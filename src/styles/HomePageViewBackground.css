@@ -1,0 +1,119 @@
+@import url(colors.css);
+
+:root {
+    --color1: #5C5196;
+    --color2: #B6D4FB;
+    --color3: #3582d4;
+    --color-interactive: #A8D6FD;
+    --circle-size: 140%;
+    --blending: multiply;
+}
+
+@keyframes moveInCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveVertical {
+    0% {
+        transform: translateY(-30%);
+    }
+    50% {
+        transform: translateY(30%);
+    }
+    100% {
+        transform: translateY(-30%);
+    }
+}
+
+@keyframes moveHorizontal {
+    0% {
+        transform: translateX(-40%) translateY(-10%);
+    }
+    50% {
+        transform: translateX(40%) translateY(10%);
+    }
+    100% {
+        transform: translateX(-40%) translateY(-10%);
+    }
+}
+
+.gradient-bg {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: black;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.gradient-bg svg {
+    display: none;
+}
+
+.gradient-bg .gradients-container {
+    filter: url(#goo) blur(30px);
+    width: 100%;
+    height: 100%;
+    will-change: transform, opacity;
+}
+
+.gradient-bg .g1 {
+    position: absolute;
+    background: radial-gradient(circle at center, var(--color1) 0, transparent 40%);
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: center center;
+    animation: moveVertical 30s ease infinite;
+    opacity: 1;
+    z-index: -1;
+}
+
+.gradient-bg .g2 {
+    position: absolute;
+    background: radial-gradient(circle at center, var(--color2) 0, transparent 40%);
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2 + 200px);
+    left: calc(50% - var(--circle-size) / 2 - 500px);
+    transform-origin: calc(50% + 400px);
+    animation: moveInCircle 40s linear infinite;
+    opacity: 1;
+    z-index: -1;
+}
+
+.gradient-bg .g3 {
+    position: absolute;
+    background: radial-gradient(circle at center, var(--color3) 0, transparent 40%);
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: calc(50% - 200px);
+    animation: moveHorizontal 40s ease infinite;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+@media (max-width: 768px) {
+    .gradient-bg .gradients-container {
+        filter: none;
+    }
+
+    .gradient-bg .g1, .g2, .g3 {
+        animation: none;
+    }
+}

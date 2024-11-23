@@ -1,0 +1,120 @@
+@import './colors.css';
+
+html {
+  scroll-behavior: smooth;
+}
+
+.homepage-container {
+  height: 100vh;
+  background-color: var(--cryptolab-black);
+  position: relative;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  margin-top: 20px;
+}
+
+.options-container {
+  height: 100vh;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.option-box {
+  width: calc(25% - 20px); /* 4 columns */
+  box-sizing: border-box;
+  background-color: var(--cryptolab-general-grey);
+  text-align: center;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1199px) {
+  .option-box {
+    width: calc(33.33% - 20px); /* 3 columns */
+  }
+}
+
+@media (max-width: 991px) {
+  .option-box {
+    width: calc(50% - 20px); /* 2 columns */
+  }
+}
+
+@media (max-width: 767px) {
+  .option-box {
+    width: calc(100% - 20px); /* 1 column */
+  }
+}
+
+.sticky-header {
+  position: fixed;
+  top: -100px; /* Start hidden above the viewport */
+  width: 100%;
+  background-color: var(--cryptolab-white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  transition: top 0.3s ease-in-out; /* Smooth transition */
+}
+
+.sticky-header.visible {
+  top: 0; /* Slide down into view */
+}
+
+.sticky-header.hidden {
+  top: -100px; /* Slide up out of view */
+}
+
+.sticky-header .logo {
+  width: 40px;
+  height: auto;
+}
+
+.sticky-header .header-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 10px;
+  color: var(--cryptolab-dark-grey);
+}
+
+.sticky-header .header-categories {
+  display: flex;
+  gap: 20px;
+}
+
+.sticky-header .header-categories a {
+  text-decoration: none;
+  color: var(--cryptolab-blue);
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.sticky-header .header-categories a:hover {
+  color: var(--cryptolab-blue-hovered);
+}
+
+.sticky-header .header-button {
+  background-color: var(--cryptolab-orange);
+  color: var(--cryptolab-white);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sticky-header .header-button:hover {
+  background-color: var(--cryptolab-orange-hovered);
+}

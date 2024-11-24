@@ -11,5 +11,15 @@
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
-  z-index: 1; /* Ensure it is behind the sidebar */
+  z-index: 1;
+}
+
+.box {
+  position: absolute;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid black;
+  cursor: move;
+  box-sizing: border-box;
+  z-index: 2;
 }

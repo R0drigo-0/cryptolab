@@ -24,6 +24,10 @@ const SidebarView = () => {
     setCollapsed(SidebarController.getCollapsed());
   };
 
+  const handleSelectItem = (item) => {
+    SidebarController.setSelectItem(item);
+  }
+
   return (
     <div className={`sidebar ${collapsed ? 'collapsed' : 'expanded'}`}>
       <button className="toggle-button" onClick={handleToggle}>
@@ -31,18 +35,18 @@ const SidebarView = () => {
       </button>
       <Sidebar collapsed={collapsed} width={"200px"}>
         <Menu>
-          <MenuItem icon={<InputIcon />}>Input</MenuItem>
-          <MenuItem icon={<OutputIcon />}>Output</MenuItem>
-          <MenuItem icon={<LockIcon />}>Encrypt</MenuItem>
-          <MenuItem icon={<LockOpenIcon />}>Decrypt</MenuItem>
-          <MenuItem icon={<FingerprintIcon />}>Hash</MenuItem>
-          <MenuItem icon={<VpnKeyIcon />}>Seed</MenuItem>
-          <MenuItem icon={<PublicIcon />}>Public Key</MenuItem>
-          <MenuItem icon={<SecurityIcon />}>Private Key</MenuItem>
-          <MenuItem icon={<SwapHorizIcon />}>Xor</MenuItem>
-          <MenuItem icon={<LinkIcon />}>Concatenate</MenuItem>
-          <MenuItem icon={<ChevronLeftIcon />}>Shift Left</MenuItem>
-          <MenuItem icon={<ChevronRightIcon />}>Shift Right</MenuItem>
+          <MenuItem icon={<InputIcon />} onClick={() => handleSelectItem('Input')}>Input</MenuItem>
+          <MenuItem icon={<OutputIcon />} onClick={() => handleSelectItem('Output')}>Output</MenuItem>
+          <MenuItem icon={<LockIcon />} onClick={() => handleSelectItem('Encrypt')}>Encrypt</MenuItem>
+          <MenuItem icon={<LockOpenIcon />} onClick={() => handleSelectItem('Decrypt')}>Decrypt</MenuItem>
+          <MenuItem icon={<FingerprintIcon />} onClick={() => handleSelectItem('Hash')}>Hash</MenuItem>
+          <MenuItem icon={<VpnKeyIcon />} onClick={() => handleSelectItem('Seed')}>Seed</MenuItem>
+          <MenuItem icon={<PublicIcon />} onClick={() => handleSelectItem('Public Key')}>Public Key</MenuItem>
+          <MenuItem icon={<SecurityIcon />} onClick={() => handleSelectItem('Private Key')}>Private Key</MenuItem>
+          <MenuItem icon={<SwapHorizIcon />} onClick={() => handleSelectItem('Xor')}>Xor</MenuItem>
+          <MenuItem icon={<LinkIcon />} onClick={() => handleSelectItem('Concatenate')}>Concatenate</MenuItem>
+          <MenuItem icon={<ChevronLeftIcon />} onClick={() => handleSelectItem('Shift Left')}>Shift Left</MenuItem>
+          <MenuItem icon={<ChevronRightIcon />} onClick={() => handleSelectItem('Shift Right')}>Shift Right</MenuItem>
         </Menu>
       </Sidebar>
     </div>

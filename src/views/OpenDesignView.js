@@ -54,7 +54,9 @@ const OpenDesignView = () => {
   };
 
   const handleResizeStop = (index, e, direction, ref, delta, position) => {
-    const newSize = { width: ref.offsetWidth, height: ref.offsetHeight };
+    const snappedWidth = Math.round(ref.offsetWidth / GRID_SIZE) * GRID_SIZE;
+    const snappedHeight = Math.round(ref.offsetHeight / GRID_SIZE) * GRID_SIZE;
+    const newSize = { width: snappedWidth, height: snappedHeight };
     const newPosition = snapToGrid(position.x, position.y);
     OpenDesignController.updateBoxSize(index, newSize);
     OpenDesignController.updateBoxPosition(index, newPosition);

@@ -1,11 +1,11 @@
 import "../styles/OpenDesignView.css";
-
+import { Rnd } from "react-rnd";
 import React, { useEffect, useState } from "react";
 import SidebarView from "./Components/SidebarView";
 import SidebarController from "../controllers/SidebarController";
 import OpenDesignController from "../controllers/OpenDesignController";
 
-const GRID_SIZE = 10; // Define the size of the grid
+const GRID_SIZE = 40; // Define the size of the grid
 
 const OpenDesignView = () => {
   const [boxes, setBoxes] = useState(OpenDesignController.getBoxes());
@@ -29,7 +29,8 @@ const OpenDesignView = () => {
         const gridPosition = snapToGrid(e.clientX, e.clientY);
         const newBox = {
           name: selectedItem,
-          position: gridPosition
+          position: gridPosition,
+          size: { width: GRID_SIZE * 2, height: GRID_SIZE * 2 } // Adjust initial size here
         };
         OpenDesignController.addBox(newBox);
         setBoxes(OpenDesignController.getBoxes());
@@ -46,8 +47,16 @@ const OpenDesignView = () => {
     };
   }, [selectedItem]);
 
-  const handleDragEnd = (index, e) => {
-    const newPosition = snapToGrid(e.clientX, e.clientY);
+  const handleDragStop = (index, e, d) => {
+    const newPosition = snapToGrid(d.x, d.y);
+    OpenDesignController.updateBoxPosition(index, newPosition);
+    setBoxes(OpenDesignController.getBoxes());
+  };
+
+  const handleResizeStop = (index, e, direction, ref, delta, position) => {
+    const newSize = { width: ref.offsetWidth, height: ref.offsetHeight };
+    const newPosition = snapToGrid(position.x, position.y);
+    OpenDesignController.updateBoxSize(index, newSize);
     OpenDesignController.updateBoxPosition(index, newPosition);
     setBoxes(OpenDesignController.getBoxes());
   };
@@ -94,20 +103,21 @@ const OpenDesignView = () => {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
         {boxes.map((box, index) => (
-          <div
+          <Rnd
             key={index}
+            size={{ width: box.size.width, height: box.size.height }}
+            position={{ x: box.position.x, y: box.position.y }}
+            grid={[GRID_SIZE, GRID_SIZE]}
+            onDragStop={(e, d) => handleDragStop(index, e, d)}
+            onResizeStop={(e, direction, ref, delta, position) => handleResizeStop(index, e, direction, ref, delta, position)}
+            minWidth={GRID_SIZE}
+            minHeight={GRID_SIZE}
+            maxWidth={GRID_SIZE * 10}
+            maxHeight={GRID_SIZE * 10}
             className="box"
-            style={{
-              left: box.position.x,
-              top: box.position.y,
-              width: GRID_SIZE,
-              height: GRID_SIZE
-            }}
-            draggable
-            onDragEnd={(e) => handleDragEnd(index, e)}
           >
-            {box.name}
-          </div>
+            <div>{box.name}</div>
+          </Rnd>
         ))}
         {selectedItem && (
           <div
@@ -115,8 +125,8 @@ const OpenDesignView = () => {
             style={{
               left: cursorPosition.x,
               top: cursorPosition.y,
-              width: GRID_SIZE,
-              height: GRID_SIZE,
+              width: GRID_SIZE * 2, // Adjust initial size here
+              height: GRID_SIZE * 2, // Adjust initial size here
               position: "fixed",
               pointerEvents: "none"
             }}

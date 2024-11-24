@@ -16,6 +16,10 @@ class OpenDesignController {
   updateBoxPosition(index, position) {
     this.model.updateBoxPosition(index, position);
   }
+
+  updateBoxSize(index, size) {
+    this.model.updateBoxSize(index, size);
+  }
 }
 
 export default new OpenDesignController();

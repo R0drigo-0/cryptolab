@@ -18,7 +18,10 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",
+    "react-draggable": "^4.4.6",
     "react-pro-sidebar": "^1.1.0",
+    "react-resizable": "^3.0.5",
+    "react-rnd": "^10.4.13",
     "react-router-dom": "^7.0.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"

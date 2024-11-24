@@ -14,6 +14,10 @@ class OpenDesignModel {
   updateBoxPosition(index, position) {
     this.boxes[index].position = position;
   }
+
+  updateBoxSize(index, size) {
+    this.boxes[index].size = size;
+  }
 }
 
 export default OpenDesignModel;

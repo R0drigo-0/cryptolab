@@ -1,5 +1,15 @@
+.open-design-view {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
+
 .grid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 0;
+  background-color: #ffffff;
+  z-index: 1; /* Ensure it is behind the sidebar */
 }

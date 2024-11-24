@@ -1,12 +1,16 @@
 // src/views/HomePageView.js
-import React from 'react';
-import { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/HomePageView.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import React from 'react';
 import logo from '../logo.svg';
 import HomePageController from '../controllers/HomePageController';
 
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const HomePageView = () => {
+  const navigate = useNavigate();
   const [controller] = useState(new HomePageController());
   const [isHeaderVisible, setIsHeaderVisible] = useState(controller.isHeaderVisible);
   const [visibleOptions, setVisibleOptions] = useState(controller.getVisibleOptions());
@@ -42,7 +46,7 @@ const HomePageView = () => {
             <a href="#protocols" className="mx-2">Protocols</a>
             <a href="#attacks" className="mx-2">Attacks</a>
           </div>
-          <button className="header-button" id="open-design">Open Design</button>
+          <button className="header-button" onClick={() => {navigate("/design")}}>Open Design</button>
         </div>
       </div>
       <div className="homepage-container d-flex flex-column justify-content-center align-items-center">

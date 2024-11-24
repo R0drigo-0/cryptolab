@@ -1,7 +1,4 @@
-// src/controllers/HomePageController.js
-
 import HomePageModel from '../models/HomePageModel';
-import { Navigate } from 'react-router-dom';
 
 class HomePageController {
   constructor() {
@@ -24,14 +21,6 @@ class HomePageController {
 
   handleResize() {
     this.windowWidth = window.innerWidth;
-  }
-
-  handleClick(event) {
-    console.log('Clicked!', event.target.id);
-    var element = event.target.id;
-    if (element === 'open-design') {
-      return <Navigate to="/design" />;
-    }
   }
 
   handleScroll() {

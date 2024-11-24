@@ -1,19 +1,28 @@
+.sidebar-container {
+  position: relative;
+  height: 100vh!important;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: width 0.3s;
+}
+
 .sidebar {
-  position: fixed;
+  margin: 0!important;
+  padding: 0!important;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 100vh !important;
   z-index: 2;
   padding-top: 20px;
   transition: width 0.3s ease;
 }
 
-.sidebar.collapsed {
-  width: 82px;
+.sidebar-container.collapsed {
+  width: 80px;
 }
 
-.sidebar.expanded {
-  width: 202px;
+.sidebar-container.expanded {
+  width: 200px;
 }
 
 .toggle-button {
@@ -31,15 +40,5 @@
 }
 
 .toggle-button:hover {
-  background-color: #f0f0f0;
-}
-
-.logo-container {
-  text-align: center;
-  padding: 10px;
-}
-
-.logo {
-  max-width: 100%;
-  height: auto;
+  background-color: #e0e0e0;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem, sidebarClasses } from "react-pro-sidebar";
 import LinkIcon from "@mui/icons-material/Link";
 import LockIcon from "@mui/icons-material/Lock";
 import InputIcon from "@mui/icons-material/Input";
@@ -16,7 +16,7 @@ import SidebarController from "../../controllers/SidebarController";
 import "../../styles/SidebarView.css";
 
 const SidebarView = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(SidebarController.getCollapsed());
 
   const handleToggle = () => {
     setCollapsed(!collapsed);

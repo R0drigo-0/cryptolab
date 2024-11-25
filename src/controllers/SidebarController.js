@@ -3,7 +3,7 @@ import SidebarModel from '../models/SidebarModel';
 class SidebarController {
   constructor() {
     this.model = new SidebarModel();
-    this.collapsed = false;
+    this.collapsed = true;
   }
 
   setSelectItem(item) {
@@ -16,6 +16,8 @@ class SidebarController {
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
+    const event = new CustomEvent("sidebarToggle", {detail: this.collapsed});
+    document.dispatchEvent(event);
   }
 
   getCollapsed() {

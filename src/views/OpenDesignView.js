@@ -28,7 +28,7 @@ const OpenDesignView = () => {
     CustomResizerNode,  
   }
   
-  const snapGrid = [16, 16];
+  const snapGrid = [20, 20];
   const defaultViewport = {x:0, y:0, zoom:1.5};
 
   const initialNodes = [
@@ -65,6 +65,7 @@ const OpenDesignView = () => {
           onConnect={onConnect}
           fitView
           nodeTypes={nodeTypes}
+          snapToGrid
           snapGrid={snapGrid}
           attributionPosition="bottom-left"
         >

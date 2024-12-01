@@ -1,21 +1,21 @@
 class OpenDesignModel {
   constructor() {
-    this.boxes = []
+    this.nodes = []
   }
 
-  addBox(box) {
-    this.boxes.push(box);
+  addNode(node) {
+    this.nodes.push(node);
   }
 
-  getBoxes() {
-    return this.boxes;
+  getNodes() {
+    return this.nodes;
   }
 
-  updateBoxPosition(index, position) {
+  updateNodePosition(index, position) {
     this.boxes[index].position = position;
   }
 
-  updateBoxSize(index, size) {
+  updateNodeSize(index, size) {
     this.boxes[index].size = size;
   }
 }

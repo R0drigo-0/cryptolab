@@ -5,20 +5,20 @@ class OpenDesignController {
     this.model = new OpenDesignModel();
   }
 
-  addBox(box) {
-    this.model.addBox(box);
+  addNode(node) {
+    this.model.addBox(node);
   }
 
-  getBoxes() {
-    return this.model.getBoxes();
+  getNodes() {
+    return this.model.getNodes();
   }
 
-  updateBoxPosition(index, position) {
-    this.model.updateBoxPosition(index, position);
+  updateNodePosition(index, position) {
+    this.model.updateNodePosition(index, position);
   }
 
-  updateBoxSize(index, size) {
-    this.model.updateBoxSize(index, size);
+  updateNodeSize(index, size) {
+    this.model.updateNodeSize(index, size);
   }
 }
 

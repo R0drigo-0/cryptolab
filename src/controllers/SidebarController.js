@@ -7,6 +7,7 @@ class SidebarController {
   }
 
   setSelectItem(item) {
+    console.log("SidebarController.setSelectedItem", item);
     this.model.setSelectedItem(item);
   }
 

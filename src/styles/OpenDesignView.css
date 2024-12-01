@@ -1,3 +1,5 @@
+@import url('./xy-theme.css');
+
 .open-design-view {
   position: relative;
   height: 100vh;
@@ -35,4 +37,17 @@
   bottom: 0;
   right: 0;
   cursor: se-resize;
+}
+
+.react-flow__panel.react-flow__attribution.bottom.right{
+  display: none!important;
+}
+
+.horizontal-controls {
+  display: flex!important;
+  flex-direction: row!important;
+  width: 200px!important;
+  justify-content: space-between!important;
+  background-color: white!important;
+  margin-top: 10px!important;
 }

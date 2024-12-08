@@ -5,8 +5,14 @@ class OpenDesignController {
     this.model = new OpenDesignModel();
   }
 
-  addNode(node) {
-    this.model.addBox(node);
+  addNode(labelNode) {
+    const newNode = {
+      id:`${this.model.getNodes().length + 1}`,
+      position:{x: 100, y: 100},
+      type:"CustomResizerNode",
+      data:{label:labelNode}
+    }
+    this.model.addNode(newNode);
   }
 
   getNodes() {

@@ -1,6 +1,6 @@
 class OpenDesignModel {
   constructor() {
-    this.nodes = []
+    this.nodes = [];
   }
 
   addNode(node) {
@@ -12,11 +12,11 @@ class OpenDesignModel {
   }
 
   updateNodePosition(index, position) {
-    this.boxes[index].position = position;
+    this.nodes[index].position = position;
   }
 
   updateNodeSize(index, size) {
-    this.boxes[index].size = size;
+    this.nodes[index].size = size;
   }
 }
 

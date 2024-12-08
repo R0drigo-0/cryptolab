@@ -15,7 +15,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SidebarController from "../../controllers/SidebarController";
 import "../../styles/SidebarView.css";
 
-const SidebarView = () => {
+const SidebarView = ({onNewNode}) => {
   const [collapsed, setCollapsed] = useState(SidebarController.getCollapsed());
 
   const handleToggle = () => {
@@ -23,7 +23,7 @@ const SidebarView = () => {
   };
 
   const handleSelectItem = (item) => {
-    SidebarController.setSelectItem(item);
+    onNewNode(item);
   };
 
   return (

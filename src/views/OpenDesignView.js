@@ -52,10 +52,20 @@ const OpenDesignView = () => {
     [],
   );
 
+  const handleNewNode = (item) => {
+    const newNode = {
+      id: `${nodes.length + 1}`,
+      type: "CustomResizerNode",
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: { label: item },
+    };
+    OpenDesignController.addNode(newNode);
+    setNodes((nds) => [...nds, newNode]);
+  };
 
   return (
     <div>
-      <SidebarView />
+      <SidebarView onNewNode={handleNewNode}/>
       <div className="grid-bg">
         <ReactFlow
           nodes={nodes}

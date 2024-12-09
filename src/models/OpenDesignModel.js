@@ -18,6 +18,10 @@ class OpenDesignModel {
   updateNodeSize(index, size) {
     this.nodes[index].size = size;
   }
+
+  updateNodeData(index, data) {
+    this.nodes[index].data = { ...this.nodes[index].data, ...data };
+  }
 }
 
 export default OpenDesignModel;

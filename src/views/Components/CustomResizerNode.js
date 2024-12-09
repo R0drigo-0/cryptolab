@@ -1,46 +1,25 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo } from 'react';
 import { Handle, Position, NodeResizeControl } from '@xyflow/react';
-
+ 
 const controlStyle = {
   background: 'transparent',
   border: 'none',
 };
-
+ 
 const CustomNode = ({ data }) => {
-  const nodeRef = useRef(null);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        console.log('Resized:', entry.target);
-      }
-    });
-
-    if (nodeRef.current) {
-      resizeObserver.observe(nodeRef.current);
-    }
-
-    return () => {
-      if (nodeRef.current) {
-        resizeObserver.unobserve(nodeRef.current);
-      }
-      resizeObserver.disconnect();
-    };
-  }, []);
-
   return (
-    <div ref={nodeRef}>
-      <NodeResizeControl style={controlStyle} minWidth={100} minHeight={100} maxHeight={200} maxWidth={200}>
+    <>
+      <NodeResizeControl style={controlStyle} minWidth={100} minHeight={50}>
         <ResizeIcon />
       </NodeResizeControl>
-
+ 
       <Handle type="target" position={Position.Left} />
       <div>{data.label}</div>
       <Handle type="source" position={Position.Right} />
-    </div>
+    </>
   );
 };
-
+ 
 function ResizeIcon() {
   return (
     <svg
@@ -63,5 +42,5 @@ function ResizeIcon() {
     </svg>
   );
 }
-
+ 
 export default memo(CustomNode);

@@ -48,15 +48,15 @@ const OpenDesignView = () => {
     ConcatenateNode,
   }
   
-  const snapGrid = [20, 20];
+  const snapGrid = [20,20];
   const defaultViewport = {x:0, y:0, zoom:1.5};
 
   const initialNodes = [
-    { id: "1", type:"CustomResizerNode", position: { x: 200, y: 200 }, data: { label: "1" } },
-    { id: "2", type:"CustomResizerNode", position: { x: 300, y: 175 }, data: { label: "2" } },
+    { id: "1", type:"InputNode", position: { x: 0, y: 0 }, data: { label: "1",  } },
+    { id: "2", type:"CustomResizerNode", position: { x: 100, y: 0 }, data: { label: "2" } },
   ];
   
-  const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+  const initialEdges = [];
 
   const [selectedItem, setSelectItem] = useState(null);
 
@@ -67,7 +67,7 @@ const OpenDesignView = () => {
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) =>
-        addEdge({ ...params, animated: true }, eds),
+        addEdge({ ...params, animated: true, type: "smoothstep"}, eds),
       ),
     [],
   );
@@ -81,6 +81,7 @@ const OpenDesignView = () => {
     };
     OpenDesignController.addNode(newNode);
     setNodes((nds) => [...nds, newNode]);
+    console.log(OpenDesignController.getNodes());
   };
 
   return (
@@ -103,7 +104,6 @@ const OpenDesignView = () => {
             <MiniMap  pannable zoomable position="bottom-right" />
             <MiniMap
               nodeStrokeColor={(n) => {
-                console.log(n);
                 if (n.type === 'ResizableNode') return '#0041d0';
                 if (n.type === 'ResizableNodeSelected') return  '#ff0072';
                 if (n.type === 'CustomResizerNode') return '#ff0072';

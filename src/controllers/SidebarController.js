@@ -7,7 +7,6 @@ class SidebarController {
   }
 
   setSelectItem(item) {
-    console.log("SidebarController.setSelectedItem", item);
     this.model.setSelectedItem(item);
   }
 
@@ -18,6 +17,7 @@ class SidebarController {
   toggleSidebar() {
     this.collapsed = !this.collapsed;
     const event = new CustomEvent("sidebarToggle", {detail: this.collapsed});
+    console.log("dispatching sidebarToggle event"+event);
     document.dispatchEvent(event);
   }
 

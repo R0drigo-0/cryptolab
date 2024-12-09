@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/css/bootstrap.min.css";  
 
 import React from "react";
@@ -6,6 +7,7 @@ import HomePageView from "./views/HomePageView";
 import OpenDesignView from "./views/OpenDesignView";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -16,6 +18,17 @@ function App() {
         <Route path="/design" element={<OpenDesignView />} />
         <Route path="*" element={<ErrorView />} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Router>
   );
 }

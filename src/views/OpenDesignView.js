@@ -52,7 +52,7 @@ const OpenDesignView = () => {
   const defaultViewport = {x:0, y:0, zoom:1.5};
 
   const initialNodes = [
-    { id: "1", type:"OutputNode", position: { x: 0, y: 0 }, data: { label: "1",  } },
+    { id: "1", type:"EncryptNode", position: { x: 0, y: 0 }, data: { label: "1",  } },
     { id: "2", type:"CustomResizerNode", position: { x: 100, y: 0 }, data: { label: "2" } },
   ];
   

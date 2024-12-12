@@ -1,6 +1,19 @@
 import { memo, useState, useEffect } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import RSAAlgorithm from './algorithms/RSAAlgorithm';
+import ElGamalAlgorithm from './algorithms/ElGamalAlgorithm';
+import DiffieHellmanAlgorithm from './algorithms/DiffieHellmanAlgorithm';
+import AESAlgorithm from './algorithms/AESAlgorithm';
+import DESAlgorithm from './algorithms/DESAlgorithm';
+import ECBAlgorithm from './algorithms/ECBAlgorithm';
+import CBCAlgorithm from './algorithms/CBCAlgorithm';
+import PCBCAlgorithm from './algorithms/PCBCAlgorithm';
+import CFBAlgorithm from './algorithms/CFBAlgorithm';
+import CaesarAlgorithm from './algorithms/CaesarAlgorithm';
+import HomophonicAlgorithm from './algorithms/HomophonicAlgorithm';
+import PolyalphabeticAlgorithm from './algorithms/PolyalphabeticAlgorithm';
+import MatrixCipherAlgorithm from './algorithms/MatrixCipherAlgorithm';
+
 
 const controlStyle = {
   background: 'transparent',
@@ -16,7 +29,7 @@ const EncryptNode = ({ data }) => {
 
   const algorithms = {
     RSA: new RSAAlgorithm(setParams),
-    //ElGamal: new ElGamalAlgorithm(setParams),
+    ElGamal: new ElGamalAlgorithm(setParams),
     //DiffieHellman: new DiffieHellmanAlgorithm(setParams),
     //AES: new AESAlgorithm(setParams),
     //DES: new DESAlgorithm(setParams),

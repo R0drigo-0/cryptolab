@@ -4,6 +4,7 @@ class ElGamalAlgorithm {
   constructor(setParams) {
     this.setParams = setParams;
   }
+
   getInputs(params) {
     return (
       <div>
@@ -27,8 +28,6 @@ class ElGamalAlgorithm {
           h:
           <input type="number" value={params.h || ''} onChange={(e) => this.setParams({ ...params, h: Number(e.target.value) })} />
         </label>
-
-
         <label>
           α:
           <input type="number" value={params.alpha || ''} readOnly />
@@ -51,48 +50,59 @@ class ElGamalAlgorithm {
         </label>
         <label>
           c:
-          <input type="number" value={params.c2 || ''} readOnly />
+          <input type="number" value={params.c || ''} readOnly />
         </label>
       </div>
     );
   }
 
-  encrypt(params){
-
-  }
-  
-  decrypt(params){
-
-  }
-
-  generatePublicKey(params)
-  {
-    const {p, q, alpha, d} = params
-    var newParams = {...params}
-    if(p && q && alpha && d) {
-      
-      newParams.kpub = []
+  generatePublicKey(params) {
+    const { p, q, alpha, d } = params;
+    let newParams = { ...params };
+    if (p && q && alpha && d) {
+      newParams.beta = Math.pow(alpha, d) % p;
+      newParams.kpub = [p, alpha, newParams.beta];
     }
-    this.setParams(newParams)
+    this.setParams(newParams);
   }
 
-  generatePrivateKey(params)
-  {
-    const {p, q, alpha, d} = params
-    var newParams = {...params}
-    if(d) {
-      newParams.kpriv = [d]
+  generatePrivateKey(params) {
+    const { d } = params;
+    let newParams = { ...params };
+    if (d) {
+      newParams.kpriv = [d];
     }
     this.setParams(newParams);
   }
 
   calculate(params) {
-    const { p, q, k } = params;
+    const { p, q } = params;
     let newParams = { ...params };
-    if (q && p){
-      newParams.alpha = (1/q) % p
+    if (q && p) {
+      newParams.alpha = Math.pow(q, -1) % p;
     }
+    this.setParams(newParams);
+  }
 
+  encrypt(params, msg) {
+    const { p, alpha, beta, h } = params;
+    let newParams = { ...params };
+    if (p && alpha && beta && h) {
+      newParams.c1 = Math.pow(alpha, h) % p;
+      newParams.c2 = (msg * Math.pow(beta, h)) % p;
+      newParams.c = [newParams.c1, newParams.c2];
+    }
+    this.setParams(newParams);
+  }
+
+  decrypt(params, c) {
+    const { p, d } = params;
+    const [c1, c2] = c;
+    let newParams = { ...params };
+    if (p && d && c1 && c2) {
+      const c1Inverse = Math.pow(c1, p - 1 - d) % p;
+      newParams.m = (c2 * c1Inverse) % p;
+    }
     this.setParams(newParams);
   }
 }

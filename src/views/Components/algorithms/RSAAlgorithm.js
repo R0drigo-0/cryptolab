@@ -41,30 +41,26 @@ class RSAAlgorithm {
           d:
           <input type="number" value={params.d || ""} readOnly />
         </label>
-        {params.e && params.n && (
           <div>
             <label>
               kpub:
               <input
                 type="text"
-                value={`(${params.e}, ${params.n})`}
+                value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
                 readOnly
               />
             </label>
           </div>
-        )}
-        {params.d && params.n && (
           <div>
             <label>
               kpriv:
               <input
                 type="text"
-                value={`(${params.d}, ${params.n})`}
+                value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
                 readOnly
               />
             </label>
           </div>
-        )}
       </div>
     );
   }

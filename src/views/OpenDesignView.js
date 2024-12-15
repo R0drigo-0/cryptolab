@@ -59,17 +59,22 @@ const OpenDesignView = () => {
 
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const onConnect = useCallback(
-    (params) =>
-      setEdges((eds) =>
-        addEdge({ ...params, animated: true, type: "smoothstep"}, eds),
-      ),
-    [],
-  );
+  const handleNewEdge = (params) => {
+    const newEdge = {
+      id: `${edges.length + 1}`,
+      source: params.source,
+      target: params.target,
+      animated: true,
+      type: "smoothstep"
+    };
+    OpenDesignController.addEdge(params.source, params.target);
+    setEdges((eds) => addEdge(newEdge, eds));
+    console.log(OpenDesignController.getEdges());
+  };
 
   const handleNewNode = (item) => {
     const newNode = {
-      id: `${nodes.length + 1}`,
+      id: `${item}Node${nodes.length + 1}`,
       type: item + "Node",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
       data: { label: item },
@@ -88,7 +93,7 @@ const OpenDesignView = () => {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
+          onConnect={handleNewEdge}
           fitView
           nodeTypes={nodeTypes}
           snapToGrid

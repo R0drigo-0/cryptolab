@@ -1,6 +1,15 @@
 class OpenDesignModel {
   constructor() {
     this.nodes = [];
+    this.edges = [];
+  }
+  
+  addEdge(edge) {
+    this.edges.push(edge);
+  }
+
+  getEdges() {
+    return this.edges;
   }
 
   addNode(node) {

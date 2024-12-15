@@ -104,9 +104,9 @@ const OpenDesignView = () => {
             <MiniMap  pannable zoomable position="bottom-right" />
             <MiniMap
               nodeStrokeColor={(n) => {
-                if (n.type === 'ResizableNode') return '#0041d0';
-                if (n.type === 'ResizableNodeSelected') return  '#ff0072';
-                if (n.type === 'CustomResizerNode') return '#ff0072';
+                if (n.type === 'InputNode') return '#0041d0';
+                if (n.type === 'OutputNode') return  '#ff0072';
+                if (n.type === 'EncryptNode') return '#ff0072';
               }}
               nodeColor={(n) => {
                 if (n.type === 'selectorNode') return '#ff0072';

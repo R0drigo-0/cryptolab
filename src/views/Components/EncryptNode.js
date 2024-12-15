@@ -31,17 +31,17 @@ const EncryptNode = ({ data }) => {
   const algorithms = useMemo(() => ({
     RSA: new RSAAlgorithm(setParams),
     ElGamal: new ElGamalAlgorithm(setParams),
-    //DiffieHellman: new DiffieHellmanAlgorithm(setParams),
-    //AES: new AESAlgorithm(setParams),
-    //DES: new DESAlgorithm(setParams),
-    //ECB: new ECBAlgorithm(setParams),
-    //CBC: new CBCAlgorithm(setParams),
-    //PCBC: new PCBCAlgorithm(setParams),
-    //CFB: new CFBAlgorithm(setParams),
-    //Caesar: new CaesarAlgorithm(setParams),
-    //Homophonic: new HomophonicAlgorithm(setParams),
-    //Polyalphabetic: new PolyalphabeticAlgorithm(setParams),
-    //MatrixCipher: new MatrixCipherAlgorithm(setParams),
+    DiffieHellman: new DiffieHellmanAlgorithm(setParams),
+    AES: new AESAlgorithm(setParams),
+    DES: new DESAlgorithm(setParams),
+    ECB: new ECBAlgorithm(setParams),
+    CBC: new CBCAlgorithm(setParams),
+    PCBC: new PCBCAlgorithm(setParams),
+    CFB: new CFBAlgorithm(setParams),
+    Caesar: new CaesarAlgorithm(setParams),
+    Homophonic: new HomophonicAlgorithm(setParams),
+    Polyalphabetic: new PolyalphabeticAlgorithm(setParams),
+    MatrixCipher: new MatrixCipherAlgorithm(setParams),
   }), []);
 
   const algorithmsNames = Object.keys(algorithms);

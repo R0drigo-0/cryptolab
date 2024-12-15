@@ -51,14 +51,9 @@ const OpenDesignView = () => {
   const snapGrid = [20,20];
   const defaultViewport = {x:0, y:0, zoom:1.5};
 
-  const initialNodes = [
-    { id: "1", type:"EncryptNode", position: { x: 0, y: 0 }, data: { label: "1",  } },
-    { id: "2", type:"CustomResizerNode", position: { x: 100, y: 0 }, data: { label: "2" } },
-  ];
+  const initialNodes = [];
   
   const initialEdges = [];
-
-  const [selectedItem, setSelectItem] = useState(null);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 
@@ -75,7 +70,7 @@ const OpenDesignView = () => {
   const handleNewNode = (item) => {
     const newNode = {
       id: `${nodes.length + 1}`,
-      type: "CustomResizerNode",
+      type: item + "Node",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
       data: { label: item },
     };

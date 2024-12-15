@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react';
+import { memo, useState, useEffect, useMemo, useRef } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import RSAAlgorithm from './algorithms/RSAAlgorithm';
 import ElGamalAlgorithm from './algorithms/ElGamalAlgorithm';
@@ -13,7 +13,7 @@ import CaesarAlgorithm from './algorithms/CaesarAlgorithm';
 import HomophonicAlgorithm from './algorithms/HomophonicAlgorithm';
 import PolyalphabeticAlgorithm from './algorithms/PolyalphabeticAlgorithm';
 import MatrixCipherAlgorithm from './algorithms/MatrixCipherAlgorithm';
-
+import { toast } from 'react-toastify';
 
 const controlStyle = {
   background: 'transparent',
@@ -26,8 +26,9 @@ const controlStyle = {
 const EncryptNode = ({ data }) => {
   const [algorithm, setAlgorithm] = useState('RSA');
   const [params, setParams] = useState({});
+  const prevParamsRef = useRef(params);
 
-  const algorithms = {
+  const algorithms = useMemo(() => ({
     RSA: new RSAAlgorithm(setParams),
     ElGamal: new ElGamalAlgorithm(setParams),
     //DiffieHellman: new DiffieHellmanAlgorithm(setParams),
@@ -41,14 +42,17 @@ const EncryptNode = ({ data }) => {
     //Homophonic: new HomophonicAlgorithm(setParams),
     //Polyalphabetic: new PolyalphabeticAlgorithm(setParams),
     //MatrixCipher: new MatrixCipherAlgorithm(setParams),
-  }
+  }), []);
 
   const algorithmsNames = Object.keys(algorithms);
 
   useEffect(() => {
-    algorithms[algorithm].calculate(params);
-  }, [params, algorithm]);
-
+    const prevParams = prevParamsRef.current;
+    if (JSON.stringify(prevParams) !== JSON.stringify(params)) {
+      algorithms[algorithm].calculate(params);
+      prevParamsRef.current = params;
+    }
+  }, [algorithm, params]);
 
   const handleAlgorithmChange = (event) => {
     setAlgorithm(event.target.value);

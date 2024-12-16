@@ -10,7 +10,7 @@ const controlStyle = {
   boxSizing: 'border-box',
 }
 
-const CustomNode = ({ data }) => {
+const InputNode = ({ data }) => {
   const [text, setText] = useState('');
 
   const handleChange = (event) => {
@@ -40,4 +40,4 @@ const CustomNode = ({ data }) => {
   )
 }
 
-export default memo(CustomNode);
+export default memo(InputNode);

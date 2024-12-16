@@ -6,15 +6,14 @@ import ErrorView from "./views/ErrorView";
 import HomePageView from "./views/HomePageView";
 import OpenDesignView from "./views/OpenDesignView";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, HashRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <Router>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<HomePageView />} />
-        <Route path="/cryptolab" element={<HomePageView />} />
         <Route path="/design" element={<OpenDesignView />} />
         <Route path="*" element={<ErrorView />} />
       </Routes>
@@ -29,7 +28,7 @@ function App() {
         draggable
         pauseOnHover
       />
-    </Router>
+    </HashRouter>
   );
 }
 

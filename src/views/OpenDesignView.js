@@ -30,6 +30,7 @@ import PublicKeyNode from "./Components/PublicKeyNode";
 import PrivateKeyNode from "./Components/PrivateKeyNode";
 import XorNode from "./Components/XorNode";
 import ConcatenateNode from "./Components/ConcatenateNode";
+import { type } from "@testing-library/user-event/dist/type";
 
 const OpenDesignView = () => {
   const nodeTypes = {

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 class RSAAlgorithm {
   constructor(setParams) {
     this.setParams = setParams;
+    this.debounceTimeout = null;
   }
 
   getInputs(params) {
@@ -15,6 +16,7 @@ class RSAAlgorithm {
             type="number"
             value={params.p || ""}
             onChange={(e) => this.handleInputChange(e, 'p', params)}
+            onBlur={() => this.validateParams('p', params)}
           />
         </label>
         <label>
@@ -23,6 +25,7 @@ class RSAAlgorithm {
             type="number"
             value={params.q || ""}
             onChange={(e) => this.handleInputChange(e, 'q', params)}
+            onBlur={() => this.validateParams('q', params)}
           />
         </label>
         <label>
@@ -31,6 +34,7 @@ class RSAAlgorithm {
             type="number"
             value={params.e || ""}
             onChange={(e) => this.handleInputChange(e, 'e', params)}
+            onBlur={() => this.validateParams('e', params)}
           />
         </label>
         <label>
@@ -41,26 +45,26 @@ class RSAAlgorithm {
           d:
           <input type="number" value={params.d || ""} readOnly />
         </label>
-          <div>
-            <label>
-              kpub:
-              <input
-                type="text"
-                value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
-                readOnly
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              kpriv:
-              <input
-                type="text"
-                value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
-                readOnly
-              />
-            </label>
-          </div>
+        <div>
+          <label>
+            kpub:
+            <input
+              type="text"
+              value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
+              readOnly
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            kpriv:
+            <input
+              type="text"
+              value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
+              readOnly
+            />
+          </label>
+        </div>
       </div>
     );
   }
@@ -75,6 +79,42 @@ class RSAAlgorithm {
         this.setParams({ ...params, [key]: numValue });
       }
     }
+
+    // Clear the previous debounce timeout
+    clearTimeout(this.debounceTimeout);
+
+    // Set a new debounce timeout
+    this.debounceTimeout = setTimeout(() => {
+      this.validateParams(key, params);
+    }, 1000); // Adjust the debounce delay to 1 second
+  }
+
+  validateParams(key, params) {
+    const { p, q, e } = params;
+
+    if (key === 'p' && p && !this.isPrime(p)) {
+      const recommendedP = this.getRandomPrime();
+      toast.clearWaitingQueue();
+      toast.dismiss();
+      toast.error(`p must be a prime number. For example ${recommendedP}.`);
+    }
+
+    if (key === 'q' && q && !this.isPrime(q)) {
+      const recommendedQ = this.getRandomPrime();
+      toast.clearWaitingQueue();
+      toast.dismiss();
+      toast.error(`q must be a prime number. For example ${recommendedQ}.`);
+    }
+
+    if (key === 'e' && e) {
+      const phi = (params.p - 1) * (params.q - 1);
+      if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
+        const recommendedE = this.getRandomCoprime(phi);
+        toast.clearWaitingQueue();
+        toast.dismiss();
+        toast.error(`e must be greater than 1, less than ${phi}, and coprime with ${phi}. For example ${recommendedE}.`);
+      }
+    }
   }
 
   calculate(params) {
@@ -86,10 +126,6 @@ class RSAAlgorithm {
     }
 
     if (!this.isPrime(p)) {
-      const recommendedP = this.getRandomPrime();
-      toast.clearWaitingQueue();
-      toast.dismiss();
-      toast.error(`p must be a prime number. For example ${recommendedP}.`);
       return;
     }
 
@@ -98,10 +134,6 @@ class RSAAlgorithm {
     }
 
     if (!this.isPrime(q)) {
-      const recommendedQ = this.getRandomPrime();
-      toast.clearWaitingQueue();
-      toast.dismiss();
-      toast.error(`q must be a prime number. For example ${recommendedQ}.`);
       return;
     }
 
@@ -114,10 +146,6 @@ class RSAAlgorithm {
     }
 
     if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
-      const recommendedE = this.getRandomCoprime(phi);
-      toast.clearWaitingQueue();
-      toast.dismiss();
-      toast.error(`e must be greater than 1, less than ${phi}, and coprime with ${phi}. For example ${recommendedE}.`);
       return;
     }
 

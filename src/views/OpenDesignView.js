@@ -86,6 +86,13 @@ const OpenDesignView = () => {
     console.log(OpenDesignController.getNodes());
   };
 
+  const handleNodesDelete = (deletedNodes) => {
+    deletedNodes.forEach(node => {
+      OpenDesignController.removeNode(node.id);
+    });
+    setNodes((nds) => nds.filter(node => !deletedNodes.some(deletedNode => deletedNode.id === node.id)));
+  };
+
   return (
     <div>
       <SidebarView onNewNode={handleNewNode}/>
@@ -96,6 +103,7 @@ const OpenDesignView = () => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={handleNewEdge}
+          onNodesDelete={handleNodesDelete}
           fitView
           nodeTypes={nodeTypes}
           snapToGrid

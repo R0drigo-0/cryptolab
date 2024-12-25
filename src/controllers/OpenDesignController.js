@@ -28,6 +28,10 @@ class OpenDesignController {
     return this.model.getEdges();
   }
 
+  removeNode(nodeId) {
+    this.model.removeNode(nodeId);
+  }
+
   updateNodePosition(index, position) {
     this.model.updateNodePosition(index, position);
   }

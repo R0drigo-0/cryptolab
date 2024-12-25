@@ -20,6 +20,10 @@ class OpenDesignModel {
     return this.nodes;
   }
 
+  removeNode(nodeId) {
+    this.nodes = this.nodes.filter((node) => node.id !== nodeId);
+  }
+
   updateNodePosition(index, position) {
     this.nodes[index].position = position;
   }

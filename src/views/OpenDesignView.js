@@ -14,23 +14,24 @@ import {
   Position
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import SidebarView from "./Components/SidebarView";
+import SidebarView from "./SidebarView";
 import SidebarController from "../controllers/SidebarController";
 import OpenDesignController from "../controllers/OpenDesignController";
-import ResizableNode from "./Components/ResizableNode";
-import ResizableNodeSelected from "./Components/ResizableNodeSelected";
-import CustomResizerNode from "./Components/CustomResizerNode";
-import InputNode from "./Components/InputNode";
-import OutputNode from "./Components/OutputNode";
-import EncryptNode from "./Components/EncryptNode";
-import DecryptNode from "./Components/DecryptNode";
-import HashNode from "./Components/HashNode";
-import SeedNode from "./Components/SeedNode";
-import PublicKeyNode from "./Components/PublicKeyNode";
-import PrivateKeyNode from "./Components/PrivateKeyNode";
-import XorNode from "./Components/XorNode";
-import ConcatenateNode from "./Components/ConcatenateNode";
-import { type } from "@testing-library/user-event/dist/type";
+import {
+  ConcatenateNode,
+  CustomResizerNode,
+  DecryptNode,
+  EncryptNode,
+  HashNode,
+  InputNode,
+  OutputNode,
+  PrivateKeyNode,
+  PublicKeyNode,
+  ResizableNode,
+  ResizableNodeSelected,
+  SeedNode,
+  XorNode
+} from "./components/nodes";
 
 const OpenDesignView = () => {
   const nodeTypes = {

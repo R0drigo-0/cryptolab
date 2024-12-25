@@ -12,8 +12,8 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import SidebarController from "../../controllers/SidebarController";
-import "../../styles/SidebarView.css";
+import SidebarController from "../controllers/SidebarController";
+import "../styles/SidebarView.css";
 
 const SidebarView = ({onNewNode}) => {
   const [collapsed, setCollapsed] = useState(SidebarController.getCollapsed());

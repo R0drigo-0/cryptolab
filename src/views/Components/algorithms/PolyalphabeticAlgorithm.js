@@ -1,9 +1,11 @@
-import React from 'react';
-
 class PolyalphabeticAlgorithm {
   constructor(setParams) {
     this.setParams = setParams;
   }
+
+  getInputs(params) {
+    return <div>No inputs required for Polyalphabetic</div>;
+  }
 }
 
-export default PolyalphabeticAlgorithm
+export default PolyalphabeticAlgorithm;

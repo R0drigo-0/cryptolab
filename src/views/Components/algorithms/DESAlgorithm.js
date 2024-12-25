@@ -1,9 +1,11 @@
-import React from 'react';
-
-class DESAAlgorithm {
+class DESAlgorithm {
   constructor(setParams) {
     this.setParams = setParams;
   }
+
+  getInputs(params) {
+    return <div>No inputs required for DES</div>;
+  }
 }
 
-export default DESAAlgorithm
+export default DESAlgorithm;

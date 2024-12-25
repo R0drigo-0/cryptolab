@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 class RSAAlgorithm {
   constructor(setParams) {
     this.setParams = setParams;
-    this.debounceTimeout = null;
   }
 
   getInputs(params) {
@@ -79,14 +78,6 @@ class RSAAlgorithm {
         this.setParams({ ...params, [key]: numValue });
       }
     }
-
-    // Clear the previous debounce timeout
-    clearTimeout(this.debounceTimeout);
-
-    // Set a new debounce timeout
-    this.debounceTimeout = setTimeout(() => {
-      this.validateParams(key, params);
-    }, 1000); // Adjust the debounce delay to 1 second
   }
 
   validateParams(key, params) {
@@ -221,14 +212,6 @@ class RSAAlgorithm {
     if (x1 < 0) x1 += m0;
 
     return x1;
-  }
-
-  encrypt(message, e, n) {
-    return Math.pow(message, e) % n;
-  }
-
-  decrypt(ciphertext, d, n) {
-    return Math.pow(ciphertext, d) % n;
   }
 }
 

@@ -1,4 +1,3 @@
-import "../styles/OpenDesignView.css";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ReactFlow,
@@ -14,8 +13,8 @@ import {
   Position
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import "../styles/OpenDesignView.css"
 import SidebarView from "./SidebarView";
-import SidebarController from "../controllers/SidebarController";
 import OpenDesignController from "../controllers/OpenDesignController";
 import {
   ConcatenateNode,
@@ -58,6 +57,7 @@ const OpenDesignView = () => {
   const initialEdges = [];
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [selectedNodes, setSelectedNodes] = useState([]);
 
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -93,9 +93,13 @@ const OpenDesignView = () => {
     setNodes((nds) => nds.filter(node => !deletedNodes.some(deletedNode => deletedNode.id === node.id)));
   };
 
+  const onSelectionChange = ({ nodes, edges }) => {
+    setSelectedNodes(nodes);
+  };
+
   return (
     <div>
-      <SidebarView onNewNode={handleNewNode}/>
+      <SidebarView onNewNode={handleNewNode} selectedNodes={selectedNodes} onNodesChange={setNodes} />
       <div className="grid-bg">
         <ReactFlow
           nodes={nodes}
@@ -104,6 +108,7 @@ const OpenDesignView = () => {
           onEdgesChange={onEdgesChange}
           onConnect={handleNewEdge}
           onNodesDelete={handleNodesDelete}
+          onSelectionChange={onSelectionChange}
           fitView
           nodeTypes={nodeTypes}
           snapToGrid

@@ -29,12 +29,10 @@ const SidebarView = ({ onNewNode, selectedNodes, onNodesChange }) => {
   };
 
   const handleRemoveSelectedNodes = () => {
-    selectedNodes.forEach((node) => {
+    selectedNodes.forEach(node => {
       OpenDesignController.removeNode(node.id);
     });
-    onNodesChange((nodes) =>
-      nodes.filter((node) => !selectedNodes.includes(node))
-    );
+    onNodesChange((nds) => nds.filter(node => !selectedNodes.some(selectedNode => selectedNode.id === node.id)));
   };
 
   return (

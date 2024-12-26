@@ -71,7 +71,6 @@ const OpenDesignView = () => {
     };
     OpenDesignController.addEdge(params.source, params.target);
     setEdges((eds) => addEdge(newEdge, eds));
-    console.log(OpenDesignController.getEdges());
   };
 
   const handleNewNode = (item) => {
@@ -83,10 +82,10 @@ const OpenDesignView = () => {
     };
     OpenDesignController.addNode(newNode);
     setNodes((nds) => [...nds, newNode]);
-    console.log(OpenDesignController.getNodes());
   };
 
   const handleNodesDelete = (deletedNodes) => {
+    deletedNodes = deletedNodes["nodes"];
     deletedNodes.forEach(node => {
       OpenDesignController.removeNode(node.id);
     });
@@ -107,7 +106,7 @@ const OpenDesignView = () => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={handleNewEdge}
-          onNodesDelete={handleNodesDelete}
+          onDelete={handleNodesDelete}
           onSelectionChange={onSelectionChange}
           fitView
           nodeTypes={nodeTypes}

@@ -1,120 +1,126 @@
-@import './colors.css';
-
-html {
-  scroll-behavior: smooth;
-}
-
-.homepage-container {
-  height: 100vh;
-  background-color: var(--cryptolab-black);
-  position: relative;
-}
-
-.logo {
-  width: 150px;
-  height: auto;
-  margin-top: 20px;
-}
-
-.options-container {
-  height: 100vh;
-  margin-top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.option-box {
-  width: calc(25% - 20px); /* 4 columns */
-  box-sizing: border-box;
-  background-color: var(--cryptolab-general-grey);
-  text-align: center;
-  margin: 10px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 1199px) {
-  .option-box {
-    width: calc(33.33% - 20px); /* 3 columns */
-  }
-}
-
-@media (max-width: 991px) {
-  .option-box {
-    width: calc(50% - 20px); /* 2 columns */
-  }
-}
-
-@media (max-width: 767px) {
-  .option-box {
-    width: calc(100% - 20px); /* 1 column */
-  }
+body {
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 }
 
 .sticky-header {
   position: fixed;
-  top: -100px; /* Start hidden above the viewport */
+  top: 0;
   width: 100%;
-  background-color: var(--cryptolab-white);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 10px 0;
   z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  transition: top 0.3s ease-in-out; /* Smooth transition */
-}
-
-.sticky-header.visible {
-  top: 0; /* Slide down into view */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: top 0.3s;
 }
 
 .sticky-header.hidden {
-  top: -100px; /* Slide up out of view */
+  top: -100px;
 }
 
-.sticky-header .logo {
-  width: 40px;
-  height: auto;
+.sticky-header.visible {
+  top: 0;
 }
 
-.sticky-header .header-title {
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.header-title {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-left: 10px;
-  color: var(--cryptolab-dark-grey);
+  color: #1d1d1f;
 }
 
-.sticky-header .header-categories {
-  display: flex;
-  gap: 20px;
-}
-
-.sticky-header .header-categories a {
+.header-categories a {
+  color: #1d1d1f;
   text-decoration: none;
-  color: var(--cryptolab-blue);
-  font-weight: bold;
+  font-size: 1rem;
   transition: color 0.3s;
 }
 
-.sticky-header .header-categories a:hover {
-  color: var(--cryptolab-blue-hovered);
+.header-categories a:hover {
+  color: #0071e3;
 }
 
-.sticky-header .header-button {
-  background-color: var(--cryptolab-orange);
-  color: var(--cryptolab-white);
+.homepage-container {
+  height: 100vh;
+  position: relative;
+  text-align: center;
+  padding-top: 100px;
+  overflow: hidden;
+}
+
+.animated-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f5f5f7 0%, #e5e5e7 100%);
+  animation: gradientAnimation 15s ease infinite;
+  z-index: -1;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.homepage-container h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #1d1d1f;
+  z-index: 1;
+}
+
+.options-container {
+  padding: 50px 0;
+}
+
+.option-box {
+  background-color: #ffffff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.sticky-header .header-button:hover {
-  background-color: var(--cryptolab-orange-hovered);
+.option-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.option-box .card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1d1d1f;
+}
+
+.option-box .card-text {
+  font-size: 1rem;
+  color: #6e6e73;
+}
+
+button {
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-5px);
 }

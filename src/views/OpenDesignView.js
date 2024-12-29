@@ -54,6 +54,11 @@ const OpenDesignView = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
+  useEffect(() => {
+    console.log("Nodes: ", nodes);
+    console.log("Edges: ", edges);
+  }, [nodes, edges]);
+
   const handleNewEdge = (params) => {
     const newEdge = {
       id: `${edges.length + 1}`,

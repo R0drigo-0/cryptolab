@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { HASH_OPTIONS, CRYPTOGRAPHY_OPTIONS } from "../constants/options";
 
-import logo from "../logo.svg";
+import logo from "../assets/logo.svg";
 
 import "../styles/HomePageView.css";
 

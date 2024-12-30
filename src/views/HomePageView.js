@@ -2,7 +2,7 @@ import "../styles/HomePageView.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import React from "react";
-import logo from "../logo.svg";
+import logo from "../assets/logo.svg";
 import HomePageController from "../controllers/HomePageController";
 
 import { useEffect, useState } from "react";

@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import logo from "../../logo.svg";
+import logo from "../../assets/logo.svg";
 import { Button, Container, Row, Col, Card, Nav } from "react-bootstrap";
 
 const Navbar = () => {

@@ -25,7 +25,7 @@ const HashView = ({ option }) => {
   const [output, setOutput] = useState("");
 
   const hashFunctions = {
-    MD5: (input) => cryptojs.MD5(input).toString(),
+    "MD5": (input) => cryptojs.MD5(input).toString(),
     "SHA-1": (input) => cryptojs.SHA1(input).toString(),
     "SHA-2": (input) => cryptojs.SHA256(input).toString(),
     "SHA-3": (input) => cryptojs.SHA3(input).toString(),

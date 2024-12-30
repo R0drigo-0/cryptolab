@@ -28,7 +28,7 @@ const OptionRouting = () => {
     <div>
       <Navbar />
       {isHashOption && <HashView option={option}/>}
-      {isCryptographyOption && <CryptographyView />}
+      {isCryptographyOption && <CryptographyView option={option}/>}
     </div>
   );
 };

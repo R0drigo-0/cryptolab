@@ -3,26 +3,51 @@ import { Container, Row, Col, Form, Dropdown, DropdownButton, Card } from "react
 import { useParams, useNavigate } from "react-router-dom";
 import { CRYPTOGRAPHY_OPTIONS } from "../../constants/options";
 
-const CryptographyView = () => {
-  const { option } = useParams();
+const CryptographyView = ({ option }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
+  const [key, setKey] = useState("");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(option || CRYPTOGRAPHY_OPTIONS[0]);
   const [output, setOutput] = useState("");
 
+  const cryptojs = require("crypto-js");
+
+  const cryptoFunctions = {
+    "AES": (input, key) => cryptojs.AES.encrypt(input, key).toString(),
+    "DES": (input, key) => cryptojs.DES.encrypt(input, key).toString(),
+    "RSA": (input) => "RSA encryption not implemented",
+    "ELGamal": (input) => "ELGamal encryption not implemented",
+    "Diffie-Hellman": (input) => "Diffie-Hellman encryption not implemented",
+    "ECB": (input) => "ECB encryption not implemented",
+    "CBC": (input) => "CBC encryption not implemented",
+    "PCBC": (input) => "PCBC encryption not implemented",
+    "CFB": (input) => "CFB encryption not implemented",
+    "Caesar": (input) => "Caesar encryption not implemented",
+    "Homophonic": (input) => "Homophonic encryption not implemented",
+    "Polyalphabetic": (input) => "Polyalphabetic encryption not implemented",
+    "Matrix Cipher": (input) => "Matrix Cipher encryption not implemented",
+  };
+
   useEffect(() => {
-    setSelectedAlgorithm(option);
-  }, [option]);
+    if (input === "" || key === "") {
+      return;
+    }
+    const cryptoFunction = cryptoFunctions[selectedAlgorithm];
+    if (cryptoFunction) {
+      setOutput(cryptoFunction(input, key));
+    }
+  }, [input, key, selectedAlgorithm]);
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
-    // Add logic to update output based on selected algorithm and input
+  };
+
+  const handleKeyChange = (e) => {
+    setKey(e.target.value);
   };
 
   const handleAlgorithmSelect = (algorithm) => {
     setSelectedAlgorithm(algorithm);
-    navigate(`/options/${algorithm}`);
-    // Add logic to update output based on selected algorithm and input
   };
 
   return (
@@ -40,10 +65,22 @@ const CryptographyView = () => {
                   onChange={handleInputChange}
                 />
               </Form.Group>
+              <Form.Group controlId="keyText">
+                <Form.Label>Key</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={key}
+                  onChange={handleKeyChange}
+                />
+              </Form.Group>
             </Card.Body>
           </Card>
         </Col>
-        <Col xs={12} md={4} className="d-flex align-items-center justify-content-center">
+        <Col
+          xs={12}
+          md={4}
+          className="d-flex align-items-center justify-content-center"
+        >
           <DropdownButton
             id="dropdown-basic-button"
             title={selectedAlgorithm}
@@ -61,12 +98,7 @@ const CryptographyView = () => {
             <Card.Body>
               <Form.Group controlId="outputText">
                 <Form.Label>Output</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={10}
-                  value={output}
-                  readOnly
-                />
+                <Form.Control as="textarea" rows={10} value={output} readOnly />
               </Form.Group>
             </Card.Body>
           </Card>

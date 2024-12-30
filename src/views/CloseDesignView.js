@@ -1,9 +1,11 @@
 import React from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "../styles/HomePageView.css";
-import logo from "../logo.svg";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { HASH_OPTIONS, CRYPTOGRAPHY_OPTIONS } from "../constants/options";
+
+import logo from "../logo.svg";
+
+import "../styles/HomePageView.css";
 
 const CloseDesignView = () => {
   const navigate = useNavigate();

@@ -1,13 +1,16 @@
+import Navbar from "./components/Navbar";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import HashView from "./components/options/HashView";
-import CryptographyView from "./CryptographyView";
 import { HASH_OPTIONS, CRYPTOGRAPHY_OPTIONS } from "./constants/options";
+
+import HashView from "./components/options/HashView";
+import CryptographyView from "./components/options/CryptographyView";
 
 const OptionRouting = () => {
   const { option } = useParams();
-  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(option);
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedOption(option);
@@ -23,10 +26,9 @@ const OptionRouting = () => {
 
   return (
     <div>
-      <h1>Selected Option: {selectedOption}</h1>
-      {isHashOption && <HashView />}
+      <Navbar />
+      {isHashOption && <HashView option={option}/>}
       {isCryptographyOption && <CryptographyView />}
-      {/* Add more buttons or a dropdown for other options */}
     </div>
   );
 };

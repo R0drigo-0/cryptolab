@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Dropdown, DropdownButton, Card } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { CRYPTOGRAPHY_OPTIONS } from "./constants/options";
+import { CRYPTOGRAPHY_OPTIONS } from "../../constants/options";
 
 const CryptographyView = () => {
   const { option } = useParams();

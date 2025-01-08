@@ -1,5 +1,5 @@
-import { memo, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
+import { memo, useState, useEffect } from 'react';
 
 const controlStyle = {
   background: 'transparent',
@@ -15,9 +15,15 @@ const InputNode = ({ data }) => {
 
   const handleChange = (event) => {
     setText(event.target.value);
+    data["output"]["inputText"] = event.target.value;
+    console.log(data["output"]["inputText"]);
     event.target.style.height = 'auto';
     event.target.style.height = `${event.target.scrollHeight}px`;
   }
+
+  useEffect(() => {
+    data["output"]["inputText"] = text;
+  }, [text]);
 
   return (
     <div style={controlStyle}>

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -36,13 +36,15 @@ const OutputNode = ({ data }) => {
     });
   };
 
+  useEffect(() => {}, [data]);
+
   return (
     <div style={controlStyle}>
       <Handle type="target" position={Position.Top} />
       <Handle type="target" position={Position.Left} />
       <Handle type="target" position={Position.Right} />
       <Handle type="target" position={Position.Bottom} />
-      <p>{data.label}</p>
+      <p>{data.input.inputText}</p>
       <FontAwesomeIcon icon={faCopy} style={iconStyle} onClick={handleCopy} />
       <Handle type="source" position={Position.Top} />
       <Handle type="source" position={Position.Left} />

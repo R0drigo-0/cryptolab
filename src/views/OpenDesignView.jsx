@@ -30,7 +30,7 @@ import {
   SeedNode,
   XorNode,
 } from "./components/nodes";
-import { data } from "react-router-dom";
+import {v4 as uuidv4} from 'uuid';
 
 const OpenDesignView = () => {
   const nodeTypes = {
@@ -97,7 +97,7 @@ const OpenDesignView = () => {
 
   const handleNewEdge = (params) => {
     const newEdge = {
-      id: `${edges.length + 1}`,
+      id: `${params.source}->${params.target}`,
       source: params.source,
       target: params.target,
       animated: true,
@@ -135,7 +135,7 @@ const OpenDesignView = () => {
 
   const handleNewNode = (item) => {
     const newNode = {
-      id: `${item}Node${nodes.length + 1}`,
+      id: uuidv4(), 
       type: item + "Node",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
       data: { label: item, input: {}, output: {} },

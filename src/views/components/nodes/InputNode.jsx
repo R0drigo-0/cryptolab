@@ -12,11 +12,12 @@ const controlStyle = {
 
 const InputNode = ({ data }) => {
   const [text, setText] = useState('');
-
+  
   const handleChange = (event) => {
+    console.log("Input");
+    console.log(data);
     setText(event.target.value);
     data["output"]["inputText"] = event.target.value;
-    console.log(data["output"]["inputText"]);
     event.target.style.height = 'auto';
     event.target.style.height = `${event.target.scrollHeight}px`;
   }

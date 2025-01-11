@@ -1,9 +1,12 @@
+/* global BigInt */
+
 import React from "react";
 import { toast } from "react-toastify";
 
 class RSAAlgorithm {
   constructor(setParams) {
     this.setParams = setParams;
+    this.params = {};
   }
 
   getInputs(params) {
@@ -109,7 +112,7 @@ class RSAAlgorithm {
   }
 
   calculate(params) {
-    const { p, q, e } = params;
+    const { p, q, e, numInputText } = params;
     let newParams = { ...params };
 
     if (!p) {
@@ -148,11 +151,29 @@ class RSAAlgorithm {
       toast.error("Failed to calculate the modular inverse. Please check the values of p, q, and e.");
       return;
     }
-
+    console.log(newParams)
     newParams.kpub = `(${e}, ${newParams.n})`;
     newParams.kpriv = `(${newParams.d}, ${newParams.n})`;
 
     this.setParams(newParams);
+
+    if (numInputText !== undefined) {
+      console.log("Encrypting text:", numInputText);
+      const message = BigInt(numInputText);
+      const result = this.modExp(message, BigInt(e), BigInt(newParams.n));
+      return result.toString();
+    }
+  }
+
+  modExp(base, exp, mod) {
+    base = base % mod;
+    let result = BigInt(1);
+    while (exp > 0) {
+      if (exp % BigInt(2) === BigInt(1)) result = (result * base) % mod;
+      base = (base * base) % mod;
+      exp = exp / BigInt(2);
+    }
+    return result;
   }
 
   isPrime(num) {
@@ -213,6 +234,7 @@ class RSAAlgorithm {
 
     return x1;
   }
+
 }
 
 export default RSAAlgorithm;

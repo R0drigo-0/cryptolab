@@ -12,8 +12,11 @@ const controlStyle = {
 
 const EncryptNode = ({ data }) => {
   const [algorithm, setAlgorithm] = useState('RSA');
+  const [inputText, setInputText] = useState('');
+  const [outputText, setOutputText] = useState('');
   const [params, setParams] = useState({});
   const prevParamsRef = useRef(params);
+  const prevDataRef = useRef(data);
 
   const algorithms = useMemo(() => {
     const algos = {};
@@ -25,11 +28,24 @@ const EncryptNode = ({ data }) => {
 
   const algorithmsNames = Object.keys(algorithms).map(name => name.replace('Algorithm', ''));
 
+  const strToNum = (str) => {
+    return str.split('').map((char) => char.charCodeAt(0)).join('');
+  };
+
+  useEffect(() => {
+    if (inputText) {
+      let numInputText = strToNum(inputText);
+      setParams(prevParams => ({ ...prevParams, numInputText }));
+    }
+  }, [inputText]);
+
   useEffect(() => {
     const prevParams = prevParamsRef.current;
     if (JSON.stringify(prevParams) !== JSON.stringify(params)) {
       if (algorithms[algorithm + 'Algorithm']) {
-        algorithms[algorithm + 'Algorithm'].calculate(params);
+        const result = algorithms[algorithm + 'Algorithm'].calculate(params);
+        setOutputText(result);
+        data.output = { inputText: result };
       }
       prevParamsRef.current = params;
     }
@@ -38,6 +54,15 @@ const EncryptNode = ({ data }) => {
   const handleAlgorithmChange = (event) => {
     setAlgorithm(event.target.value);
   };
+
+  useEffect(() => {
+    if (JSON.stringify(prevDataRef.current) !== JSON.stringify(data)) {
+      prevDataRef.current = data;
+      if (data.input) {
+        setInputText(data.input.inputText);
+      }
+    }
+  }, [data]);
 
   return (
     <div style={controlStyle}>

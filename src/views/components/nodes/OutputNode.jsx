@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +23,7 @@ const iconStyle = {
 };
 
 const OutputNode = ({ data }) => {
+  const [output, setOutput] = useState('');
   const handleCopy = () => {
     navigator.clipboard.writeText(data.label);
     toast.success('Text copied to clipboard', {
@@ -36,7 +37,9 @@ const OutputNode = ({ data }) => {
     });
   };
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+    setOutput(data.input.inputText);
+  }, [data]);
 
   return (
     <div style={controlStyle}>
@@ -44,7 +47,7 @@ const OutputNode = ({ data }) => {
       <Handle type="target" position={Position.Left} />
       <Handle type="target" position={Position.Right} />
       <Handle type="target" position={Position.Bottom} />
-      <p>{data.input.inputText}</p>
+      <p>{output}</p>
       <FontAwesomeIcon icon={faCopy} style={iconStyle} onClick={handleCopy} />
       <Handle type="source" position={Position.Top} />
       <Handle type="source" position={Position.Left} />

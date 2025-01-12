@@ -7,6 +7,7 @@ import HomePageController from "../controllers/HomePageController";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import Navbar from "./components/Navbar";
 
 const HomePageView = () => {
   const navigate = useNavigate();
@@ -40,49 +41,22 @@ const HomePageView = () => {
       <div
         className={`sticky-header ${isHeaderVisible ? "visible" : "hidden"}`}
       >
-        <Container className="d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <img src={logo} alt="Logo" className="logo" />
-            <span className="header-title">CryptoLab</span>
-          </div>
-          <div className="header-categories d-flex justify-content-center">
-            <a href="#hash" className="mx-2">
-              Hash
-            </a>
-            <a href="#cryptography" className="mx-2">
-              Cryptography
-            </a>
-            <a href="#protocols" className="mx-2">
-              Protocols
-            </a>
-            <a href="#attacks" className="mx-2">
-              Attacks
-            </a>
-          </div>
-          <Button
-            variant="primary"
-            onClick={() => {
-              navigate("/design");
-            }}
-          >
-            Open Design
-          </Button>
-        </Container>
+        <Navbar />
       </div>
-      <div className="homepage-container d-flex flex-column justify-content-center align-items-center">
-        <div className="animated-background"></div>
+      <div className={`d-flex flex-column justify-content-center align-items-center ${styles.homepageContainer}`}>
+        <div className={styles.animatedBackground}></div>
         <h1 className="text-center">
           An interactive visual
           <br />
           way to learn
         </h1>
-        <img src={logo} alt="Logo" className="logo" />
+        <img src={logo} alt="Logo" className={styles.logo} />
       </div>
-      <Container className="options-container">
+      <Container className={styles.optionsContainer}>
         <Row>
           {visibleOptions.map((option, index) => (
             <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
-              <Card className="option-box">
+              <Card className={styles.optionBox}>
                 <Card.Body>
                   <Card.Title>{option.category}</Card.Title>
                   <Card.Text>{option.name}</Card.Text>
@@ -92,12 +66,7 @@ const HomePageView = () => {
           ))}
         </Row>
         <div className="text-center mt-4">
-          <Button
-            variant="secondary"
-            onClick={() => {
-              navigate("/options");
-            }}
-          >
+          <Button variant="secondary" onClick={() => navigate("/options")}>
             Show all options
           </Button>
         </div>

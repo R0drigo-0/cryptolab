@@ -1,0 +1,64 @@
+.stickyHeader {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: top 0.3s;
+  }
+  
+  .hidden {
+    top: -100px;
+  }
+  
+  .visible {
+    top: 0;
+  }
+  
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .headerTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .headerCategories a {
+    margin: 0 15px;
+    font-size: 16px;
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .headerCategories a:hover {
+    color: #007bff;
+  }
+  
+  .homepageContainer {
+    padding-top: 100px;
+    text-align: center;
+  }
+  
+  .animatedBackground {
+    /* Add your animated background styles here */
+  }
+  
+  .optionsContainer {
+    margin-top: 20px;
+  }
+  
+  .optionBox {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .optionBox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }

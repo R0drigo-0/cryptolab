@@ -9,7 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   return (
     <Container className="d-flex justify-content-between align-items-center">
-      <div className="d-flex align-items-center">
+      <div className="d-flex align-items-center" onClick={() => navigate("/")}>
         <img src={logo} alt="Logo" className="logo" />
         <span className="header-title">CryptoLab</span>
       </div>

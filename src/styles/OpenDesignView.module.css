@@ -1,12 +1,12 @@
 @import url('./xy-theme.css');
 
-.open-design-view {
+.openDesignView {
   position: relative;
   height: 100vh;
   width: 100vw;
 }
 
-.grid-bg {
+.gridBg {
   position: absolute;
   top: 0;
   left: 0;
@@ -25,11 +25,11 @@
   cursor: move;
 }
 
-.react-resizable {
+.reactResizable {
   position: absolute;
 }
 
-.react-resizable-handle {
+.reactResizableHandle {
   position: absolute;
   width: 10px;
   height: 10px;
@@ -39,15 +39,15 @@
   cursor: se-resize;
 }
 
-.react-flow__panel.react-flow__attribution.bottom.right{
-  display: none!important;
+.react-flow__panel.react-flow__attribution.bottom.right {
+  display: none !important;
 }
 
-.horizontal-controls {
-  display: flex!important;
-  flex-direction: row!important;
-  width: 200px!important;
-  justify-content: space-between!important;
-  background-color: white!important;
-  margin-top: 10px!important;
+.horizontalControls {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 200px !important;
+  justify-content: space-between !important;
+  background-color: white !important;
+  margin-top: 10px !important;
 }

@@ -1,4 +1,4 @@
-.sidebar-container {
+.sidebarContainer {
   position: relative;
   height: 100vh!important;
   background-color: #f0f0f0;
@@ -20,15 +20,15 @@
   justify-content: space-between;
 }
 
-.sidebar-container.collapsed {
+.sidebarContainer.collapsed {
   width: 80px;
 }
 
-.sidebar-container.expanded {
+.sidebarContainer.expanded {
   width: 200px;
 }
 
-.toggle-button {
+.toggleButton {
   position: absolute;
   z-index: 10;
   top: 50%;
@@ -42,20 +42,49 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.toggle-button:hover {
+.toggleButton:hover {
   background-color: #e0e0e0;
 }
 
-.menu-items {
+.menuItems {
   flex-grow: 1;
 }
 
-.delete-button-container {
+.deleteButtonContainer {
   position: absolute;
   width: 100%;
   bottom: 0;
 }
 
-.delete-button {
+.deleteButton {
   background-color: rgba(255, 0, 0, 0.552);
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: margin-left 0.3s ease;
+}
+
+.logo {
+  max-width: 40px;
+  height: auto;
+}
+
+.logoText {
+  margin-left: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+.separator {
+  border: 0;
+  height: 2px;
+  background: #ccc;
+  margin: 10px 0;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { HASH_OPTIONS, CRYPTOGRAPHY_OPTIONS } from "../constants/options";
+import Navbar from "./components/Navbar";
 
 import logo from "../assets/logo.svg";
 
@@ -15,36 +16,7 @@ const CloseDesignView = () => {
 
   return (
     <div>
-      <div className="sticky-header visible">
-        <Container className="d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <img src={logo} alt="Logo" className="logo" />
-            <span className="header-title">CryptoLab</span>
-          </div>
-          <div className="header-categories d-flex justify-content-center">
-            <a href="#hash" className="mx-2">
-              Hash
-            </a>
-            <a href="#cryptography" className="mx-2">
-              Cryptography
-            </a>
-            <a href="#protocols" className="mx-2">
-              Protocols
-            </a>
-            <a href="#attacks" className="mx-2">
-              Attacks
-            </a>
-          </div>
-          <Button
-            variant="primary"
-            onClick={() => {
-              navigate("/design");
-            }}
-          >
-            Open Design
-          </Button>
-        </Container>
-      </div>
+      <Navbar />
       <Container className="options-container mt-4">
         <Row>
           <Col xs={12} className="mb-4">

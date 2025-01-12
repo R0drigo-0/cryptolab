@@ -1,5 +1,4 @@
-import "../styles/HomePageView.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "../styles/HomePageView.module.css";
 
 import React from "react";
 import logo from "../assets/logo.svg";

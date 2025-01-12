@@ -24,6 +24,10 @@ class OpenDesignModel {
     this.nodes = this.nodes.filter((node) => node.id !== nodeId);
   }
 
+  removeEdge(edgeId) {
+    this.edges = this.edges.filter((edge) => edge.id !== edgeId);
+  }
+
   updateNodePosition(index, position) {
     this.nodes[index].position = position;
   }

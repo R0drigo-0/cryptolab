@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import debounce from 'lodash.debounce';
+import React, { useEffect, useState, useRef } from "react";
+import debounce from "lodash.debounce";
 import {
   ReactFlow,
   Background,
@@ -9,10 +9,10 @@ import {
   addEdge,
   Controls,
   MiniMap,
-
+  MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import "../styles/OpenDesignView.css";
+import styles from "../styles/OpenDesignView.module.css";
 import SidebarView from "./SidebarView";
 import OpenDesignController from "../controllers/OpenDesignController";
 import {
@@ -30,59 +30,262 @@ import {
   SeedNode,
   XorNode,
 } from "./components/nodes";
-import {v4 as uuidv4} from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ReactFlowProvider } from "@xyflow/react";
+import { handleRemoveSelected } from "../utils/handleRemoveSelected";
 const OpenDesignView = () => {
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [selectedNodes, setSelectedNodes] = useState([]);
+  const [selectedEdges, setSelectedEdges] = useState([]);
+  const [copiedNodes, setCopiedNodes] = useState([]);
+  const [copiedEdges, setCopiedEdges] = useState([]);
+  const [snapGrid, setSnapGrid] = useState([15, 15]);
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+
   const nodeTypes = {
     ResizableNode,
     ResizableNodeSelected,
     CustomResizerNode,
     InputNode,
-    OutputNode,
-    EncryptNode,
-    DecryptNode,
-    HashNode,
-    SeedNode,
-    PublicKeyNode,
-    PrivateKeyNode,
-    XorNode,
     ConcatenateNode,
+    DecryptNode,
+    EncryptNode,
+    HashNode,
+    OutputNode,
+    PrivateKeyNode,
+    PublicKeyNode,
+    SeedNode,
+    XorNode,
   };
 
-  const snapGrid = [20, 20];
-  const [selectedNodes, setSelectedNodes] = useState([]);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const handleSelectCopy = () => {
+    console.log("handleSelectCopyPaste");
+    console.log(selectedEdges);
+
+    const nodeIdMap = new Map();
+    const newCopiedNodes = selectedNodes.map((node) => {
+      const newId = uuidv4();
+      nodeIdMap.set(node.id, newId);
+      return {
+        ...node,
+        id: newId,
+        position: { x: node.position.x + 50, y: node.position.y + 50 },
+      };
+    });
+
+    setCopiedNodes(newCopiedNodes);
+
+    const newCopiedEdges = selectedEdges.map((edge) => ({
+      ...edge,
+      id: uuidv4(),
+      source: nodeIdMap.get(edge.source),
+      target: nodeIdMap.get(edge.target),
+    }));
+    setCopiedEdges(newCopiedEdges);
+  };
+
+  const handlePaste = () => {
+    console.log("handlePaste");
+
+    const nodeIdMap = new Map();
+    const newPastedNodes = copiedNodes.map((node) => {
+      const newId = uuidv4();
+      nodeIdMap.set(node.id, newId);
+      return {
+        ...node,
+        id: newId,
+        position: { x: node.position.x + 50, y: node.position.y + 50 },
+      };
+    });
+
+    const newPastedEdges = copiedEdges.map((edge) => ({
+      ...edge,
+      id: uuidv4(),
+      source: nodeIdMap.get(edge.source),
+      target: nodeIdMap.get(edge.target),
+    }));
+    setNodes((nds) => [...nds, ...newPastedNodes]);
+    setEdges((eds) => [...eds, ...newPastedEdges]);
+  };
+
+  const handleNewEdge = (params) => {
+    const edgeExists = edges.some(
+      (edge) => edge.source === params.source && edge.target === params.target
+    );
+
+    if (edgeExists) {
+      toast.error("An edge already exists between these nodes.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    if (params.source === params.target) {
+      toast.error("Cannot connect a node to itself.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    const newEdge = {
+      id: `${params.source}-${params.sourceHandle}->${params.target}-${params.targetHandle}`,
+      source: params.source,
+      target: params.target,
+      sourceHandle: params.sourceHandle,
+      targetHandle: params.targetHandle,
+      animated: true,
+      markerEnd: {
+        type: MarkerType.Arrow,
+        width: 22,
+        height: 22,
+        color: "#FF0072",
+      },
+      style: {
+        strokeWidth: 2,
+        stroke: "#FF0072",
+      },
+      selectable: true,
+    };
+    OpenDesignController.addEdge(params.source, params.target);
+    setEdges((eds) => addEdge(newEdge, eds));
+
+    const sourceNode = nodes.find((node) => node.id === params.source);
+    const targetNode = nodes.find((node) => node.id === params.target);
+
+    if (sourceNode && targetNode) {
+      const updatedTargetNode = {
+        ...targetNode,
+        data: {
+          ...targetNode.data,
+          input: sourceNode.data.output,
+        },
+      };
+
+      setNodes((nds) =>
+        nds.map((n) => (n.id === targetNode.id ? updatedTargetNode : n))
+      );
+    }
+  };
+
+  const handleNewNode = (item) => {
+    const newNode = {
+      id: uuidv4(),
+      type: item + "Node",
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: { label: item, input: "", output: "" },
+    };
+    OpenDesignController.addNode(newNode);
+    setNodes((nds) => [...nds, newNode]);
+  };
+
+  const handleDelete = () => {
+    const deletedNodes = [...selectedNodes];
+    const deletedEdges = [...selectedEdges];
+    handleRemoveSelected(selectedNodes, selectedEdges, setNodes, setEdges);
+    setUndoStack((prevUndoStack) => [
+      ...prevUndoStack,
+      { nodes: deletedNodes, edges: deletedEdges },
+    ]);
+    setRedoStack([]);
+  };
+
+  const handleUndo = () => {
+    if (undoStack.length === 0) return;
+
+    const lastDeleted = undoStack[undoStack.length - 1];
+    setUndoStack((prevUndoStack) => prevUndoStack.slice(0, -1));
+    setRedoStack((prevRedoStack) => [
+      ...prevRedoStack,
+      { nodes: lastDeleted.nodes, edges: lastDeleted.edges },
+    ]);
+
+    setNodes((nds) => [...nds, ...lastDeleted.nodes]);
+    setEdges((eds) => [...eds, ...lastDeleted.edges]);
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+
+    const lastUndone = redoStack[redoStack.length - 1];
+    setRedoStack((prevRedoStack) => prevRedoStack.slice(0, -1));
+    setUndoStack((prevUndoStack) => [
+      ...prevUndoStack,
+      { nodes: lastUndone.nodes, edges: lastUndone.edges },
+    ]);
+
+    handleRemoveSelected(
+      lastUndone.nodes,
+      lastUndone.edges,
+      setNodes,
+      setEdges
+    );
+  };
+
+  const onSelectionChange = ({ nodes, edges }) => {
+    setSelectedNodes(nodes || []);
+    setSelectedEdges(edges || []);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const code = event.which || event.keyCode;
+      let charCode = String.fromCharCode(code).toLowerCase();
+      if ((event.ctrlKey || event.metaKey) && charCode === "c") {
+        event.preventDefault();
+        handleSelectCopy();
+      } else if ((event.ctrlKey || event.metaKey) && charCode === "v") {
+        handlePaste();
+        event.preventDefault();
+      } else if ((event.ctrlKey || event.metaKey) && charCode === "z") {
+        event.preventDefault();
+        handleUndo();
+      } else if ((event.ctrlKey || event.metaKey) && charCode === "y") {
+        event.preventDefault();
+        handleRedo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedNodes, selectedNodes, copiedNodes, copiedEdges, undoStack, redoStack]);
 
   useEffect(() => {
     const updateNodes = debounce(() => {
       nodes.forEach((node) => {
-        const connectedEdges = edges.filter(
-          (edge) => edge.source === node.id || edge.target === node.id
-        );
-        connectedEdges.forEach((edge) => {
-          const sourceNode = nodes.find((n) => n.id === edge.source);
-          const targetNode = nodes.find((n) => n.id === edge.target);
+        edges.forEach((edge) => {
+          if (edge.source === node.id) {
+            const sourceNode = node;
+            const targetNode = nodes.find((n) => n.id === edge.target);
 
-          if (sourceNode && targetNode) {
-            if (!sourceNode.data.output) {
-              console.error("Source node does not have output data");
-              return;
-            }
-            const updatedTargetNode = {
-              ...targetNode,
-              data: {
-                ...targetNode.data,
-                input: {
-                  ...targetNode.data.input,
-                  ...sourceNode.data.output,
+            if (targetNode) {
+              const updatedTargetNode = {
+                ...targetNode,
+                data: {
+                  ...targetNode.data,
+                  input: sourceNode.data.output,
                 },
-              },
-            };
+              };
 
-            setNodes((nds) =>
-              nds.map((n) => (n.id === targetNode.id ? updatedTargetNode : n))
-            );
+              setNodes((nds) =>
+                nds.map((n) => (n.id === targetNode.id ? updatedTargetNode : n))
+              );
+            }
           }
         });
       });
@@ -95,108 +298,112 @@ const OpenDesignView = () => {
     };
   }, [nodes, edges]);
 
-  const handleNewEdge = (params) => {
-    const newEdge = {
-      id: `${params.source}->${params.target}`,
-      source: params.source,
-      target: params.target,
-      animated: true,
-      type: "smoothstep",
-    };
-    OpenDesignController.addEdge(params.source, params.target);
-    setEdges((eds) => addEdge(newEdge, eds));
-
-    const sourceNode = nodes.find((node) => node.id === params.source);
-    const targetNode = nodes.find((node) => node.id === params.target);
-
-    if (sourceNode && targetNode) {
-      if (!sourceNode.data.output) {
-        console.error("Source node does not have output data");
-        return;
-      }
-      const updatedTargetNode = {
-        ...targetNode,
-        data: {
-          ...targetNode.data,
-          input: {
-            ...targetNode.data.input,
-            ...sourceNode.data.output,
-          },
-        },
-      };
-
-      setNodes((nds) =>
-        nds.map((node) =>
-          node.id === targetNode.id ? updatedTargetNode : node
-        )
-      );
-    }
-  };
-
-  const handleNewNode = (item) => {
-    const newNode = {
-      id: uuidv4(), 
-      type: item + "Node",
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: { label: item, input: {}, output: {} },
-    };
-    OpenDesignController.addNode(newNode);
-    setNodes((nds) => [...nds, newNode]);
-  };
-
-  const handleNodesDelete = (deletedNodes) => {
-    deletedNodes = deletedNodes["nodes"];
-    deletedNodes.forEach((node) => {
-      OpenDesignController.removeNode(node.id);
-    });
+  useEffect(() => {
     setNodes((nds) =>
-      nds.filter(
-        (node) =>
-          !deletedNodes.some((deletedNode) => deletedNode.id === node.id)
+      nds.map((node) => ({
+        ...node,
+        style: {
+          ...node.style,
+          boxShadow: "none",
+          borderRadius: "5px",
+          transition: "box-shadow 0.125s ease, border-radius 0.125s ease",
+        },
+      }))
+    );
+
+    setNodes((nds) =>
+      nds.map((node) =>
+        selectedNodes.some((selectedNode) => selectedNode.id === node.id)
+          ? {
+              ...node,
+              style: {
+                ...node.style,
+                boxShadow: "0 0 0 2px rgba(255, 0, 115, 0.5)",
+                borderRadius: "9px",
+                transition: "box-shadow 0.125s ease, border-radius 0.125s ease",
+              },
+            }
+          : node
       )
     );
-  };
+  }, [selectedNodes]);
 
-  const onSelectionChange = ({ nodes, edges }) => {
-    setSelectedNodes(nodes);
-  };
+  useEffect(() => {
+    setEdges((eds) =>
+      eds.map((edge) =>
+        selectedEdges.some((selectedEdge) => selectedEdge.id === edge.id)
+          ? {
+              ...edge,
+              style: {
+                ...edge.style,
+                stroke: "#8400ff",
+                transition: "stroke 0.125s ease",
+              },
+              markerEnd: {
+                type: MarkerType.Arrow,
+                width: 22,
+                height: 22,
+                color: "#8400ff",
+              },
+            }
+          : {
+              ...edge,
+              style: {
+                ...edge.style,
+                stroke: "#FF0072",
+                transition: "stroke 0.125s ease",
+              },
+              markerEnd: {
+                type: MarkerType.Arrow,
+                width: 22,
+                height: 22,
+                color: "#FF0072",
+              },
+            }
+      )
+    );
+  }, [selectedEdges]);
 
   return (
-    <div>
-      <SidebarView
-        onNewNode={handleNewNode}
-        selectedNodes={selectedNodes}
-        onNodesChange={setNodes}
-      />
-      <div className="grid-bg">
-        <ReactFlow
-          fitView
-          snapToGrid
-          nodes={nodes}
-          edges={edges}
-          snapGrid={snapGrid}
-          nodeTypes={nodeTypes}
-          onConnect={handleNewEdge}
-          onDelete={handleNodesDelete}
-          onNodesChange={onNodesChange}
-          onSelectionChange={onSelectionChange}
-        >
-          <Background color="#ccc" variant={BackgroundVariant.Lines} />
-          <MiniMap pannable zoomable position="bottom-right" />
-          <MiniMap
-            nodeStrokeColor={(n) => {
-              if (n.type === "InputNode") return "#0041d0";
-              if (n.type === "OutputNode") return "#ff0072";
-              if (n.type === "EncryptNode") return "#ff0072";
-            }}
-            nodeColor={(n) => {
-              if (n.type === "selectorNode") return "#ff0072";
-              return "#fff";
-            }}
-          />
-          <Controls className="horizontal-controls" position="bottom-right" />
-        </ReactFlow>
-      </div>
+    <div className={styles.openDesignView}>
+      <ReactFlowProvider>
+        <SidebarView onNewNode={handleNewNode} handleDelete={handleDelete} />
+        <div className={styles.gridBg}>
+          <ReactFlow
+            fitView
+            snapToGrid
+            nodes={nodes}
+            edges={edges}
+            snapGrid={snapGrid}
+            nodeTypes={nodeTypes}
+            onConnect={handleNewEdge}
+            onDelete={handleDelete}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onSelectionChange={onSelectionChange}
+            selectNodesOnDrag
+            multiSelectionKeyCode={16}
+          >
+            <Background color="#ccc" variant={BackgroundVariant.Lines} />
+            <MiniMap pannable zoomable position="bottom-right" />
+            <MiniMap
+              nodeStrokeColor={(n) => {
+                if (n.type === "InputNode") return "#0041d0";
+                if (n.type === "OutputNode") return "#ff0072";
+                if (n.type === "EncryptNode") return "#ff0072";
+              }}
+              nodeColor={(n) => {
+                if (n.type === "selectorNode") return "#ff0072";
+                return "#fff";
+              }}
+            />
+            <Controls
+              className={styles.horizontalControls}
+              position="bottom-right"
+            />
+          </ReactFlow>
+        </div>
+      </ReactFlowProvider>
     </div>
   );
 };

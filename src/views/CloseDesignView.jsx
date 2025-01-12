@@ -5,7 +5,6 @@ import { HASH_OPTIONS, CRYPTOGRAPHY_OPTIONS } from "../constants/options";
 
 import logo from "../assets/logo.svg";
 
-import "../styles/HomePageView.css";
 
 const CloseDesignView = () => {
   const navigate = useNavigate();

@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/cryptolab/static/css/main.882553a6.css",
-    "main.js": "/cryptolab/static/js/main.c8c7f6d6.js",
+    "main.css": "/cryptolab/static/css/main.fbc38c80.css",
+    "main.js": "/cryptolab/static/js/main.a02d64fb.js",
     "static/js/453.68693753.chunk.js": "/cryptolab/static/js/453.68693753.chunk.js",
     "index.html": "/cryptolab/index.html",
     "static/media/logo.svg": "/cryptolab/static/media/logo.0c40e2aff1338fa75a0fa61e1b3145ed.svg",
-    "main.882553a6.css.map": "/cryptolab/static/css/main.882553a6.css.map",
-    "main.c8c7f6d6.js.map": "/cryptolab/static/js/main.c8c7f6d6.js.map",
+    "main.fbc38c80.css.map": "/cryptolab/static/css/main.fbc38c80.css.map",
+    "main.a02d64fb.js.map": "/cryptolab/static/js/main.a02d64fb.js.map",
     "453.68693753.chunk.js.map": "/cryptolab/static/js/453.68693753.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.882553a6.css",
-    "static/js/main.c8c7f6d6.js"
+    "static/css/main.fbc38c80.css",
+    "static/js/main.a02d64fb.js"
   ]
 }

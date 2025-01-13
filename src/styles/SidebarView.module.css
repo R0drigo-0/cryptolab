@@ -1,14 +1,15 @@
 .sidebarContainer {
   position: relative;
-  height: 100vh!important;
+  height: 100vh !important;
   background-color: #f0f0f0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: width 0.3s;
 }
 
 .sidebar {
-  margin: 0!important;
-  padding: 0!important;
+  font-weight: 600;
+  margin: 0 !important;
+  padding: 0 !important;
   top: 0;
   left: 0;
   height: 100vh !important;
@@ -32,7 +33,8 @@
   position: absolute;
   z-index: 10;
   top: 50%;
-  right: -15px; /* Adjust this value to position the button correctly */
+  right: -15px;
+  /* Adjust this value to position the button correctly */
   transform: translateY(-50%);
   background-color: white;
   border: none;
@@ -81,10 +83,20 @@
   font-weight: bold;
   transition: opacity 0.3s ease;
   opacity: 1;
+  box-sizing: border-box;
 }
+
 .separator {
   border: 0;
   height: 2px;
   background: #ccc;
   margin: 10px 0;
+}
+
+.crypto {
+  color: var(--cryptolab-blue);
+}
+
+.lab {
+  color: var(--cryptolab-orange);
 }

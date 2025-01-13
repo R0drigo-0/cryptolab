@@ -59,7 +59,12 @@ const SidebarView = ({ onNewNode, handleDelete }) => {
       >
         <div className={styles.logoContainer} onClick={() => navigate("/")}>
           <img src={Logo} alt="Cryptolab" className={styles.logo} />
-          {showText && <span className={styles.logoText}>CryptoLab</span>}
+          {showText && (
+            <span className={styles.logoText}>
+              <span className={styles.crypto}>Crypto</span>
+              <span className={styles.lab}>lab</span>
+            </span>
+          )}
         </div>
         <hr className={styles.separator} />
         <Menu height="100vh">

@@ -1,0 +1,35 @@
+@import "./colors.css";
+
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+.crypto {
+  color: var(--cryptolab-blue);
+}
+
+.lab {
+  color: var(--cryptolab-orange);
+}
+
+.headerCategories a {
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.headerCategories a:hover {
+  color: #00bfff;
+}
+
+.container {
+  padding: 10px 20px;
+  border-radius: 5px;
+}

@@ -46,7 +46,7 @@ const EncryptNode = ({ data }) => {
     const prevParams = prevParamsRef.current;
     if (JSON.stringify(prevParams) !== JSON.stringify(params)) {
       if (algorithms[algorithm + 'Algorithm']) {
-        const result = algorithms[algorithm + 'Algorithm'].calculate(params);
+        const result = algorithms[algorithm + 'Algorithm'].encrypt(params);
         setOutputText(result);
         data.output = result;
       }

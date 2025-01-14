@@ -17,8 +17,8 @@ class RSAAlgorithm {
           <input
             type="number"
             value={params.p || ""}
-            onChange={(e) => this.handleInputChange(e, 'p', params)}
-            onBlur={() => this.validateParams('p', params)}
+            onChange={(e) => this.handleInputChange(e, "p", params)}
+            onBlur={() => this.validateParams("p", params)}
           />
         </label>
         <label>
@@ -26,8 +26,8 @@ class RSAAlgorithm {
           <input
             type="number"
             value={params.q || ""}
-            onChange={(e) => this.handleInputChange(e, 'q', params)}
-            onBlur={() => this.validateParams('q', params)}
+            onChange={(e) => this.handleInputChange(e, "q", params)}
+            onBlur={() => this.validateParams("q", params)}
           />
         </label>
         <label>
@@ -35,8 +35,8 @@ class RSAAlgorithm {
           <input
             type="number"
             value={params.e || ""}
-            onChange={(e) => this.handleInputChange(e, 'e', params)}
-            onBlur={() => this.validateParams('e', params)}
+            onChange={(e) => this.handleInputChange(e, "e", params)}
+            onBlur={() => this.validateParams("e", params)}
           />
         </label>
         <label>
@@ -52,7 +52,7 @@ class RSAAlgorithm {
             kpub:
             <input
               type="text"
-              value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
+              value={params.e && params.n ? params.kpub : ""}
               readOnly
             />
           </label>
@@ -62,7 +62,7 @@ class RSAAlgorithm {
             kpriv:
             <input
               type="text"
-              value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
+              value={params.e && params.n ? params.kpriv : ""}
               readOnly
             />
           </label>
@@ -86,40 +86,38 @@ class RSAAlgorithm {
   validateParams(key, params) {
     const { p, q, e } = params;
 
-    if (key === 'p' && p && !this.isPrime(p)) {
+    if (key === "p" && p && !this.isPrime(p)) {
       const recommendedP = this.getRandomPrime();
       toast.clearWaitingQueue();
       toast.dismiss();
       toast.error(`p must be a prime number. For example ${recommendedP}.`);
     }
 
-    if (key === 'q' && q && !this.isPrime(q)) {
+    if (key === "q" && q && !this.isPrime(q)) {
       const recommendedQ = this.getRandomPrime();
       toast.clearWaitingQueue();
       toast.dismiss();
       toast.error(`q must be a prime number. For example ${recommendedQ}.`);
     }
 
-    if (key === 'e' && e) {
+    if (key === "e" && e) {
       const phi = (params.p - 1) * (params.q - 1);
       if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
         const recommendedE = this.getRandomCoprime(phi);
         toast.clearWaitingQueue();
         toast.dismiss();
-        toast.error(`e must be greater than 1, less than ${phi}, and coprime with ${phi}. For example ${recommendedE}.`);
+        toast.error(
+          `e must be greater than 1, less than ${phi}, and coprime with ${phi}. For example ${recommendedE}.`
+        );
       }
     }
   }
 
   calculate(params) {
-    const { p, q, e, numInputText } = params;
+    const { p, q, e } = params;
     let newParams = { ...params };
 
-    if (!p) {
-      return;
-    }
-
-    if (!this.isPrime(p)) {
+    if (!p || !this.isPrime(p) || !q || !this.isPrime(q)) {
       return;
     }
 
@@ -135,11 +133,7 @@ class RSAAlgorithm {
     const phi = (p - 1) * (q - 1);
     newParams.phi = phi;
 
-    if (!e) {
-      return;
-    }
-
-    if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
+    if (!e || e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
       return;
     }
 
@@ -148,28 +142,65 @@ class RSAAlgorithm {
     if (newParams.d === null || newParams.d === undefined) {
       toast.clearWaitingQueue();
       toast.dismiss();
-      toast.error("Failed to calculate the modular inverse. Please check the values of p, q, and e.");
+      toast.error(
+        "Failed to calculate the modular inverse. Please check the values of p, q, and e."
+      );
       return;
     }
-    console.log(newParams)
     newParams.kpub = `(${e}, ${newParams.n})`;
     newParams.kpriv = `(${newParams.d}, ${newParams.n})`;
 
     this.setParams(newParams);
+  }
 
-    if (numInputText !== undefined) {
-      console.log("Encrypting text:", numInputText);
-      const message = BigInt(numInputText);
-      const result = this.modExp(message, BigInt(e), BigInt(newParams.n));
-      return result.toString();
+  encrypt(params) {
+    this.calculate(params);
+    const { e, n, numInputText } = params;
+    console.log("numInputText", numInputText);
+    console.log("eeeeeeeeeeeeeeee", e);
+    console.log("nnnnnnnnnnnnnnnn", n);
+    if (!numInputText) {
+      toast.error("Input text is required for encryption.");
+      return;
     }
+  
+    const nBigInt = BigInt(n);
+    const eBigInt = BigInt(e);
+    const message = numInputText;
+    const chunkSize = n.toString().length - 1; // Ensure chunks are less than n
+    let encryptedMessage = '';
+    
+    for (let i = 0; i < message.length; i += chunkSize) {
+      const chunk = message.slice(i, i + chunkSize);
+      console.log("chunk", chunk);
+      const chunkBigInt = BigInt(chunk);
+      const encryptedChunk = this.modExp(chunkBigInt, eBigInt, nBigInt);
+      encryptedMessage += encryptedChunk.toString() + ' ';
+    }
+  
+    console.log("encryptedMessage");
+    console.log(encryptedMessage);
+    return encryptedMessage.trim();
+  }
+
+  decrypt(params) {
+    this.calculate(params);
+    if (!params.d || !params.n || !params.numInputText) {
+      return;
+    }
+    const { d, n, numInputText } = params;
+    const message = BigInt(numInputText);
+    const result = this.modExp(message, BigInt(d), BigInt(n));
+    return result.toString();
   }
 
   modExp(base, exp, mod) {
-    base = base % mod;
     let result = BigInt(1);
+    base = base % mod;
     while (exp > 0) {
-      if (exp % BigInt(2) === BigInt(1)) result = (result * base) % mod;
+      if (exp % BigInt(2) === BigInt(1)) {
+        result = (result * base) % mod;
+      }
       base = (base * base) % mod;
       exp = exp / BigInt(2);
     }
@@ -210,8 +241,11 @@ class RSAAlgorithm {
   }
 
   modInverse(e, phi) {
-    let m0 = phi, t, q;
-    let x0 = 0, x1 = 1;
+    let m0 = phi,
+      t,
+      q;
+    let x0 = 0,
+      x1 = 1;
 
     if (phi === 1) return 0;
 
@@ -234,7 +268,6 @@ class RSAAlgorithm {
 
     return x1;
   }
-
 }
 
 export default RSAAlgorithm;

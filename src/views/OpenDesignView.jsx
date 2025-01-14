@@ -42,9 +42,11 @@ const OpenDesignView = () => {
   const [selectedEdges, setSelectedEdges] = useState([]);
   const [copiedNodes, setCopiedNodes] = useState([]);
   const [copiedEdges, setCopiedEdges] = useState([]);
-  const [snapGrid, setSnapGrid] = useState([15, 15]);
+  const [snapGrid, setSnapGrid] = useState([13, 11]);
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
+  const [zoom, setZoom] = useState(1);
+  const [toastShown, setToastShown] = useState(false);
 
   const nodeTypes = {
     ResizableNode,
@@ -62,10 +64,20 @@ const OpenDesignView = () => {
     XorNode,
   };
 
-  const handleSelectCopy = () => {
-    console.log("handleSelectCopyPaste");
-    console.log(selectedEdges);
+  const handleZoomChange = (zoomLevel) => {
+    setZoom(zoomLevel);
+    const newSnapGrid = [20 * zoomLevel, 20 * zoomLevel];
+    setSnapGrid(newSnapGrid);
 
+    const pathD = `M${10 * zoomLevel} 0 V${20 * zoomLevel} M0 ${
+      10 * zoomLevel
+    } H${20 * zoomLevel}`;
+    document
+      .querySelector(".react-flow__background-pattern.lines")
+      .setAttribute("d", pathD);
+  };
+
+  const handleSelectCopy = () => {
     const nodeIdMap = new Map();
     const newCopiedNodes = selectedNodes.map((node) => {
       const newId = uuidv4();
@@ -86,11 +98,20 @@ const OpenDesignView = () => {
       target: nodeIdMap.get(edge.target),
     }));
     setCopiedEdges(newCopiedEdges);
+
+    if (!toastShown) {
+      toast.success("Nodes copied.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        onClose: () => setToastShown(false),
+      });
+      setToastShown(true);
+    }
   };
 
   const handlePaste = () => {
-    console.log("handlePaste");
-
     const nodeIdMap = new Map();
     const newPastedNodes = copiedNodes.map((node) => {
       const newId = uuidv4();
@@ -263,7 +284,14 @@ const OpenDesignView = () => {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedNodes, selectedNodes, copiedNodes, copiedEdges, undoStack, redoStack]);
+  }, [
+    selectedNodes,
+    selectedNodes,
+    copiedNodes,
+    copiedEdges,
+    undoStack,
+    redoStack,
+  ]);
 
   useEffect(() => {
     const updateNodes = debounce(() => {

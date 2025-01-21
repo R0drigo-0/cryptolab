@@ -49,7 +49,7 @@ class RSAAlgorithm {
         </label>
         <div>
           <label>
-            kpub:
+            Public Key:
             <input
               type="text"
               value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
@@ -59,10 +59,10 @@ class RSAAlgorithm {
         </div>
         <div>
           <label>
-            kpriv:
+            Private Key:
             <input
               type="text"
-              value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
+              value={params.d && params.n ? `(${params.d}, ${params.n})` : ""}
               readOnly
             />
           </label>
@@ -111,8 +111,8 @@ class RSAAlgorithm {
     }
   }
 
-  calculate(params) {
-    const { p, q, e, numInputText } = params;
+  encrypt(params) {
+    const { p, q, e, input } = params;
     let newParams = { ...params };
 
     if (!p) {
@@ -151,16 +151,68 @@ class RSAAlgorithm {
       toast.error("Failed to calculate the modular inverse. Please check the values of p, q, and e.");
       return;
     }
-    console.log(newParams)
     newParams.kpub = `(${e}, ${newParams.n})`;
     newParams.kpriv = `(${newParams.d}, ${newParams.n})`;
 
     this.setParams(newParams);
 
-    if (numInputText !== undefined) {
-      console.log("Encrypting text:", numInputText);
-      const message = BigInt(numInputText);
+    if (input !== undefined) {
+      const message = BigInt(input);
       const result = this.modExp(message, BigInt(e), BigInt(newParams.n));
+      return result.toString();
+    }
+  }
+
+  decrypt(params) {
+    const { p, q, e, input } = params;
+    let newParams = { ...params };
+    console.log("Decrypting with params:", newParams);
+
+    if (!p) {
+      return;
+    }
+
+    if (!this.isPrime(p)) {
+      return;
+    }
+
+    if (!q) {
+      return;
+    }
+
+    if (!this.isPrime(q)) {
+      return;
+    }
+
+    newParams.n = p * q;
+    const phi = (p - 1) * (q - 1);
+    newParams.phi = phi;
+
+    if (!e) {
+      return;
+    }
+
+    if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
+      return;
+    }
+
+    newParams.d = this.modInverse(e, phi);
+
+    if (newParams.d === null || newParams.d === undefined) {
+      toast.clearWaitingQueue();
+      toast.dismiss();
+      toast.error("Failed to calculate the modular inverse. Please check the values of p, q, and e.");
+      return;
+    }
+    newParams.kpub = `(${e}, ${newParams.n})`;
+    newParams.kpriv = `(${newParams.d}, ${newParams.n})`;
+
+    this.setParams(newParams);
+
+    if (input !== undefined) {
+      console.log("Decrypting text:", input);
+      const message = BigInt(input);
+      const result = this.modExp(message, BigInt(newParams.d), BigInt(newParams.n));
       return result.toString();
     }
   }

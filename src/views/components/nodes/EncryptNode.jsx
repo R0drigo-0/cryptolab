@@ -1,6 +1,6 @@
-import { memo, useState, useEffect, useMemo, useRef } from 'react';
-import { Handle, Position } from '@xyflow/react';
-import * as Algorithms from '../algorithms';
+import { memo, useState, useEffect, useMemo, useRef } from "react";
+import { Handle, Position } from "@xyflow/react";
+import * as Algorithms from "../algorithms";
 
 const controlStyle = {
   padding: "15px",
@@ -14,45 +14,40 @@ const controlStyle = {
 };
 
 const EncryptNode = ({ data }) => {
-  const [algorithm, setAlgorithm] = useState('RSA');
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
+  const [algorithm, setAlgorithm] = useState("RSA");
+  const [outputText, setOutputText] = useState("");
+  const [inputText, setInputText] = useState("");
   const [params, setParams] = useState({});
   const prevParamsRef = useRef(params);
   const prevDataRef = useRef(data);
 
   const algorithms = useMemo(() => {
     const algos = {};
-    Object.keys(Algorithms).forEach(key => {
+    Object.keys(Algorithms).forEach((key) => {
       algos[key] = new Algorithms[key](setParams);
     });
     return algos;
   }, []);
 
-  const algorithmsNames = Object.keys(algorithms).map(name => name.replace('Algorithm', ''));
-
-  const strToNum = (str) => {
-    return str.split('').map((char) => char.charCodeAt(0)).join('');
-  };
+  const algorithmsNames = Object.keys(algorithms).map((name) =>
+    name.replace("Algorithm", "")
+  );
 
   useEffect(() => {
-    if (inputText) {
-      let numInputText = strToNum(inputText);
-      setParams(prevParams => ({ ...prevParams, numInputText }));
-    }
-  }, [inputText]);
+    params.input = data.input;
+  }, [data.input]);
 
   useEffect(() => {
     const prevParams = prevParamsRef.current;
     if (JSON.stringify(prevParams) !== JSON.stringify(params)) {
-      if (algorithms[algorithm + 'Algorithm']) {
-        const result = algorithms[algorithm + 'Algorithm'].calculate(params);
+      if (algorithms[algorithm + "Algorithm"]) {
+        const result = algorithms[algorithm + "Algorithm"].encrypt(params);
         setOutputText(result);
         data.output = result;
       }
       prevParamsRef.current = params;
     }
-  }, [algorithm, params, algorithms]);
+  }, [algorithm, params, algorithms, data.input]);
 
   const handleAlgorithmChange = (event) => {
     setAlgorithm(event.target.value);
@@ -69,7 +64,7 @@ const EncryptNode = ({ data }) => {
 
   return (
     <div style={controlStyle}>
-<Handle type="target" position={Position.Top} id="encrypt-top" />
+      <Handle type="target" position={Position.Top} id="encrypt-top" />
       <Handle type="target" position={Position.Left} id="encrypt-left" />
       <Handle type="target" position={Position.Right} id="encrypt-right" />
       <Handle type="target" position={Position.Bottom} id="encrypt-bottom" />
@@ -83,16 +78,24 @@ const EncryptNode = ({ data }) => {
             ))}
           </select>
         </label>
-        {algorithms[algorithm + 'Algorithm'] ? (
-          algorithms[algorithm + 'Algorithm'].getInputs(params)
+        {algorithms[algorithm + "Algorithm"] ? (
+          algorithms[algorithm + "Algorithm"].getInputs(params)
         ) : (
           <div>Error: Algorithm not found</div>
         )}
       </div>
       <Handle type="source" position={Position.Top} id="encrypt-output-top" />
       <Handle type="source" position={Position.Left} id="encrypt-output-left" />
-      <Handle type="source" position={Position.Right} id="encrypt-output-right" />
-      <Handle type="source" position={Position.Bottom} id="encrypt-output-bottom" />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="encrypt-output-right"
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="encrypt-output-bottom"
+      />
     </div>
   );
 };

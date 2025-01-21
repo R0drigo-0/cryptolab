@@ -10,6 +10,10 @@ import {
   Controls,
   MiniMap,
   MarkerType,
+  useViewport,
+  ReactFlowProvider,
+  useOnViewportChange,
+  Viewport,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import styles from "../styles/OpenDesignView.module.css";
@@ -33,7 +37,6 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ReactFlowProvider } from "@xyflow/react";
 import { handleRemoveSelected } from "../utils/handleRemoveSelected";
 const OpenDesignView = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -42,9 +45,20 @@ const OpenDesignView = () => {
   const [selectedEdges, setSelectedEdges] = useState([]);
   const [copiedNodes, setCopiedNodes] = useState([]);
   const [copiedEdges, setCopiedEdges] = useState([]);
-  const [snapGrid, setSnapGrid] = useState([15, 15]);
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
+  const [snapGrid, setSnapGrid] = useState([1,1]);
+  
+  let { viewport } = useViewport({
+    x: 0,
+    y: 0,
+    zoom: 1,
+  });
+
+  const setViewport = (v) => {
+    setSnapGrid([Math.max(1, 32 / v.zoom), Math.max(1, 32 / v.zoom)]);
+    viewport = v;
+  }
 
   const nodeTypes = {
     ResizableNode,
@@ -62,10 +76,11 @@ const OpenDesignView = () => {
     XorNode,
   };
 
-  const handleSelectCopy = () => {
-    console.log("handleSelectCopyPaste");
-    console.log(selectedEdges);
+  const updateViewportConst = ({ x, y, zoom }) => {
+    setViewport({ x, y, zoom });
+  };
 
+  const handleSelectCopy = () => {
     const nodeIdMap = new Map();
     const newCopiedNodes = selectedNodes.map((node) => {
       const newId = uuidv4();
@@ -194,6 +209,10 @@ const OpenDesignView = () => {
     setNodes((nds) => [...nds, newNode]);
   };
 
+  const handleNodesChange = (item) => {
+    onNodesChange(item);
+  };
+
   const handleDelete = () => {
     const deletedNodes = [...selectedNodes];
     const deletedEdges = [...selectedEdges];
@@ -263,7 +282,14 @@ const OpenDesignView = () => {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedNodes, selectedNodes, copiedNodes, copiedEdges, undoStack, redoStack]);
+  }, [
+    selectedNodes,
+    selectedNodes,
+    copiedNodes,
+    copiedEdges,
+    undoStack,
+    redoStack,
+  ]);
 
   useEffect(() => {
     const updateNodes = debounce(() => {
@@ -378,11 +404,12 @@ const OpenDesignView = () => {
             nodeTypes={nodeTypes}
             onConnect={handleNewEdge}
             onDelete={handleDelete}
-            onNodesChange={onNodesChange}
+            onNodesChange={handleNodesChange}
             onEdgesChange={onEdgesChange}
             onSelectionChange={onSelectionChange}
             selectNodesOnDrag
             multiSelectionKeyCode={16}
+            onViewportChange={(viewport) => setViewport(viewport)}
           >
             <Background color="#ccc" variant={BackgroundVariant.Lines} />
             <MiniMap pannable zoomable position="bottom-right" />
@@ -402,6 +429,23 @@ const OpenDesignView = () => {
               position="bottom-right"
             />
           </ReactFlow>
+          {selectedNodes.length == -1 && (
+            <div
+              style={{
+                position: "absolute",
+                top: selectedNodes[0].position.y + 90,
+                left: selectedNodes[0].position.x + 318,
+                backgroundColor: "white",
+                padding: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                zIndex: 10,
+              }}
+            >
+              <button onClick={handleDelete}>Delete Node</button>
+            </div>
+          )}
         </div>
       </ReactFlowProvider>
     </div>

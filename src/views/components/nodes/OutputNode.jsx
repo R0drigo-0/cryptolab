@@ -25,7 +25,6 @@ const iconStyle = {
 };
 
 const OutputNode = ({ data }) => {
-  console.log(data);
   const [output, setOutput] = useState('');
   const handleCopy = () => {
     navigator.clipboard.writeText(output);
@@ -41,6 +40,7 @@ const OutputNode = ({ data }) => {
   };
 
   useEffect(() => {
+    data.output = data.input
     setOutput(data.input);
   }, [data]);
 

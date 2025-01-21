@@ -53,7 +53,10 @@ const InputNode = ({ data }) => {
   
   const handleChange = (event) => {
     setText(event.target.value);
-    data.output = event.target.value;
+    var ascii_text = Array.from(event.target.value)
+        .map(char => char.charCodeAt(0))
+        .join('');
+    data.output = ascii_text;
     event.target.style.height = 'auto';
     event.target.style.height = `${event.target.scrollHeight}px`;
   }

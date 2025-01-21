@@ -28,8 +28,14 @@ class OpenDesignModel {
     this.edges = this.edges.filter((edge) => edge.id !== edgeId);
   }
 
-  updateNodePosition(index, position) {
-    this.nodes[index].position = position;
+      
+  updateNodePosition(id, position){
+    const index = this.nodes.findIndex(node => node.id === id);
+    console.log("index", index);
+    console.log("position", position);
+    if (index === -1) {
+      this.nodes[index].position = position;
+    }
   }
 
   updateNodeSize(index, size) {

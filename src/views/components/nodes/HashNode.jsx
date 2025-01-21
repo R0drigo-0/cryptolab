@@ -50,8 +50,6 @@ const HashNode = ({ data }) => {
             <option key={name} value={name}>{name}</option>
           ))}
         </select>
-
-        <div>Output: {output}</div>
       </div>
 
       <Handle type="source" position={Position.Top} id="hash-out-t" />

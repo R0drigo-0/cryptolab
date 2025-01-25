@@ -41,7 +41,7 @@ const OutputNode = ({ data }) => {
 
   useEffect(() => {
     data.output = data.input
-    setOutput(data.input);
+    setOutput(data.input || data.seed);
   }, [data]);
 
   return (

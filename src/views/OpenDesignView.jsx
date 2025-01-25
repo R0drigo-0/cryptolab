@@ -303,12 +303,16 @@ const OpenDesignView = () => {
                 data: {
                   ...targetNode.data,
                   input: sourceNode.data.output,
+                  ...(sourceNode.data.seed && { seed: sourceNode.data.seed }),
+                  ...(sourceNode.data.pubKey && { pubKey: sourceNode.data.pubKey }),
+                  ...(sourceNode.data.privKey && { privKey: sourceNode.data.privKey }),
                 },
               };
 
               setNodes((nds) =>
                 nds.map((n) => (n.id === targetNode.id ? updatedTargetNode : n))
-              );
+            );
+            console.log("Nodes updated", targetNode.data);
             }
           }
         });

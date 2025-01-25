@@ -104,8 +104,6 @@ const OpenDesignView = () => {
   };
 
   const handlePaste = () => {
-    console.log("handlePaste");
-
     const nodeIdMap = new Map();
     const newPastedNodes = copiedNodes.map((node) => {
       const newId = uuidv4();
@@ -201,7 +199,7 @@ const OpenDesignView = () => {
   const handleNewNode = (item) => {
     const newNode = {
       id: uuidv4(),
-      type: item + "Node",
+      type: item.replace(/\s+/g, '') + "Node",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
       data: { label: item, input: "", output: "" },
     };

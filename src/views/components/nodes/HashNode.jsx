@@ -27,7 +27,6 @@ const HashNode = ({ data }) => {
 
   useEffect(() => {
     if (data.input && algorithms[algorithm]) {
-      console.log("Hashing data:", data.input);
       const hash = algorithms[algorithm](data.input).toString();
       setOutput(hash);
       data.output = hash;

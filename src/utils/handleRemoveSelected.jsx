@@ -1,18 +1,17 @@
 import OpenDesignController from "../controllers/OpenDesignController";
 
-export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, setEdges, setTrigger) => {
+export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, setEdges) => {
   setNodes((nds) => {
     const updatedNodes = nds.map((node) => {
       const updatedNode = { ...node };
       selectedEdges.forEach((selectedEdge) => {
         if (updatedNode.id === selectedEdge.target) {
-          Object.keys(updatedNode.data).forEach((key) => {
-            if (key !== "label") {
-              updatedNode.data[key] = "";
-            }
-          });
-          updatedNode.data.input = "";
-          updatedNode.data.output = "";
+          // Clear the data related to the edge
+          updatedNode.data = {
+            ...updatedNode.data,
+            input: updatedNode.data.input === selectedEdge.source ? "" : updatedNode.data.input,
+            output: updatedNode.data.output === selectedEdge.source ? "" : updatedNode.data.output,
+          };
         }
       });
       return updatedNode;
@@ -55,5 +54,4 @@ export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, set
   });
 
   // Call setTrigger to force re-render
-  setTrigger((prev) => prev + 1);
 };

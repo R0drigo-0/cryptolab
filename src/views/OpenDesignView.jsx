@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import debounce from "lodash.debounce";
 import {
   ReactFlow,
@@ -48,8 +48,14 @@ const OpenDesignView = () => {
   const [snapGrid, setSnapGrid] = useState([1, 1]);
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
-  const [trigger, setTrigger] = useState(0);
-  
+  const [nodeKeys, setNodeKeys] = useState({});
+
+  // Mantain sync between model and view
+  useEffect(() => {
+    setNodes(OpenDesignController.getNodes());
+    setEdges(OpenDesignController.getEdges());
+  }, []);
+
   let { viewport } = useViewport({
     x: 0,
     y: 0,
@@ -206,7 +212,7 @@ const OpenDesignView = () => {
       id: uuidv4(),
       type: item.replace(/\s+/g, "") + "Node",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: { label: item, input: "", output: "" },
+      data: { label: item },
     };
     OpenDesignController.addNode(newNode);
     setNodes((nds) => [...nds, newNode]);
@@ -216,16 +222,52 @@ const OpenDesignView = () => {
     onNodesChange(item);
   };
 
-  const handleDelete = () => {
+  const cleanupNodeData = useCallback((nodeId) => {
+    setNodes((nds) => 
+      nds.map((node) => {
+        if (node.id === nodeId) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              input: "",
+              output: "",
+              pubKey: undefined,
+              privKey: undefined,
+              seed: undefined
+            }
+          };
+        }
+        return node;
+      })
+    );
+  }, []);
+
+  const handleDelete = useCallback(() => {
     const deletedNodes = [...selectedNodes];
     const deletedEdges = [...selectedEdges];
-    handleRemoveSelected(selectedNodes, selectedEdges, setNodes, setEdges, setTrigger);
+
+    deletedEdges.forEach((edge) => {
+      cleanupNodeData(edge.target);
+      setNodeKeys((prev) => ({
+        ...prev,
+        [edge.target]: (prev[edge.target] || 0) + 1 
+      }));
+    });
+
+    handleRemoveSelected(
+      selectedNodes,
+      selectedEdges,
+      setNodes,
+      setEdges
+    );
+
     setUndoStack((prevUndoStack) => [
       ...prevUndoStack,
-      { nodes: deletedNodes, edges: deletedEdges },
+      { nodes: deletedNodes, edges: deletedEdges }
     ]);
     setRedoStack([]);
-  };
+  }, [selectedNodes, selectedEdges, cleanupNodeData]);
 
   const handleUndo = () => {
     if (undoStack.length === 0) return;
@@ -299,27 +341,25 @@ const OpenDesignView = () => {
       nodes.forEach((node) => {
         edges.forEach((edge) => {
           if (edge.source === node.id) {
-            const sourceNode = node;
             const targetNode = nodes.find((n) => n.id === edge.target);
-
             if (targetNode) {
-              const updatedTargetNode = {
-                ...targetNode,
-                data: {
-                  ...targetNode.data,
-                  input: sourceNode.data.output,
-                  ...(sourceNode.data.seed && { seed: sourceNode.data.seed }),
-                  ...(sourceNode.data.pubKey && {
-                    pubKey: sourceNode.data.pubKey,
-                  }),
-                  ...(sourceNode.data.privKey && {
-                    privKey: sourceNode.data.privKey,
-                  }),
-                },
-              };
-
               setNodes((nds) =>
-                nds.map((n) => (n.id === targetNode.id ? updatedTargetNode : n))
+                nds.map((n) => {
+                  if (n.id === edge.target) {
+                    return {
+                      ...n,
+                      data: {
+                        ...n.data,
+                        input: node.data.output,
+                        seed: node.data.seed,
+                        pubKey: node.data.pubKey,
+                        privKey: node.data.privKey,
+                      },
+                      key: nodeKeys[n.id] || 0
+                    };
+                  }
+                  return n;
+                })
               );
             }
           }
@@ -328,11 +368,8 @@ const OpenDesignView = () => {
     }, 100);
 
     updateNodes();
-
-    return () => {
-      updateNodes.cancel();
-    };
-  }, [nodes, edges]);
+    return () => updateNodes.cancel();
+  }, [nodes, edges, nodeKeys]);
 
   useEffect(() => {
     setNodes((nds) =>

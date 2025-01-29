@@ -1,9 +1,9 @@
-import { memo, useEffect, useState } from 'react';
-import { Handle, Position } from '@xyflow/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { memo, useEffect, useState } from "react";
+import { Handle, Position } from "@xyflow/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const controlStyle = {
   padding: "15px",
@@ -17,19 +17,19 @@ const controlStyle = {
 };
 
 const iconStyle = {
-  position: 'absolute',
-  bottom: '3px',
-  right: '3px',
-  cursor: 'pointer',
-  color: '#ff0071'
+  position: "absolute",
+  bottom: "3px",
+  right: "3px",
+  cursor: "pointer",
+  color: "#ff0071",
 };
 
-const OutputNode = ({ data, trigger}) => {
-  const [output, setOutput] = useState('');
+const OutputNode = ({ data, nodeKey }) => {
+  const [output, setOutput] = useState("");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output);
-    toast.success('Text copied to clipboard', {
+    toast.success("Text copied to clipboard", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -41,16 +41,17 @@ const OutputNode = ({ data, trigger}) => {
   };
 
   useEffect(() => {
-    console.log("DATA: ",data);
+    console.log("DATA: ", data);
+    console.log("NODEKEY: ", nodeKey);
     if (data.input) {
       data.output = data.input;
       setOutput(data.input);
     } else {
-      data.output = '';
-      setOutput(data.seed || '');
+      data.output = "";
+      setOutput("");
     }
     console.log(data.input);
-  }, [data, trigger]);
+  }, [data, nodeKey]);
 
   return (
     <div style={controlStyle}>

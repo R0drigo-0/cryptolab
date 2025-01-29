@@ -219,11 +219,7 @@ class RSAAlgorithm {
     const { p, q, e, input } = params;
     let newParams = { ...params };
 
-    if (!p) {
-      return;
-    }
-
-    if (!this.isPrime(p)) {
+    if (!p || !this.isPrime(p) || !q || !this.isPrime(q)) {
       return;
     }
 
@@ -239,11 +235,7 @@ class RSAAlgorithm {
     const phi = (p - 1) * (q - 1);
     newParams.phi = phi;
 
-    if (!e) {
-      return;
-    }
-
-    if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
+    if (!e || e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
       return;
     }
 
@@ -274,10 +266,12 @@ class RSAAlgorithm {
   }
 
   modExp(base, exp, mod) {
-    base = base % mod;
     let result = BigInt(1);
+    base = base % mod;
     while (exp > 0) {
-      if (exp % BigInt(2) === BigInt(1)) result = (result * base) % mod;
+      if (exp % BigInt(2) === BigInt(1)) {
+        result = (result * base) % mod;
+      }
       base = (base * base) % mod;
       exp = exp / BigInt(2);
     }

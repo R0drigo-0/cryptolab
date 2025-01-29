@@ -1,6 +1,26 @@
 import OpenDesignController from "../controllers/OpenDesignController";
 
-export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, setEdges) => {
+export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, setEdges, setTrigger) => {
+  setNodes((nds) => {
+    const updatedNodes = nds.map((node) => {
+      const updatedNode = { ...node };
+      selectedEdges.forEach((selectedEdge) => {
+        if (updatedNode.id === selectedEdge.target) {
+          Object.keys(updatedNode.data).forEach((key) => {
+            if (key !== "label") {
+              updatedNode.data[key] = "";
+            }
+          });
+          updatedNode.data.input = "";
+          updatedNode.data.output = "";
+        }
+      });
+      return updatedNode;
+    });
+    return updatedNodes;
+  });
+
+  // Remove selected nodes
   selectedNodes.forEach((node) => {
     OpenDesignController.removeNode(node.id);
   });
@@ -25,10 +45,6 @@ export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, set
     );
   });
 
-  selectedEdges.forEach((edge) => {
-    OpenDesignController.removeEdge(edge.id);
-  });
-
   setEdges((eds) => {
     const updatedEdges = eds.filter(
       (edge) =>
@@ -38,21 +54,6 @@ export const handleRemoveSelected = (selectedNodes, selectedEdges, setNodes, set
     return updatedEdges;
   });
 
-  // Update nodes after edges are removed
-  setNodes((nds) => {
-    const updatedNodes = nds.map((node) => {
-      const updatedNode = { ...node };
-      selectedEdges.forEach((selectedEdge) => {
-        if (updatedNode.id === selectedEdge.target) {
-          updatedNode.data.input = "";
-        }
-        if (updatedNode.id === selectedEdge.source) {
-          updatedNode.data.output = "";
-        }
-      });
-      return updatedNode;
-    });
-
-    return updatedNodes;
-  });
+  // Call setTrigger to force re-render
+  setTrigger((prev) => prev + 1);
 };

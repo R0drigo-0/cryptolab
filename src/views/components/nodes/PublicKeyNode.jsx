@@ -18,7 +18,7 @@ const PublicKeyNode = ({ data }) => {
   useEffect(() => {
     if (e && n) {
       const keyPair = [parseInt(e), parseInt(n)];
-      data.output = keyPair;
+      data.pubKey = keyPair;
     }
   }, [e, n]);
 

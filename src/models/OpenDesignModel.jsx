@@ -25,6 +25,7 @@ class OpenDesignModel {
   }
 
   removeEdge(edgeId) {
+    console.log("removing edge", this.nodes);
     this.edges = this.edges.filter((edge) => edge.id !== edgeId);
   }
 

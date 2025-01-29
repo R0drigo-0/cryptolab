@@ -24,8 +24,9 @@ const iconStyle = {
   color: '#ff0071'
 };
 
-const OutputNode = ({ data }) => {
+const OutputNode = ({ data, trigger}) => {
   const [output, setOutput] = useState('');
+
   const handleCopy = () => {
     navigator.clipboard.writeText(output);
     toast.success('Text copied to clipboard', {
@@ -40,9 +41,16 @@ const OutputNode = ({ data }) => {
   };
 
   useEffect(() => {
-    data.output = data.input
-    setOutput(data.input || data.seed);
-  }, [data]);
+    console.log("DATA: ",data);
+    if (data.input) {
+      data.output = data.input;
+      setOutput(data.input);
+    } else {
+      data.output = '';
+      setOutput(data.seed || '');
+    }
+    console.log(data.input);
+  }, [data, trigger]);
 
   return (
     <div style={controlStyle}>

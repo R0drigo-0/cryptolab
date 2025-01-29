@@ -10,49 +10,84 @@ class RSAAlgorithm {
   }
 
   getInputs(params) {
+    const hasKeys = params.pubKey && params.privKey;
+    params.hasKeys = hasKeys;
+    if (hasKeys) {
+      const pubKeyN = params.pubKey[1];
+      const privKeyN = params.privKey[1];
+      if (pubKeyN !== privKeyN) {
+        toast.error(
+          "Error: Public Key and Private Key do not have the same 'n' value.",
+          {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+        return;
+      }
+
+      params.e = params.pubKey[0];
+      params.n = params.pubKey[1];
+      params.d = params.privKey[0];
+    }
     return (
       <div>
-        <label>
-          p:
-          <input
-            type="number"
-            value={params.p || ""}
-            onChange={(e) => this.handleInputChange(e, 'p', params)}
-            onBlur={() => this.validateParams('p', params)}
-          />
-        </label>
-        <label>
-          q:
-          <input
-            type="number"
-            value={params.q || ""}
-            onChange={(e) => this.handleInputChange(e, 'q', params)}
-            onBlur={() => this.validateParams('q', params)}
-          />
-        </label>
-        <label>
-          e:
-          <input
-            type="number"
-            value={params.e || ""}
-            onChange={(e) => this.handleInputChange(e, 'e', params)}
-            onBlur={() => this.validateParams('e', params)}
-          />
-        </label>
-        <label>
-          n:
-          <input type="number" value={params.n || ""} readOnly />
-        </label>
-        <label>
-          d:
-          <input type="number" value={params.d || ""} readOnly />
-        </label>
+        {!hasKeys && (
+          <>
+            <label>
+              p:
+              <input
+                type="number"
+                value={params.p || ""}
+                onChange={(e) => this.handleInputChange(e, "p", params)}
+                onBlur={() => this.validateParams("p", params)}
+              />
+            </label>
+            <label>
+              q:
+              <input
+                type="number"
+                value={params.q || ""}
+                onChange={(e) => this.handleInputChange(e, "q", params)}
+                onBlur={() => this.validateParams("q", params)}
+              />
+            </label>
+            <label>
+              e:
+              <input
+                type="number"
+                value={params.e || ""}
+                onChange={(e) => this.handleInputChange(e, "e", params)}
+                onBlur={() => this.validateParams("e", params)}
+              />
+            </label>
+            <label>
+              n:
+              <input type="number" value={params.n || ""} readOnly />
+            </label>
+            <label>
+              d:
+              <input type="number" value={params.d || ""} readOnly />
+            </label>
+          </>
+        )}
         <div>
           <label>
             Public Key:
             <input
               type="text"
-              value={params.e && params.n ? `(${params.e}, ${params.n})` : ""}
+              value={
+                hasKeys
+                  ? `(${params.pubKey[0]}, ${params.pubKey[1]})`
+                  : params.d && params.n
+                  ? `(${params.e}, ${params.n})`
+                  : ""
+              }
               readOnly
             />
           </label>
@@ -62,7 +97,13 @@ class RSAAlgorithm {
             Private Key:
             <input
               type="text"
-              value={params.d && params.n ? `(${params.d}, ${params.n})` : ""}
+              value={
+                hasKeys
+                  ? `(${params.privKey[0]}, ${params.privKey[1]})`
+                  : params.d && params.n
+                  ? `(${params.d}, ${params.n})`
+                  : ""
+              }
               readOnly
             />
           </label>
@@ -86,79 +127,90 @@ class RSAAlgorithm {
   validateParams(key, params) {
     const { p, q, e } = params;
 
-    if (key === 'p' && p && !this.isPrime(p)) {
+    if (key === "p" && p && !this.isPrime(p)) {
       const recommendedP = this.getRandomPrime();
       toast.clearWaitingQueue();
       toast.dismiss();
       toast.error(`p must be a prime number. For example ${recommendedP}.`);
     }
 
-    if (key === 'q' && q && !this.isPrime(q)) {
+    if (key === "q" && q && !this.isPrime(q)) {
       const recommendedQ = this.getRandomPrime();
       toast.clearWaitingQueue();
       toast.dismiss();
       toast.error(`q must be a prime number. For example ${recommendedQ}.`);
     }
 
-    if (key === 'e' && e) {
+    if (key === "e" && e) {
       const phi = (params.p - 1) * (params.q - 1);
       if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
         const recommendedE = this.getRandomCoprime(phi);
         toast.clearWaitingQueue();
         toast.dismiss();
-        toast.error(`e must be greater than 1, less than ${phi}, and coprime with ${phi}. For example ${recommendedE}.`);
+        toast.error(
+          `e must be greater than 1, less than ${phi}, and coprime with ${phi}. For example ${recommendedE}.`
+        );
       }
     }
   }
 
   encrypt(params) {
-    const { p, q, e, input } = params;
+    const { hasKeys, p, q, e, input } = params;
     let newParams = { ...params };
+    if (!hasKeys) {
+      if (!p) {
+        return;
+      }
 
-    if (!p) {
-      return;
+      if (!this.isPrime(p)) {
+        return;
+      }
+
+      if (!q) {
+        return;
+      }
+
+      if (!this.isPrime(q)) {
+        return;
+      }
+
+      newParams.n = p * q;
+      const phi = (p - 1) * (q - 1);
+      newParams.phi = phi;
+
+      if (!e) {
+        return;
+      }
+
+      if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
+        return;
+      }
+
+      newParams.d = this.modInverse(e, phi);
+
+      if (newParams.d === null || newParams.d === undefined) {
+        toast.clearWaitingQueue();
+        toast.dismiss();
+        toast.error(
+          "Failed to calculate the modular inverse. Please check the values of p, q, and e."
+        );
+        return;
+      }
+      newParams.e = e;
+      newParams.kpub = `(${newParams.e}, ${newParams.n})`;
+      newParams.kpriv = `(${newParams.d}, ${newParams.n})`;
+
+      this.setParams(newParams);
     }
-
-    if (!this.isPrime(p)) {
-      return;
+    else{
+      newParams.n = params.privKey[1];
+      newParams.e = params.pubKey[0];
     }
-
-    if (!q) {
-      return;
-    }
-
-    if (!this.isPrime(q)) {
-      return;
-    }
-
-    newParams.n = p * q;
-    const phi = (p - 1) * (q - 1);
-    newParams.phi = phi;
-
-    if (!e) {
-      return;
-    }
-
-    if (e <= 1 || e >= phi || this.gcd(e, phi) !== 1) {
-      return;
-    }
-
-    newParams.d = this.modInverse(e, phi);
-
-    if (newParams.d === null || newParams.d === undefined) {
-      toast.clearWaitingQueue();
-      toast.dismiss();
-      toast.error("Failed to calculate the modular inverse. Please check the values of p, q, and e.");
-      return;
-    }
-    newParams.kpub = `(${e}, ${newParams.n})`;
-    newParams.kpriv = `(${newParams.d}, ${newParams.n})`;
-
-    this.setParams(newParams);
 
     if (input !== undefined) {
+      console.log(newParams);
       const message = BigInt(input);
-      const result = this.modExp(message, BigInt(e), BigInt(newParams.n));
+      const result = this.modExp(message, BigInt(newParams.e), BigInt(newParams.n));
       return result.toString();
     }
   }
@@ -166,7 +218,6 @@ class RSAAlgorithm {
   decrypt(params) {
     const { p, q, e, input } = params;
     let newParams = { ...params };
-    console.log("Decrypting with params:", newParams);
 
     if (!p) {
       return;
@@ -201,7 +252,9 @@ class RSAAlgorithm {
     if (newParams.d === null || newParams.d === undefined) {
       toast.clearWaitingQueue();
       toast.dismiss();
-      toast.error("Failed to calculate the modular inverse. Please check the values of p, q, and e.");
+      toast.error(
+        "Failed to calculate the modular inverse. Please check the values of p, q, and e."
+      );
       return;
     }
     newParams.kpub = `(${e}, ${newParams.n})`;
@@ -210,9 +263,12 @@ class RSAAlgorithm {
     this.setParams(newParams);
 
     if (input !== undefined) {
-      console.log("Decrypting text:", input);
       const message = BigInt(input);
-      const result = this.modExp(message, BigInt(newParams.d), BigInt(newParams.n));
+      const result = this.modExp(
+        message,
+        BigInt(newParams.d),
+        BigInt(newParams.n)
+      );
       return result.toString();
     }
   }
@@ -262,8 +318,11 @@ class RSAAlgorithm {
   }
 
   modInverse(e, phi) {
-    let m0 = phi, t, q;
-    let x0 = 0, x1 = 1;
+    let m0 = phi,
+      t,
+      q;
+    let x0 = 0,
+      x1 = 1;
 
     if (phi === 1) return 0;
 
@@ -286,7 +345,6 @@ class RSAAlgorithm {
 
     return x1;
   }
-
 }
 
 export default RSAAlgorithm;

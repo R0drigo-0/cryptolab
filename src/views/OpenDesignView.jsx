@@ -45,9 +45,10 @@ const OpenDesignView = () => {
   const [selectedEdges, setSelectedEdges] = useState([]);
   const [copiedNodes, setCopiedNodes] = useState([]);
   const [copiedEdges, setCopiedEdges] = useState([]);
+  const [snapGrid, setSnapGrid] = useState([1, 1]);
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
-  const [snapGrid, setSnapGrid] = useState([1,1]);
+  const [trigger, setTrigger] = useState(0);
   
   let { viewport } = useViewport({
     x: 0,
@@ -58,7 +59,7 @@ const OpenDesignView = () => {
   const setViewport = (v) => {
     setSnapGrid([Math.max(1, 32 / v.zoom), Math.max(1, 32 / v.zoom)]);
     viewport = v;
-  }
+  };
 
   const nodeTypes = {
     ResizableNode,
@@ -182,11 +183,15 @@ const OpenDesignView = () => {
     const targetNode = nodes.find((node) => node.id === params.target);
 
     if (sourceNode && targetNode) {
+      console.log("Source Node", sourceNode.data.privKey);
       const updatedTargetNode = {
         ...targetNode,
         data: {
           ...targetNode.data,
           input: sourceNode.data.output,
+          ...(sourceNode.data.seed && { seed: sourceNode.data.seed }),
+          ...(sourceNode.data.pubKey && { pubKey: sourceNode.data.pubKey }),
+          ...(sourceNode.data.privKey && { privKey: sourceNode.data.privKey }),
         },
       };
 
@@ -199,7 +204,7 @@ const OpenDesignView = () => {
   const handleNewNode = (item) => {
     const newNode = {
       id: uuidv4(),
-      type: item.replace(/\s+/g, '') + "Node",
+      type: item.replace(/\s+/g, "") + "Node",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
       data: { label: item, input: "", output: "" },
     };
@@ -214,7 +219,7 @@ const OpenDesignView = () => {
   const handleDelete = () => {
     const deletedNodes = [...selectedNodes];
     const deletedEdges = [...selectedEdges];
-    handleRemoveSelected(selectedNodes, selectedEdges, setNodes, setEdges);
+    handleRemoveSelected(selectedNodes, selectedEdges, setNodes, setEdges, setTrigger);
     setUndoStack((prevUndoStack) => [
       ...prevUndoStack,
       { nodes: deletedNodes, edges: deletedEdges },
@@ -304,15 +309,18 @@ const OpenDesignView = () => {
                   ...targetNode.data,
                   input: sourceNode.data.output,
                   ...(sourceNode.data.seed && { seed: sourceNode.data.seed }),
-                  ...(sourceNode.data.pubKey && { pubKey: sourceNode.data.pubKey }),
-                  ...(sourceNode.data.privKey && { privKey: sourceNode.data.privKey }),
+                  ...(sourceNode.data.pubKey && {
+                    pubKey: sourceNode.data.pubKey,
+                  }),
+                  ...(sourceNode.data.privKey && {
+                    privKey: sourceNode.data.privKey,
+                  }),
                 },
               };
 
               setNodes((nds) =>
                 nds.map((n) => (n.id === targetNode.id ? updatedTargetNode : n))
-            );
-            console.log("Nodes updated", targetNode.data);
+              );
             }
           }
         });

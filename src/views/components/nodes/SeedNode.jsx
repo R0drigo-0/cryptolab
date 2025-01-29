@@ -21,10 +21,10 @@ const SeedNode = ({ data }) => {
 
   return (
     <div style={nodeStyle}>
-      <Handle type="target" position={Position.Top} id="encrypt-top" />
-      <Handle type="target" position={Position.Left} id="encrypt-left" />
-      <Handle type="target" position={Position.Right} id="encrypt-right" />
-      <Handle type="target" position={Position.Bottom} id="encrypt-bottom" />
+      <Handle type="target" position={Position.Top} id="seed-input-top" />
+      <Handle type="target" position={Position.Left} id="seed-input-left" />
+      <Handle type="target" position={Position.Right} id="seed-input-right" />
+      <Handle type="target" position={Position.Bottom} id="seed-input-bottom" />
       <div>
         <label>Seed: </label>
         <input
@@ -33,17 +33,17 @@ const SeedNode = ({ data }) => {
           onChange={(evt) => handleSeedChange(evt)}
         />
       </div>
-      <Handle type="source" position={Position.Top} id="encrypt-output-top" />
-      <Handle type="source" position={Position.Left} id="encrypt-output-left" />
+      <Handle type="source" position={Position.Top} id="seed-output-top" />
+      <Handle type="source" position={Position.Left} id="seed-output-left" />
       <Handle
         type="source"
         position={Position.Right}
-        id="encrypt-output-right"
+        id="seed-output-right"
       />
       <Handle
         type="source"
         position={Position.Bottom}
-        id="encrypt-output-bottom"
+        id="seed-output-bottom"
       />
     </div>
   );

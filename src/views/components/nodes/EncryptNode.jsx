@@ -35,7 +35,9 @@ const EncryptNode = ({ data }) => {
 
   useEffect(() => {
     params.input = data.input;
-  }, [data.input]);
+    params.pubKey = data.pubKey;
+    params.privKey = data.privKey;
+  }, [data.input, data.pubKey, data.privKey]);
 
   useEffect(() => {
     const prevParams = prevParamsRef.current;
@@ -47,7 +49,7 @@ const EncryptNode = ({ data }) => {
       }
       prevParamsRef.current = params;
     }
-  }, [algorithm, params, algorithms, data.input]);
+  }, [algorithm, params, algorithms, data.input, data.pubKey, data.privKey]);
 
   const handleAlgorithmChange = (event) => {
     setAlgorithm(event.target.value);

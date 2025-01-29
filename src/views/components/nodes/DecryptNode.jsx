@@ -31,6 +31,8 @@ const DecryptNode = ({ data }) => {
 
   useEffect(() => {
     params.input = data.input;
+    params.pubKey = data.pubKey;
+    params.privKey = data.privKey;
   }, [data.input]);
 
   useEffect(() => {
@@ -45,9 +47,11 @@ const DecryptNode = ({ data }) => {
       prevParamsRef.current = params;
     }
   }, [algorithm, params, algorithms, data.input]);
+
   const handleAlgorithmChange = (event) => {
     setAlgorithm(event.target.value);
   };
+  
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(data)) {
       prevDataRef.current = data;

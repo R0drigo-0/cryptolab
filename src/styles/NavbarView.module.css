@@ -35,9 +35,9 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   position: fixed;
-  width: 100vw!important;
   top: -100px; /* Adjust this value based on your navbar height */
   transition: top 0.3s;
+  z-index: 10;
 }
 
 .hidden {

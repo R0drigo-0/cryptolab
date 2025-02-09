@@ -1,15 +1,11 @@
 import styles from "../styles/HomePageView.module.css";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.svg";
 import HomePageController from "../controllers/HomePageController";
-
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col, Card } from "react-bootstrap";
 import Navbar from "./components/Navbar";
-
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const HomePageView = () => {
   const navigate = useNavigate();
@@ -38,32 +34,93 @@ const HomePageView = () => {
     };
   }, [controller]);
 
+    useEffect(() => {
+      let lastScrollTop = 0;
+
+      const handleScroll = () => {
+        const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollThreshold = window.innerHeight * 0.91;
+        const autoScrollThreshold = document.documentElement.scrollHeight * 0.001;
+
+        if (scrollPosition > autoScrollThreshold && scrollPosition > lastScrollTop) {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+
+        lastScrollTop = scrollPosition;
+      };
+
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, []);
+
   return (
     <>
       <Navbar />
-      <div className={`d-flex flex-column justify-content-center align-items-center ${styles.homepageContainer}`}>
+      <div
+        className={`d-flex flex-column justify-content-center align-items-center ${styles.homepageContainer}`}
+      >
         <div className={styles.gradientBg}>
           <div className={styles.mainContainer}>
             <h1>
-              <span className="roboto-bold">An</span>
-              <span className="interactive_visual roboto-bold">interactive visual</span>
+              <span
+                className="roboto-bold"
+                style={{ position: "relative", zIndex: 10 }}
+              >
+                An
+              </span>
+              <span
+                className="interactive_visual roboto-bold"
+                style={{ position: "relative", zIndex: 10 }}
+              >
+                interactive visual
+              </span>
               <br />
-              <span className="roboto-bold">way to learn</span>
+              <span
+                className="roboto-bold"
+                style={{ position: "relative", zIndex: 10 }}
+              >
+                way to learn
+              </span>
             </h1>
             <div className={styles.content}>
               <div className={styles.logoContainer}>
-                <img src={logo} className={styles.logo} />
+                <img
+                  src={logo}
+                  className={styles.logo}
+                  style={{ position: "relative", zIndex: 10 }}
+                  alt="Logo"
+                />
               </div>
-              <div className={styles.scrollIndicator}>
-                <ArrowDownwardIcon />
+              <div
+                className={styles.scrollIndicator}
+                style={{ position: "relative", zIndex: 10 }}
+              >
+                <ArrowDownwardIcon
+                  style={{ color: "var(--cryptolab-orange)" }}
+                />
               </div>
             </div>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg">
             <defs>
               <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+                <feGaussianBlur
+                  in="SourceGraphic"
+                  stdDeviation="10"
+                  result="blur"
+                />
+                <feColorMatrix
+                  in="blur"
+                  mode="matrix"
+                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+                  result="goo"
+                />
                 <feBlend in="SourceGraphic" in2="goo" />
               </filter>
             </defs>

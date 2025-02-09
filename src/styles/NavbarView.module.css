@@ -30,6 +30,20 @@
 }
 
 .container {
+  background-color: var(--cryptolab-white);
   padding: 10px 20px;
-  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: fixed;
+  width: 100vw!important;
+  top: -100px; /* Adjust this value based on your navbar height */
+  transition: top 0.3s;
+}
+
+.hidden {
+  top: -100px; /* Adjust this value based on your navbar height */
+}
+
+.visible {
+  top: 0;
 }

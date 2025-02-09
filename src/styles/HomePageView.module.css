@@ -89,6 +89,7 @@ button {
     color: var(--cryptolab-white);
     touch-action: manipulation;
     -webkit-user-select: none;
+    user-select: none;
     justify-content: center;
     box-sizing: border-box;
     vertical-align: middle;
@@ -149,6 +150,7 @@ button:disabled {
     flex-direction: column;
     align-items: center;
     display: flex;
+    z-index: 15;
 }
 
 .scroll-indicator {
@@ -223,7 +225,7 @@ button:disabled {
     background: black;
     top: 0;
     left: 0;
-    z-index: -2;
+    z-index: -10;
 }
 
 .gradientBg .gradientsContainer {
@@ -360,4 +362,26 @@ button:disabled {
 
 .main-container>* {
     z-index: 2;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+@keyframes clickScroll {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.scrollIndicator {
+  z-index: 20;
+  animation: clickScroll 1s infinite;
+  cursor: "pointer"!important;
 }

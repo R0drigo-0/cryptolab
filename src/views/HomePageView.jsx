@@ -34,30 +34,41 @@ const HomePageView = () => {
     };
   }, [controller]);
 
-    useEffect(() => {
-      let lastScrollTop = 0;
+  useEffect(() => {
+    let lastScrollTop = 0;
 
-      const handleScroll = () => {
-        const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollThreshold = window.innerHeight * 0.91;
-        const autoScrollThreshold = document.documentElement.scrollHeight * 0.001;
+    const handleScroll = () => {
+      const scrollPosition =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollThreshold = window.innerHeight * 0.91;
+      const autoScrollThreshold = document.documentElement.scrollHeight * 0.001;
 
-        if (scrollPosition > autoScrollThreshold && scrollPosition > lastScrollTop) {
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth'
-          });
-        }
+      if (
+        scrollPosition > autoScrollThreshold &&
+        scrollPosition > lastScrollTop
+      ) {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+      }
 
-        lastScrollTop = scrollPosition;
-      };
+      lastScrollTop = scrollPosition;
+    };
 
-      window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScrollDown = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <>
@@ -69,16 +80,10 @@ const HomePageView = () => {
           <div className={styles.mainContainer}>
             <h1>
               <span
-                className="roboto-bold"
-                style={{ position: "relative", zIndex: 10 }}
-              >
-                An
-              </span>
-              <span
                 className="interactive_visual roboto-bold"
                 style={{ position: "relative", zIndex: 10 }}
               >
-                interactive visual
+                An interactive visual
               </span>
               <br />
               <span
@@ -93,16 +98,23 @@ const HomePageView = () => {
                 <img
                   src={logo}
                   className={styles.logo}
-                  style={{ position: "relative", zIndex: 10 }}
+                  style={{ position: "relative", zIndex: 10, height: "10rem" }}
                   alt="Logo"
                 />
               </div>
               <div
-                className={styles.scrollIndicator}
+                className={`${styles.scrollIndicator}`}
                 style={{ position: "relative", zIndex: 10 }}
+                onClick={handleScrollDown}
               >
                 <ArrowDownwardIcon
-                  style={{ color: "var(--cryptolab-orange)" }}
+                  style={{
+                    color: "var(--cryptolab-orange)",
+                    marginTop: "10px",
+                    fontSize: "3rem",
+                    cursor: "pointer",
+                    zIndex: "20",
+                  }}
                 />
               </div>
             </div>

@@ -11,8 +11,12 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 const HomePageView = () => {
   const navigate = useNavigate();
   const [controller] = useState(new HomePageController());
-  const [isHeaderVisible, setIsHeaderVisible] = useState(controller.isHeaderVisible);
-  const [visibleOptions, setVisibleOptions] = useState(controller.getVisibleOptions());
+  const [isHeaderVisible, setIsHeaderVisible] = useState(
+    controller.isHeaderVisible
+  );
+  const [visibleOptions, setVisibleOptions] = useState(
+    controller.getVisibleOptions()
+  );
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -37,10 +41,14 @@ const HomePageView = () => {
     let lastScrollTop = 0;
 
     const handleScroll = () => {
-      const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollPosition =
+        document.documentElement.scrollTop || document.body.scrollTop;
       const autoScrollThreshold = document.documentElement.scrollHeight * 0.001;
 
-      if (scrollPosition > autoScrollThreshold && scrollPosition > lastScrollTop) {
+      if (
+        scrollPosition > autoScrollThreshold &&
+        scrollPosition > lastScrollTop
+      ) {
         window.scrollTo({
           top: document.documentElement.scrollHeight,
           behavior: "smooth",
@@ -93,14 +101,17 @@ const HomePageView = () => {
                   <img
                     src={logo}
                     className={styles.logo}
-                    style={{ position: "relative", zIndex: 10, height: "10rem" }}
+                    style={{
+                      position: "relative",
+                      zIndex: 20,
+                      height: "10rem",
+                    }}
                     alt="Logo"
                   />
                 </div>
                 <div
                   className={styles.scrollIndicator}
-                  style={{ position: "relative", zIndex: 10 }}
-                  onClick={handleScrollDown}
+                  style={{ position: "relative", zIndex: 20}}
                 >
                   <ArrowDownwardIcon
                     style={{
@@ -108,8 +119,8 @@ const HomePageView = () => {
                       marginTop: "10px",
                       fontSize: "3rem",
                       cursor: "pointer",
-                      zIndex: "20",
-                    }}
+                      zIndex: "30",
+                    }} onClick={handleScrollDown}
                   />
                 </div>
               </div>
@@ -168,14 +179,16 @@ const HomePageView = () => {
                 key={index}
                 className="d-flex align-items-stretch justify-content-center"
               >
-                <Card className={`${styles.optionBox} w-100`}>
+                <Card
+                  className={`${styles.optionBox} w-100 ${
+                    styles[`option-${option.category.toLowerCase()}`]
+                  }`}
+                >
                   <Card.Body className="d-flex flex-column justify-content-between">
                     <Card.Title className="text-center">
                       {option.category}
                     </Card.Title>
-                    <Card.Text className="text-center">
-                      {option.name}
-                    </Card.Text>
+                    <Card.Text className="text-center">{option.name}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>

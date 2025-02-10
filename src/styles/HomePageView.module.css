@@ -1,386 +1,417 @@
-@import url('colors.css');
+@import url("colors.css");
 
 :root {
-    --color1: #5C5196;
-    --color2: #B6D4FB;
-    --color3: #3582d4;
-    --color-interactive: #A8D6FD;
-    --circle-size: 140%;
-    --blending: multiply;
+  --color1: #5c5196;
+  --color2: #b6d4fb;
+  --color3: #3582d4;
+  --color-interactive: #a8d6fd;
+  --circle-size: 140%;
+  --blending: multiply;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: var(--cryptolab-white);
-    width: 100vw;
-    overflow-x: hidden;
+  background-color: var(--cryptolab-white);
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 h1 {
-    color: var(--cryptolab-white);
-    font-size: 5rem;
-    text-align: center;
-    margin-bottom: -45px;
-    text-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.4),
-        0 0 8px rgba(255, 255, 255, 0.3);
+  color: var(--cryptolab-white);
+  font-size: 5rem;
+  text-align: center;
+  margin-bottom: -45px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 h1 .interactive_visual {
-    color: var(--cryptolab-orange);
+  color: var(--cryptolab-orange);
 }
 
 .navbar {
-    background-color: var(--cryptolab-white);
-    color: var(--cryptolab-dark-grey);
-    justify-content: space-between;
-    transition: top 0.3s ease;
-    align-items: center;
-    text-align: center;
-    padding: 15px 20px;
-    position: fixed;
-    display: flex;
-    height: 4.5rem;
-    top: -4.5rem;
-    z-index: 10;
-    right: 0;
-    left: 0;
+  background-color: var(--cryptolab-white);
+  color: var(--cryptolab-dark-grey);
+  justify-content: space-between;
+  transition: top 0.3s ease;
+  align-items: center;
+  text-align: center;
+  padding: 15px 20px;
+  position: fixed;
+  display: flex;
+  height: 4.5rem;
+  top: -4.5rem;
+  z-index: 10;
+  right: 0;
+  left: 0;
 }
 .navbar > * {
-    margin-left: 4rem;
-    margin-right: 4rem;
+  margin-left: 4rem;
+  margin-right: 4rem;
 }
 
 .navbar .logo {
-    align-items: center;
-    display: flex;
-    width: 3rem;
+  align-items: center;
+  display: flex;
+  width: 3rem;
 }
 
 .navbar .logo h2 {
-    font-weight: 700;
-    font-size: 24px;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 .crypto {
-    color: var(--cryptolab-blue);
+  color: var(--cryptolab-blue);
 }
 
 .lab {
-    color: var(--cryptolab-orange);
+  color: var(--cryptolab-orange);
 }
 
 .navbar .nav-links {
-    width: 70%;
-    justify-content: space-evenly;
-    align-items: center;
-    display: flex;
+  width: 70%;
+  justify-content: space-evenly;
+  align-items: center;
+  display: flex;
 }
 
 button {
-    transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1), color 0.167s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: var(--cryptolab-orange);
-    color: var(--cryptolab-white);
-    touch-action: manipulation;
-    -webkit-user-select: none;
-    user-select: none;
-    justify-content: center;
-    box-sizing: border-box;
-    vertical-align: middle;
-    display: inline-flex;
-    border-radius: 100px;
-    align-items: center;
-    padding-right: 20px;
-    text-align: center;
-    padding-left: 20px;
-    line-height: 20px;
-    max-width: 480px;
-    min-height: 40px;
-    overflow: hidden;
-    cursor: pointer;
-    font-size: 14px;
-    border: none;
-    width: 10rem;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.167s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--cryptolab-orange);
+  color: var(--cryptolab-white);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  justify-content: center;
+  box-sizing: border-box;
+  vertical-align: middle;
+  display: inline-flex;
+  border-radius: 100px;
+  align-items: center;
+  padding-right: 20px;
+  text-align: center;
+  padding-left: 20px;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  width: 10rem;
 }
 
 button:hover,
 button:focus {
-    background-color: var(--cryptolab-orange-hovered);
-    color: var(--cryptolab-white-hovered);
+  background-color: var(--cryptolab-orange-hovered);
+  color: var(--cryptolab-white-hovered);
 }
 
 button:active {
-    background: var(--cryptolab-orange-active);
-    color: var(--cryptolab-white-active);
+  background: var(--cryptolab-orange-active);
+  color: var(--cryptolab-white-active);
 }
 
 button:disabled {
-    cursor: not-allowed;
-    background: rgba(0, 0, 0, .08);
-    color: rgba(0, 0, 0, .3);
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .main-container {
-    justify-content: center;
-    flex-direction: column;
-    justify-self: center;
-    align-items: center;
-    position: absolute;
-    display: flex;
-    height: 100vh;
-    width: 100vw;
+  justify-content: center;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 
 .main-container > * {
-    z-index: 2;
+  z-index: 2;
 }
 
 .logo-container {
-    width: 16.5rem;
+  width: 16.5rem;
 }
 
 .content {
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    display: flex;
-    z-index: 15;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  z-index: 15;
 }
 
-.scroll-indicator {
-    cursor: pointer;
-    width: 64px;
-    z-index: 20;
-    animation: clickScroll 1s infinite;
+.scrollIndicator {
+  cursor: pointer;
+  width: 64px;
+  z-index: 20;
+  animation: clickScroll 1s infinite;
 }
 
 .options-container {
-    height: 100vh;
-    display: flex;
-    background-color: red;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  display: flex;
+  background-color: red;
+  justify-content: center;
+  align-items: center;
 }
 
-.options-container h2  {
-    position: absolute;
-    top: 115vh;
-    font-size: 5rem;
-    text-shadow: 0px 4px 3px rgba(0,0,0,0.05),
-                 0px 8px 13px rgba(0,0,0,0.05),
-                 0px 18px 23px rgba(0,0,0,0.05);
+.options-container h2 {
+  position: absolute;
+  top: 115vh;
+  font-size: 5rem;
+  text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05), 0px 8px 13px rgba(0, 0, 0, 0.05),
+    0px 18px 23px rgba(0, 0, 0, 0.05);
 }
 
 .most {
-    color: var(--cryptolab-black);
+  color: var(--cryptolab-black);
 }
 
 .common {
-    color: var(--cryptolab-blue);
+  color: var(--cryptolab-blue);
 }
 
 @keyframes moveInCircle {
-    0% {
-        transform: rotate(0deg);
-    }
-    50% {
-        transform: rotate(180deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes moveVertical {
-    0% {
-        transform: translateY(-30%);
-    }
-    50% {
-        transform: translateY(30%);
-    }
-    100% {
-        transform: translateY(-30%);
-    }
+  0% {
+    transform: translateY(-30%);
+  }
+  50% {
+    transform: translateY(30%);
+  }
+  100% {
+    transform: translateY(-30%);
+  }
 }
 
 @keyframes moveHorizontal {
-    0% {
-        transform: translateX(-40%) translateY(-10%);
-    }
-    50% {
-        transform: translateX(40%) translateY(10%);
-    }
-    100% {
-        transform: translateX(-40%) translateY(-10%);
-    }
+  0% {
+    transform: translateX(-40%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(40%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-40%) translateY(-10%);
+  }
 }
 
 .gradientBg {
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    overflow: hidden;
-    background: black;
-    top: 0;
-    left: 0;
-    z-index: -10;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  background: black;
+  top: 0;
+  left: 0;
+  z-index: -10;
 }
 
 .gradientBg .gradientsContainer {
-    filter: url(#goo) blur(30px);
-    width: 100%;
-    height: 100%;
-    will-change: transform, opacity;
+  filter: url(#goo) blur(30px);
+  width: 100%;
+  height: 100%;
+  will-change: transform, opacity;
 }
 
 .gradientBg .g1 {
-    position: absolute;
-    background: radial-gradient(circle at center, var(--color1) 0, transparent 40%);
-    mix-blend-mode: var(--blending);
-    width: var(--circle-size);
-    height: var(--circle-size);
-    top: calc(50% - var(--circle-size) / 2);
-    left: calc(50% - var(--circle-size) / 2);
-    transform-origin: center center;
-    animation: moveVertical 30s ease infinite;
-    opacity: 1;
-    z-index: -1;
+  position: absolute;
+  background: radial-gradient(
+    circle at center,
+    var(--color1) 0,
+    transparent 40%
+  );
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2);
+  left: calc(50% - var(--circle-size) / 2);
+  transform-origin: center center;
+  animation: moveVertical 30s ease infinite;
+  opacity: 1;
+  z-index: -1;
 }
 
 .gradientBg .g2 {
-    position: absolute;
-    background: radial-gradient(circle at center, var(--color2) 0, transparent 40%);
-    mix-blend-mode: var(--blending);
-    width: var(--circle-size);
-    height: var(--circle-size);
-    top: calc(50% - var(--circle-size) / 2 + 200px);
-    left: calc(50% - var(--circle-size) / 2 - 500px);
-    transform-origin: calc(50% + 400px);
-    animation: moveInCircle 40s linear infinite;
-    opacity: 1;
-    z-index: -1;
+  position: absolute;
+  background: radial-gradient(
+    circle at center,
+    var(--color2) 0,
+    transparent 40%
+  );
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2 + 200px);
+  left: calc(50% - var(--circle-size) / 2 - 500px);
+  transform-origin: calc(50% + 400px);
+  animation: moveInCircle 40s linear infinite;
+  opacity: 1;
+  z-index: -1;
 }
 
 .gradientBg .g3 {
-    position: absolute;
-    background: radial-gradient(circle at center, var(--color3) 0, transparent 40%);
-    mix-blend-mode: var(--blending);
-    width: var(--circle-size);
-    height: var(--circle-size);
-    top: calc(50% - var(--circle-size) / 2);
-    left: calc(50% - var(--circle-size) / 2);
-    transform-origin: calc(50% - 200px);
-    animation: moveHorizontal 40s ease infinite;
-    opacity: 0.7;
-    z-index: -1;
+  position: absolute;
+  background: radial-gradient(
+    circle at center,
+    var(--color3) 0,
+    transparent 40%
+  );
+  mix-blend-mode: var(--blending);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  top: calc(50% - var(--circle-size) / 2);
+  left: calc(50% - var(--circle-size) / 2);
+  transform-origin: calc(50% - 200px);
+  animation: moveHorizontal 40s ease infinite;
+  opacity: 0.7;
+  z-index: -1;
 }
 
 @media (max-width: 768px) {
-    .gradientBg .gradientsContainer {
-        filter: none;
-    }
+  .gradientBg .gradientsContainer {
+    filter: none;
+  }
 
-    .gradientBg .g1,
-    .g2,
-    .g3 {
-        animation: none;
-    }
+  .gradientBg .g1,
+  .g2,
+  .g3 {
+    animation: none;
+  }
 
-    .homepageContainer {
-        display: none;
-    }
+  .homepageContainer {
+    display: none;
+  }
 }
 
 .stickyHeader {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    transition: top 0.3s;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: top 0.3s;
 }
 
 .hidden {
-    top: -100px;
+  top: -100px;
 }
 
 .visible {
-    top: 0;
+  top: 0;
 }
 
 .logo {
-    height: 40px;
-    margin-right: 10px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .headerTitle {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
 }
 
 .headerCategories a {
-    margin: 0 15px;
-    font-size: 16px;
-    color: #555;
-    text-decoration: none;
-    transition: color 0.3s;
+  margin: 0 15px;
+  font-size: 16px;
+  color: #555;
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 .headerCategories a:hover {
-    color: #007bff;
+  color: #007bff;
 }
 
 .homepageContainer {
-    text-align: center;
-    width: 100vw;
-    overflow: hidden;
+  text-align: center;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .optionBox {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .optionBox:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .mainContainer {
-    justify-content: center;
-    flex-direction: column;
-    justify-self: center;
-    align-items: center;
-    position: absolute;
-    display: flex;
-    height: 100vh;
-    width: 100vw;
+  justify-content: center;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 
 .main-container > * {
-    z-index: 2;
+  z-index: 2;
 }
 
 h1 {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 @keyframes clickScroll {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(10px);
-    }
-    100% {
-        transform: translateY(0);
-    }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.option-hash {
+  background-color: var(--cryptolab-hash);
+}
+
+.option-cryptography {
+  background-color: var(--cryptolab-cryptography);
+}
+
+.option-general-grey {
+  background-color: var(--cryptolab-general-grey);
+}
+
+.option-protocol {
+  background-color: var(--cryptolab-protocols);
+}
+
+.option-attack {
+  background-color: var(--cryptolab-attacks);
 }

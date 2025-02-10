@@ -39,28 +39,41 @@ const HomePageView = () => {
 
   useEffect(() => {
     let lastScrollTop = 0;
-
-    const handleScroll = () => {
-      const scrollPosition =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      const autoScrollThreshold = document.documentElement.scrollHeight * 0.001;
-
+    let isScrolling = false;
+  
+    const handleScroll = (e) => {
+      const scrollPosition = window.scrollY;
+      const documentHeight = document.documentElement.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const isAtBottom = scrollPosition + windowHeight >= documentHeight - 10;
+      const isAtTop = scrollPosition <= 10;
+      const scrollDirection = scrollPosition > lastScrollTop ? "down" : "up";
+  
+      // Only allow scrolling at the extremes
       if (
-        scrollPosition > autoScrollThreshold &&
-        scrollPosition > lastScrollTop
+        (scrollDirection === "down" && isAtTop) ||
+        (scrollDirection === "up" && isAtBottom)
       ) {
+        isScrolling = true;
+        e.preventDefault(); // Prevent default scroll
+  
         window.scrollTo({
-          top: document.documentElement.scrollHeight,
+          top: scrollDirection === "down" ? documentHeight : 0,
           behavior: "smooth",
         });
+  
+        // Reset the scroll lock after animation completes
+        setTimeout(() => {
+          isScrolling = false;
+        }, 1500); // Adjust timeout to match your scroll animation duration
       }
-
+  
       lastScrollTop = scrollPosition;
     };
-
-    window.addEventListener("scroll", handleScroll);
+  
+    window.addEventListener("scroll", handleScroll, { passive: false });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll, { passive: false });
     };
   }, []);
 
@@ -79,8 +92,11 @@ const HomePageView = () => {
         className={`p-0 d-flex flex-column justify-content-center align-items-center ${styles.homepageContainer}`}
       >
         {!isMobile && (
-          <div className={styles.gradientBg}>
-            <div className={styles.mainContainer}>
+          <div className={styles.gradientBg} style={{ pointerEvents: "none" }}>
+            <div
+              className={styles.mainContainer}
+              style={{ pointerEvents: "auto" }}
+            >
               <h1>
                 <span
                   className="interactive_visual roboto-bold"
@@ -96,7 +112,10 @@ const HomePageView = () => {
                   way to learn
                 </span>
               </h1>
-              <div className={styles.content}>
+              <div
+                className={styles.content}
+                style={{ position: "relative", zIndex: 1000 }}
+              >
                 <div className={styles.logoContainer}>
                   <img
                     src={logo}
@@ -111,16 +130,25 @@ const HomePageView = () => {
                 </div>
                 <div
                   className={styles.scrollIndicator}
-                  style={{ position: "relative", zIndex: 20}}
+                  onClick={handleScrollDown}
+                  style={{
+                    position: "relative",
+                    zIndex: 1000,
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "64px",
+                    height: "64px",
+                    pointerEvents: "auto",
+                  }}
                 >
                   <ArrowDownwardIcon
                     style={{
                       color: "var(--cryptolab-orange)",
                       marginTop: "10px",
                       fontSize: "3rem",
-                      cursor: "pointer",
-                      zIndex: "30",
-                    }} onClick={handleScrollDown}
+                    }}
                   />
                 </div>
               </div>

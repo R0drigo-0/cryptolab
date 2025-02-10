@@ -149,14 +149,19 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   display: flex;
-  z-index: 15;
+  z-index: 1000;
+  position: relative;
+  pointer-events: auto;
 }
 
 .scrollIndicator {
   cursor: pointer;
   width: 64px;
-  z-index: 20;
+  height: 64px;
+  position: relative;
+  z-index: 1000;
   animation: clickScroll 1s infinite;
+  pointer-events: auto !important;
 }
 
 .options-container {
@@ -219,6 +224,11 @@ button:disabled {
   }
 }
 
+.gradientsContainer {
+    pointer-events: none !important;
+    z-index: 0;
+  }
+
 .gradientBg {
   height: 100vh;
   width: 100vw;
@@ -227,7 +237,8 @@ button:disabled {
   background: black;
   top: 0;
   left: 0;
-  z-index: -10;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .gradientBg .gradientsContainer {
@@ -374,6 +385,8 @@ button:disabled {
   display: flex;
   height: 100vh;
   width: 100vw;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 .main-container > * {

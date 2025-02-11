@@ -16,7 +16,7 @@ const CloseDesignView = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar forceVisible={true}/>
       <Container className="options-container mt-4">
         <Row>
           <Col xs={12} className="mb-4">

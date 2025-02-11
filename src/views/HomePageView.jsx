@@ -86,7 +86,7 @@ const HomePageView = () => {
 
   return (
     <>
-      {isMobile ? <Sidebar /> : <Navbar />}
+      {isMobile ? <Sidebar /> : <Navbar forceVisible={false} />}
       <Container
         fluid
         className={`p-0 d-flex flex-column justify-content-center align-items-center ${styles.homepageContainer}`}

@@ -71,7 +71,7 @@
   border: none;
   font-size: 1.1rem; /* Increased font size */
   transition: background-color 0.3s ease, transform 0.3s ease;
-  margin-right: 3rem;
+  margin-right: 6rem!important; /* Adjusted margin for better spacing */
   white-space: nowrap;
 }
 

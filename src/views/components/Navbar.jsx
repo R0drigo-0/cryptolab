@@ -39,7 +39,7 @@ const Navbar = ({ forceVisible }) => {
         styles.container
       } ${isVisible ? styles.visible : styles.hidden}`}
     >
-      <div className="d-flex align-items-center" onClick={() => navigate("/")}>
+      <div className="d-flex align-items-center" onClick={() => navigate("/")} style={{ cursor: "pointer", marginLeft: "3rem" }}>
         <img src={logo} alt="Cryptolab" className={styles.logo} />
         <span className={styles.headerTitle}>
           <span className={styles.crypto}>Crypto</span>
@@ -64,6 +64,7 @@ const Navbar = ({ forceVisible }) => {
       </div>
       <Button
         className={styles["navbar-button"]}
+        
         onClick={() => {
           navigate("/design");
         }}

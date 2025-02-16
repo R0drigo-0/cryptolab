@@ -2,6 +2,7 @@
   position: relative;
   height: 100vh !important;
   background-color: #f0f0f0;
+  color: #000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: width 0.3s;
 }
@@ -31,10 +32,11 @@
 
 .toggleButton {
   position: absolute;
+  width: 3.2rem;
+  height: 3.2rem;
   z-index: 10;
   top: 50%;
-  right: -15px;
-  /* Adjust this value to position the button correctly */
+  right: -1.5rem;
   transform: translateY(-50%);
   background-color: white;
   border: none;

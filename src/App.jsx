@@ -12,18 +12,13 @@ import CloseDesignView from "./views/CloseDesignView";
 import OptionRouting from "./views/OptionRouting";
 import ErrorView from "./views/ErrorView";
 import { ReactFlowProvider } from "@xyflow/react";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <ReactFlowProvider>
       <HashRouter>
-        <Routes>
-          <Route path="/" element={<HomePageView />} />
-          <Route path="/design" element={<OpenDesignView />} />
-          <Route path="/options" element={<CloseDesignView />} />
-          <Route path="/options/:option" element={<OptionRouting />} />
-          <Route path="*" element={<ErrorView />} />
-        </Routes>
-        <ToastContainer
+      <ToastContainer
           position="top-right"
           autoClose={3000}
           hideProgressBar={false}
@@ -34,6 +29,14 @@ function App() {
           draggable
           pauseOnHover
         />
+        <Routes>
+          <Route path="/" element={<HomePageView />} />
+          <Route path="/design" element={<OpenDesignView />} />
+          <Route path="/options" element={<CloseDesignView />} />
+          <Route path="/options/:option" element={<OptionRouting />} />
+          <Route path="*" element={<ErrorView />} />
+        </Routes>
+
       </HashRouter>
     </ReactFlowProvider>
   );

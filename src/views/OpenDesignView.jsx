@@ -12,8 +12,6 @@ import {
   MarkerType,
   useViewport,
   ReactFlowProvider,
-  useOnViewportChange,
-  Viewport,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import styles from "../styles/OpenDesignView.module.css";
@@ -36,8 +34,8 @@ import {
 } from "./components/nodes";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { handleRemoveSelected } from "../utils/handleRemoveSelected";
+
 const OpenDesignView = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -50,7 +48,7 @@ const OpenDesignView = () => {
   const [redoStack, setRedoStack] = useState([]);
   const [nodeKeys, setNodeKeys] = useState({});
 
-  // Mantain sync between model and view
+  // Maintain sync between model and view
   useEffect(() => {
     setNodes(OpenDesignController.getNodes());
     setEdges(OpenDesignController.getEdges());
@@ -189,12 +187,12 @@ const OpenDesignView = () => {
     const targetNode = nodes.find((node) => node.id === params.target);
 
     if (sourceNode && targetNode) {
-      console.log("Source Node", sourceNode.data.privKey);
       const updatedTargetNode = {
         ...targetNode,
         data: {
           ...targetNode.data,
           input: sourceNode.data.output,
+          sourceId: sourceNode.id, // Add source node ID to the target node's data
           ...(sourceNode.data.seed && { seed: sourceNode.data.seed }),
           ...(sourceNode.data.pubKey && { pubKey: sourceNode.data.pubKey }),
           ...(sourceNode.data.privKey && { privKey: sourceNode.data.privKey }),
@@ -223,7 +221,7 @@ const OpenDesignView = () => {
   };
 
   const cleanupNodeData = useCallback((nodeId) => {
-    setNodes((nds) => 
+    setNodes((nds) =>
       nds.map((node) => {
         if (node.id === nodeId) {
           return {
@@ -234,8 +232,8 @@ const OpenDesignView = () => {
               output: "",
               pubKey: undefined,
               privKey: undefined,
-              seed: undefined
-            }
+              seed: undefined,
+            },
           };
         }
         return node;
@@ -251,20 +249,15 @@ const OpenDesignView = () => {
       cleanupNodeData(edge.target);
       setNodeKeys((prev) => ({
         ...prev,
-        [edge.target]: (prev[edge.target] || 0) + 1 
+        [edge.target]: (prev[edge.target] || 0) + 1,
       }));
     });
 
-    handleRemoveSelected(
-      selectedNodes,
-      selectedEdges,
-      setNodes,
-      setEdges
-    );
+    handleRemoveSelected(selectedNodes, selectedEdges, setNodes, setEdges);
 
     setUndoStack((prevUndoStack) => [
       ...prevUndoStack,
-      { nodes: deletedNodes, edges: deletedEdges }
+      { nodes: deletedNodes, edges: deletedEdges },
     ]);
     setRedoStack([]);
   }, [selectedNodes, selectedEdges, cleanupNodeData]);
@@ -293,12 +286,7 @@ const OpenDesignView = () => {
       { nodes: lastUndone.nodes, edges: lastUndone.edges },
     ]);
 
-    handleRemoveSelected(
-      lastUndone.nodes,
-      lastUndone.edges,
-      setNodes,
-      setEdges
-    );
+    handleRemoveSelected(lastUndone.nodes, lastUndone.edges, setNodes, setEdges);
   };
 
   const onSelectionChange = ({ nodes, edges }) => {
@@ -355,7 +343,7 @@ const OpenDesignView = () => {
                         pubKey: node.data.pubKey,
                         privKey: node.data.privKey,
                       },
-                      key: nodeKeys[n.id] || 0
+                      key: nodeKeys[n.id] || 0,
                     };
                   }
                   return n;
@@ -476,23 +464,6 @@ const OpenDesignView = () => {
               position="bottom-right"
             />
           </ReactFlow>
-          {selectedNodes.length == -1 && (
-            <div
-              style={{
-                position: "absolute",
-                top: selectedNodes[0].position.y + 90,
-                left: selectedNodes[0].position.x + 318,
-                backgroundColor: "white",
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                zIndex: 10,
-              }}
-            >
-              <button onClick={handleDelete}>Delete Node</button>
-            </div>
-          )}
         </div>
       </ReactFlowProvider>
     </div>

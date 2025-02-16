@@ -17,6 +17,7 @@ import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SidebarController from "../controllers/SidebarController";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import { colors } from "@mui/material";
 
 const SidebarView = ({ onNewNode, handleDelete }) => {
   const [collapsed, setCollapsed] = useState(SidebarController.getCollapsed());
@@ -49,7 +50,7 @@ const SidebarView = ({ onNewNode, handleDelete }) => {
       }`}
     >
       <button className={styles.toggleButton} onClick={handleToggle}>
-        {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        {collapsed ? <ChevronRightIcon style={{color:"black"}} /> : <ChevronLeftIcon style={{color:"black"}} />}
       </button>
       <Sidebar
         className={styles.sidebar}

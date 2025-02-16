@@ -1,0 +1,47 @@
+body {
+    padding-top: 56px; /* Height of the navbar */
+  }
+  
+  .optionsContainer {
+    margin-top: 2rem;
+    padding: 1rem; /* Reduced padding */
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem; /* Reduced font size */
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 1rem; /* Reduced margin */
+    text-align: center;
+  }
+  
+  .optionBox {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  
+  .optionBox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .optionText {
+    font-size: 1rem; /* Reduced font size */
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .hashOption {
+    background-color: #ff7043; /* Custom color for hash options */
+  }
+  
+  .cryptographyOption {
+    background-color: #42a5f5; /* Custom color for cryptography options */
+  }

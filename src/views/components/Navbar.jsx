@@ -1,29 +1,29 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import styles from "../../styles/NavbarView.module.css";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import logo from "../../assets/logo.svg";
-import { Button, Container, Row, Col, Card, Nav } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 
-const Navbar = ({forceVisible}) => {
+const Navbar = ({ forceVisible }) => {
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isVisible, setIsVisible] = useState(forceVisible);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
 
   const handleScroll = () => {
     if (forceVisible) {
       setIsVisible(true);
       return;
     }
-    if (window.scrollY > lastScrollY) {
+    const currentScrollTop = window.scrollY;
+    if (currentScrollTop < lastScrollTop) {
       // Scrolling down
-      setIsVisible(true);
+      setIsVisible(false);
     } else {
       // Scrolling up
-      setIsVisible(false);
+      setIsVisible(true);
     }
-    setLastScrollY(window.scrollY);
+    setLastScrollTop(currentScrollTop);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Navbar = ({forceVisible}) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastScrollY]);
+  }, [lastScrollTop, forceVisible]);
 
   return (
     <Container
@@ -63,7 +63,7 @@ const Navbar = ({forceVisible}) => {
         </a>
       </div>
       <Button
-        variant="primary"
+        className={styles["navbar-button"]}
         onClick={() => {
           navigate("/design");
         }}

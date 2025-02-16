@@ -1,16 +1,20 @@
 @import "./colors.css";
 
+/* Header Title Styling */
 .headerTitle {
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Increased font size */
   font-weight: bold;
-  margin-left: 10px;
+  margin-left: 20px; /* Adjusted margin for better spacing */
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
+/* Logo Styling */
 .logo {
-  width: 40px;
-  height: 40px;
+  width: 60px; /* Increased width */
+  height: 60px; /* Increased height */
 }
 
+/* Crypto and Lab Text Colors */
 .crypto {
   color: var(--cryptolab-blue);
 }
@@ -19,31 +23,73 @@
   color: var(--cryptolab-orange);
 }
 
+/* Header Categories Links */
 .headerCategories a {
   text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s ease;
+  font-size: 1.1rem; /* Increased font size */
+  color: var(--cryptolab-dark-grey);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .headerCategories a:hover {
-  color: #00bfff;
+  color: var(--cryptolab-blue);
+  transform: scale(1.1);
 }
 
+/* Container Styling */
 .container {
-  background-color: var(--cryptolab-white);
-  padding: 10px 20px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  background: white;
+  height: 6rem !important; /* Force height */
+  min-height: 6rem !important; /* Add min-height to prevent expansion */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: 100vw!important; 
   position: fixed;
-  top: -100px; /* Adjust this value based on your navbar height */
-  transition: top 0.3s;
+  top: 0;
+  width: 100%;
+  transition: top 0.1s;
   z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0 !important; /* Remove Bootstrap padding */
+  margin: 0 !important; /* Remove Bootstrap margin */
 }
 
 .hidden {
-  top: -100px; /* Adjust this value based on your navbar height */
+  top: -6rem;
 }
 
 .visible {
   top: 0;
+}
+
+/* Navbar Button Styling */
+.navbar-button {
+  background-color: var(--cryptolab-orange);
+  border: none;
+  font-size: 1.1rem; /* Increased font size */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-right: 3rem;
+  white-space: nowrap;
+}
+
+.navbar-button:hover {
+  background-color: var(--cryptolab-orange-hovered);
+  transform: scale(1.05);
+}
+
+.navbar-button:active {
+  background-color: var(--cryptolab-orange-active);
+}
+
+.navbar-button:disabled {
+  background-color: var(--cryptolab-orange-disabled);
+}
+
+/* Focus State for Accessibility */
+.navbar-button:focus {
+  outline: 2px solid var(--cryptolab-blue);
+  outline-offset: 2px;
 }

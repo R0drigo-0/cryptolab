@@ -1,11 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { HASH_OPTIONS, CRYPTOGRAPHY_OPTIONS } from "../constants/options";
 import Navbar from "./components/Navbar";
-
-import logo from "../assets/logo.svg";
-
 
 const CloseDesignView = () => {
   const navigate = useNavigate();
@@ -16,7 +13,7 @@ const CloseDesignView = () => {
 
   return (
     <div>
-      <Navbar forceVisible={true}/>
+      <Navbar forceVisible={true} />
       <Container className="options-container mt-4">
         <Row>
           <Col xs={12} className="mb-4">
@@ -26,7 +23,7 @@ const CloseDesignView = () => {
                 <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-3">
                   <Card
                     className="option-box"
-                    style={{ backgroundColor: 'var(--cryptolab-orange)' }}
+                    style={{ backgroundColor: 'var(--cryptolab-hash)' }}
                     onClick={() => handleOptionClick(option)}
                   >
                     <Card.Body>
@@ -44,7 +41,7 @@ const CloseDesignView = () => {
                 <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-3">
                   <Card
                     className="option-box"
-                    style={{ backgroundColor: 'var(--cryptolab-blue)' }}
+                    style={{ backgroundColor: 'var(--cryptolab-cryptography)' }}
                     onClick={() => handleOptionClick(option)}
                   >
                     <Card.Body>

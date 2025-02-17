@@ -40,6 +40,7 @@ import { toast } from "react-toastify";
 import { handleRemoveSelected } from "../utils/handleRemoveSelected";
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import { FileDownload as FileDownloadIcon, FileUpload as FileUploadIcon } from '@mui/icons-material';
+import zIndex from "@mui/material/styles/zIndex";
 
 const OpenDesignView = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -598,7 +599,7 @@ const OpenDesignView = () => {
             aria-controls="export-menu"
             aria-haspopup="true"
             onClick={handleClick}
-            className={styles.exportButton}
+            style={{width: '3.1rem', height: '3.1rem', borderRadius: '50%', backgroundColor: 'var(--cryptolab-orange)', zIndex: '1000', transition: 'all 0.125s ease', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)'}}
           >
             <FileDownloadIcon />
           </IconButton>

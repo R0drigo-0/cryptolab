@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import debounce from "lodash.debounce";
+import * as htmlToImage from "html-to-image";
+import jsPDF from "jspdf";
 import {
   ReactFlow,
   Background,
@@ -47,6 +49,9 @@ const OpenDesignView = () => {
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
   const [nodeKeys, setNodeKeys] = useState({});
+  const [isExporting, setIsExporting] = useState(false);
+
+  const designRef = useRef(null);
 
   // Maintain sync between model and view
   useEffect(() => {
@@ -286,7 +291,12 @@ const OpenDesignView = () => {
       { nodes: lastUndone.nodes, edges: lastUndone.edges },
     ]);
 
-    handleRemoveSelected(lastUndone.nodes, lastUndone.edges, setNodes, setEdges);
+    handleRemoveSelected(
+      lastUndone.nodes,
+      lastUndone.edges,
+      setNodes,
+      setEdges
+    );
   };
 
   const onSelectionChange = ({ nodes, edges }) => {
@@ -425,11 +435,87 @@ const OpenDesignView = () => {
     );
   }, [selectedEdges]);
 
+  const exportToPng = () => {
+    if (designRef.current === null) {
+      return;
+    }
+    setIsExporting(true);
+    htmlToImage
+      .toPng(designRef.current)
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "design.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((error) => {
+        console.error("Error exporting to PNG:", error);
+      })
+      .finally(() => {
+        setIsExporting(false);
+      });
+  };
+
+  const exportToSvg = () => {
+    if (designRef.current === null) {
+      return;
+    }
+    setIsExporting(true);
+    htmlToImage
+      .toSvg(designRef.current)
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "design.svg";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((error) => {
+        console.error("Error exporting to SVG:", error);
+      })
+      .finally(() => {
+        setIsExporting(false);
+      });
+  };
+
+  const exportToPdf = () => {
+    if (designRef.current === null) {
+      return;
+    }
+    setIsExporting(true);
+    htmlToImage
+      .toPng(designRef.current)
+      .then((dataUrl) => {
+        const pdf = new jsPDF({
+          orientation: "landscape",
+          unit: "px",
+          format: [
+            designRef.current.offsetWidth,
+            designRef.current.offsetHeight,
+          ],
+        });
+        pdf.addImage(
+          dataUrl,
+          "PNG",
+          0,
+          0,
+          designRef.current.offsetWidth,
+          designRef.current.offsetHeight
+        );
+        pdf.save("design.pdf");
+      })
+      .catch((error) => {
+        console.error("Error exporting to PDF:", error);
+      })
+      .finally(() => {
+        setIsExporting(false);
+      });
+  };
+
   return (
     <div className={styles.openDesignView}>
       <ReactFlowProvider>
         <SidebarView onNewNode={handleNewNode} handleDelete={handleDelete} />
-        <div className={styles.gridBg}>
+        <div className={styles.gridBg} ref={designRef}>
           <ReactFlow
             fitView
             snapToGrid
@@ -447,23 +533,32 @@ const OpenDesignView = () => {
             onViewportChange={(viewport) => setViewport(viewport)}
           >
             <Background color="#ccc" variant={BackgroundVariant.Lines} />
-            <MiniMap pannable zoomable position="bottom-right" />
-            <MiniMap
-              nodeStrokeColor={(n) => {
-                if (n.type === "InputNode") return "#0041d0";
-                if (n.type === "OutputNode") return "#ff0072";
-                if (n.type === "EncryptNode") return "#ff0072";
-              }}
-              nodeColor={(n) => {
-                if (n.type === "selectorNode") return "#ff0072";
-                return "#fff";
-              }}
-            />
+            {!isExporting && (
+              <>
+                <MiniMap pannable zoomable position="bottom-right" />
+                <MiniMap
+                  nodeStrokeColor={(n) => {
+                    if (n.type === "InputNode") return "#0041d0";
+                    if (n.type === "OutputNode") return "#ff0072";
+                    if (n.type === "EncryptNode") return "#ff0072";
+                  }}
+                  nodeColor={(n) => {
+                    if (n.type === "selectorNode") return "#ff0072";
+                    return "#fff";
+                  }}
+                />
             <Controls
               className={styles.horizontalControls}
               position="bottom-right"
-            />
+              />
+              </>
+            )}
           </ReactFlow>
+        </div>
+        <div className={styles.exportButtons}>
+          <button onClick={exportToPng}>Export to PNG</button>
+          <button onClick={exportToSvg}>Export to SVG</button>
+          <button onClick={exportToPdf}>Export to PDF</button>
         </div>
       </ReactFlowProvider>
     </div>

@@ -83,3 +83,10 @@
   background-color: #ffffff;
   border: 1px solid #AAAAAA;
 }
+
+.exportButtons{
+  position: absolute;
+  top: 200;
+  left: 200;
+  z-index: 10;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import debounce from "lodash.debounce";
+import { FaFileExport, FaFileImport } from "react-icons/fa";
 import * as htmlToImage from "html-to-image";
+import debounce from "lodash.debounce";
 import jsPDF from "jspdf";
 import {
   ReactFlow,
@@ -37,6 +38,8 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { handleRemoveSelected } from "../utils/handleRemoveSelected";
+import { IconButton, Menu, MenuItem } from '@mui/material';
+import { FileDownload as FileDownloadIcon, FileUpload as FileUploadIcon } from '@mui/icons-material';
 
 const OpenDesignView = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -511,6 +514,41 @@ const OpenDesignView = () => {
       });
   };
 
+  const exportToJson = () => {
+    const json = JSON.stringify({
+      author: "Your Author Name", // Replace with dynamic author if needed
+      timestamp: new Date().toISOString(),
+      nodes,
+      edges,
+    });
+    const blob = new Blob([json], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "design.json";
+    link.click();
+  };
+  
+  const importFromJson = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const json = JSON.parse(e.target.result);
+        setNodes(json.nodes);
+        setEdges(json.edges);
+      };
+      reader.readAsText(file);
+    }
+  };  
+  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  
   return (
     <div className={styles.openDesignView}>
       <ReactFlowProvider>
@@ -547,18 +585,41 @@ const OpenDesignView = () => {
                     return "#fff";
                   }}
                 />
-            <Controls
-              className={styles.horizontalControls}
-              position="bottom-right"
-              />
+                <Controls
+                  className={styles.horizontalControls}
+                  position="bottom-right"
+                />
               </>
             )}
           </ReactFlow>
         </div>
         <div className={styles.exportButtons}>
-          <button onClick={exportToPng}>Export to PNG</button>
-          <button onClick={exportToSvg}>Export to SVG</button>
-          <button onClick={exportToPdf}>Export to PDF</button>
+          <IconButton
+            aria-controls="export-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+            className={styles.exportButton}
+          >
+            <FileDownloadIcon />
+          </IconButton>
+          <Menu
+            id="export-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={exportToPng}>Export to PNG</MenuItem>
+            <MenuItem onClick={exportToSvg}>Export to SVG</MenuItem>
+            <MenuItem onClick={exportToPdf}>Export to PDF</MenuItem>
+            <MenuItem onClick={exportToJson}>Export to JSON</MenuItem>
+            <MenuItem>
+              <label className={styles.importLabel}>
+                <FileUploadIcon /> Import JSON
+                <input type="file" accept=".json" onChange={importFromJson} style={{ display: 'none' }} />
+              </label>
+            </MenuItem>
+          </Menu>
         </div>
       </ReactFlowProvider>
     </div>

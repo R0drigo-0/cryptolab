@@ -38,8 +38,11 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { handleRemoveSelected } from "../utils/handleRemoveSelected";
-import { IconButton, Menu, MenuItem } from '@mui/material';
-import { FileDownload as FileDownloadIcon, FileUpload as FileUploadIcon } from '@mui/icons-material';
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import {
+  FileDownload as FileDownloadIcon,
+  FileUpload as FileUploadIcon,
+} from "@mui/icons-material";
 import zIndex from "@mui/material/styles/zIndex";
 
 const OpenDesignView = () => {
@@ -54,6 +57,10 @@ const OpenDesignView = () => {
   const [redoStack, setRedoStack] = useState([]);
   const [nodeKeys, setNodeKeys] = useState({});
   const [isExporting, setIsExporting] = useState(false);
+
+  const [authorName, setAuthorName] = useState("");
+  const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
+  const [isModalClosing, setIsModalClosing] = useState(false);
 
   const designRef = useRef(null);
 
@@ -439,6 +446,31 @@ const OpenDesignView = () => {
     );
   }, [selectedEdges]);
 
+
+  const closeModal = (callback) => {
+    setIsModalClosing(true);
+    setTimeout(() => {
+      setIsAuthorModalOpen(false);
+      setIsModalClosing(false);
+      if (callback) callback();
+    }, 300); // 300ms matches the CSS animation duration
+  };
+
+  const handleExportToJsonClick = () => {
+    closeModal(() => {
+    setIsAuthorModalOpen(true);});
+  };
+
+  const handleAuthorNameSubmit = () => {
+    closeModal(() => {
+    exportToJson();});
+  };
+
+  const handleCancelModal = () => {
+    closeModal();
+  }
+
+
   const exportToPng = () => {
     if (designRef.current === null) {
       return;
@@ -517,7 +549,7 @@ const OpenDesignView = () => {
 
   const exportToJson = () => {
     const json = JSON.stringify({
-      author: "Your Author Name", // Replace with dynamic author if needed
+      author: authorName || "Unknown Author",
       timestamp: new Date().toISOString(),
       nodes,
       edges,
@@ -528,7 +560,7 @@ const OpenDesignView = () => {
     link.download = "design.json";
     link.click();
   };
-  
+
   const importFromJson = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -540,8 +572,8 @@ const OpenDesignView = () => {
       };
       reader.readAsText(file);
     }
-  };  
-  
+  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -549,7 +581,7 @@ const OpenDesignView = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   return (
     <div className={styles.openDesignView}>
       <ReactFlowProvider>
@@ -599,7 +631,16 @@ const OpenDesignView = () => {
             aria-controls="export-menu"
             aria-haspopup="true"
             onClick={handleClick}
-            style={{width: '3.1rem', height: '3.1rem', borderRadius: '50%', backgroundColor: 'var(--cryptolab-orange)', zIndex: '1000', transition: 'all 0.125s ease', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.13), 0 6px 20px rgba(0, 0, 0, 0.19)'}}
+            style={{
+              width: "3.1rem",
+              height: "3.1rem",
+              borderRadius: "50%",
+              backgroundColor: "var(--cryptolab-orange)",
+              zIndex: "1000",
+              transition: "all 0.125s ease",
+              boxShadow:
+                "0 4px 8px rgba(0, 0, 0, 0.13), 0 6px 20px rgba(0, 0, 0, 0.19)",
+            }}
           >
             <FileDownloadIcon />
           </IconButton>
@@ -611,19 +652,62 @@ const OpenDesignView = () => {
             onClose={handleClose}
             className={styles.exportMenuClick}
           >
-            <MenuItem style={{fontWeight:500}} onClick={exportToPng}>Export to PNG</MenuItem>
-            <MenuItem style={{fontWeight:500}} onClick={exportToSvg}>Export to SVG</MenuItem>
-            <MenuItem style={{fontWeight:500}} onClick={exportToPdf}>Export to PDF</MenuItem>
-            <MenuItem style={{fontWeight:500}} onClick={exportToJson}>Export to JSON</MenuItem>
-            <MenuItem style={{fontWeight:500}}>
+            <MenuItem style={{ fontWeight: 500 }} onClick={exportToPng}>
+              Export to PNG
+            </MenuItem>
+            <MenuItem style={{ fontWeight: 500 }} onClick={exportToSvg}>
+              Export to SVG
+            </MenuItem>
+            <MenuItem style={{ fontWeight: 500 }} onClick={exportToPdf}>
+              Export to PDF
+            </MenuItem>
+            <MenuItem
+              style={{ fontWeight: 500 }}
+              onClick={handleExportToJsonClick}
+            >
+              Export to JSON
+            </MenuItem>
+            <MenuItem style={{ fontWeight: 500 }}>
               <label className={styles.importLabel}>
                 <FileUploadIcon /> Import JSON
-                <input type="file" accept=".json" onChange={importFromJson} style={{ display: 'none', backgroundColor: "var(--cryptolab-orange)"}} />
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={importFromJson}
+                  style={{
+                    display: "none",
+                    backgroundColor: "var(--cryptolab-orange)",
+                  }}
+                />
               </label>
             </MenuItem>
           </Menu>
         </div>
       </ReactFlowProvider>
+      {isAuthorModalOpen && (
+        <div className={styles.modal} style={{ zIndex: 1001 }}>
+          {" "}
+          {/* Increased zIndex for the modal */}
+          <div className={styles.modalContent}>
+            <h2>Enter Author Name</h2>
+            <input
+              type="text"
+              value={authorName}
+              onChange={(e) => setAuthorName(e.target.value)}
+              placeholder="Your Name"
+              key={isAuthorModalOpen} // Added key attribute
+              className={styles.authorInput} // Added a class for styling
+              style={{ zIndex: 1002 }} // Increased zIndex for the input
+            />
+            <div className={styles.modalButtons}>
+              <button onClick={handleAuthorNameSubmit}>Save</button>
+              <button onClick={() => handleCancelModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

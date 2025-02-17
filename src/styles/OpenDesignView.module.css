@@ -102,24 +102,83 @@
 }
 
 .exportButton {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  z-index: 20;
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 50%;
+  background-color: var(--cryptolab-orange);
+  z-index: 1000;
+  transition: all 0.125s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
 }
 
 .exportButton:hover {
-  background-color: #45a049;
+  background-color: var(--cryptolab-orange-hovered);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 8px 25px rgba(0, 0, 0, 0.22);
 }
 
 .importLabel {
   cursor: pointer;
   display: flex;
   align-items: center;
+}
+
+.exportButton {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 50%;
+  background-color: var(--cryptolab-orange);
+  z-index: 1000;
+  transition: all 0.125s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+}
+
+.exportButton:hover {
+  background-color: var(--cryptolab-orange-hovered);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+.exportMenuClick {
+  animation: fadeIn 0.3s ease-in-out;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.exportMenuClick .MuiMenuItem-root {
+  transition: background-color 0.2s ease, color 0.2s ease;
+  color: var(--cryptolab-orange); /* Ensure text is white */
+}
+
+.exportMenuClick .MuiMenuItem-root:hover {
+  background-color: var(--cryptolab-orange-hovered);
+}
+
+.exportMenuClick .MuiMenuItem-root:active {
+  background-color: var(--cryptolab-orange-active);
+}
+
+.importLabel {
+  display: flex;
+  align-items: center;
+  color: var(--cryptolab-orange);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.importLabel svg {
+  margin-right: 8px;
+}
+
+.importLabel:hover {
+  color: var(--cryptolab-orange-hovered);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -599,7 +599,7 @@ const OpenDesignView = () => {
             aria-controls="export-menu"
             aria-haspopup="true"
             onClick={handleClick}
-            style={{width: '3.1rem', height: '3.1rem', borderRadius: '50%', backgroundColor: 'var(--cryptolab-orange)', zIndex: '1000', transition: 'all 0.125s ease', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)'}}
+            style={{width: '3.1rem', height: '3.1rem', borderRadius: '50%', backgroundColor: 'var(--cryptolab-orange)', zIndex: '1000', transition: 'all 0.125s ease', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.13), 0 6px 20px rgba(0, 0, 0, 0.19)'}}
           >
             <FileDownloadIcon />
           </IconButton>
@@ -609,15 +609,16 @@ const OpenDesignView = () => {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
+            className={styles.exportMenuClick}
           >
-            <MenuItem onClick={exportToPng}>Export to PNG</MenuItem>
-            <MenuItem onClick={exportToSvg}>Export to SVG</MenuItem>
-            <MenuItem onClick={exportToPdf}>Export to PDF</MenuItem>
-            <MenuItem onClick={exportToJson}>Export to JSON</MenuItem>
-            <MenuItem>
+            <MenuItem style={{fontWeight:500}} onClick={exportToPng}>Export to PNG</MenuItem>
+            <MenuItem style={{fontWeight:500}} onClick={exportToSvg}>Export to SVG</MenuItem>
+            <MenuItem style={{fontWeight:500}} onClick={exportToPdf}>Export to PDF</MenuItem>
+            <MenuItem style={{fontWeight:500}} onClick={exportToJson}>Export to JSON</MenuItem>
+            <MenuItem style={{fontWeight:500}}>
               <label className={styles.importLabel}>
                 <FileUploadIcon /> Import JSON
-                <input type="file" accept=".json" onChange={importFromJson} style={{ display: 'none' }} />
+                <input type="file" accept=".json" onChange={importFromJson} style={{ display: 'none', backgroundColor: "var(--cryptolab-orange)"}} />
               </label>
             </MenuItem>
           </Menu>

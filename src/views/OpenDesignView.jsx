@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { FaFileExport, FaFileImport } from "react-icons/fa";
+import { FaFileExport, FaFileImport, FaMoon, FaSun } from "react-icons/fa";
 import * as htmlToImage from "html-to-image";
 import debounce from "lodash.debounce";
 import jsPDF from "jspdf";
@@ -61,6 +61,7 @@ const OpenDesignView = () => {
   const [authorName, setAuthorName] = useState("");
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
   const [isModalClosing, setIsModalClosing] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const designRef = useRef(null);
 
@@ -582,9 +583,13 @@ const OpenDesignView = () => {
     setAnchorEl(null);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  }
+
   return (
-    <div className={styles.openDesignView}>
-      <ReactFlowProvider>
+    <div className={`${styles.openDesignView} ${isDarkMode ? styles.dark : ''}`}>
+      <ReactFlowProvider >
         <SidebarView onNewNode={handleNewNode} handleDelete={handleDelete} />
         <div className={styles.gridBg} ref={designRef}>
           <ReactFlow
@@ -603,7 +608,7 @@ const OpenDesignView = () => {
             multiSelectionKeyCode={16}
             onViewportChange={(viewport) => setViewport(viewport)}
           >
-            <Background color="#ccc" variant={BackgroundVariant.Lines} />
+            <Background color="#ccc" variant={isDarkMode ? BackgroundVariant.Dots : BackgroundVariant.Lines} />
             {!isExporting && (
               <>
                 <MiniMap pannable zoomable position="bottom-right" />
@@ -627,6 +632,22 @@ const OpenDesignView = () => {
           </ReactFlow>
         </div>
         <div className={styles.exportButtons}>
+          <IconButton
+            onClick={toggleDarkMode}
+            style={{
+              width: "3.1rem",
+              height: "3.1rem",
+              borderRadius: "50%",
+              backgroundColor: "var(--cryptolab-orange)",
+              zIndex: "1000",
+              transition: "all 0.125s ease",
+              boxShadow:
+                "0 4px 8px rgba(0, 0, 0, 0.13), 0 6px 20px rgba(0, 0, 0, 0.19)",
+              marginRight: "0.5rem", // Add margin to separate from export button
+            }}
+          >
+            {isDarkMode ? <FaSun /> : <FaMoon />}
+          </IconButton>
           <IconButton
             aria-controls="export-menu"
             aria-haspopup="true"
@@ -686,8 +707,6 @@ const OpenDesignView = () => {
       </ReactFlowProvider>
       {isAuthorModalOpen && (
         <div className={styles.modal} style={{ zIndex: 1001 }}>
-          {" "}
-          {/* Increased zIndex for the modal */}
           <div className={styles.modalContent}>
             <h2>Enter Author Name</h2>
             <input
@@ -695,15 +714,13 @@ const OpenDesignView = () => {
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
               placeholder="Your Name"
-              key={isAuthorModalOpen} // Added key attribute
-              className={styles.authorInput} // Added a class for styling
-              style={{ zIndex: 1002 }} // Increased zIndex for the input
+              key={isAuthorModalOpen}
+              className={styles.authorInput}
+              style={{ zIndex: 1002 }}
             />
             <div className={styles.modalButtons}>
               <button onClick={handleAuthorNameSubmit}>Save</button>
-              <button onClick={() => handleCancelModal(false)}>
-                Cancel
-              </button>
+              <button onClick={() => handleCancelModal(false)}>Cancel</button>
             </div>
           </div>
         </div>

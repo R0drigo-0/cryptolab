@@ -32,4 +32,11 @@
   --cryptolab-white-disabled: #999999;
   --cryptolab-dark-grey-disabled: #0f1114;
   --cryptolab-black-disabled: #303030;
+
+  --cryptolab-dark-bg: #010011;
+  --cryptolab-dark-text: #ffffff;
+  --cryptolab-dark-node-bg: #333333;
+  --cryptolab-dark-node-text: #ffffff;
+  --cryptolab-dark-edge: #bbbbbb;
+  --cryptolab-dark-handle-bg: #555555;
 }

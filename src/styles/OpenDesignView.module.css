@@ -8,6 +8,12 @@
   flex-direction: column;
 }
 
+/* Dark Mode Styles */
+.openDesignView.dark {
+  background-color: var(--cryptolab-dark-bg);
+  color: var(--cryptolab-dark-text);
+}
+
 .gridBg {
   position: absolute;
   top: 0;
@@ -16,6 +22,10 @@
   height: 100vh;
   background-color: #ffffff;
   z-index: 1;
+}
+
+.openDesignView.dark .gridBg {
+  background-color: var(--cryptolab-dark-bg);
 }
 
 .box {
@@ -57,11 +67,23 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
+.openDesignView.dark .horizontalControls {
+  background-color: #444;
+  color: var(--cryptolab-dark-text);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
 .react-flow__node {
   position: absolute;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   transition: box-shadow 0.125s ease, border-radius 0.125s ease;
+}
+
+.openDesignView.dark .react-flow__node {
+  background-color: var(--cryptolab-dark-node-bg);
+  color: var(--cryptolab-dark-node-text);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .react-flow__node.selected {
@@ -75,6 +97,10 @@
   transition: stroke 0.125s ease;
 }
 
+.openDesignView.dark .react-flow__edge {
+  stroke: var(--cryptolab-dark-edge);
+}
+
 .react-flow__edge.selected {
   stroke: #8400ff;
 }
@@ -82,6 +108,11 @@
 .react-flow__handle {
   background-color: #ffffff;
   border: 1px solid #AAAAAA;
+}
+
+.openDesignView.dark .react-flow__handle {
+  background-color: var(--cryptolab-dark-handle-bg);
+  border: 1px solid #666666;
 }
 
 .exportButtons {
@@ -195,7 +226,7 @@
   justify-content: center;
   align-items: center;
   z-index: 10000;
-  animation: fadeInModal 0.3s ease-in-out;
+  animation: fadeInModal 0.15s ease-in-out;
 }
 
 @keyframes fadeInModal {
@@ -227,8 +258,13 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   width: 320px;
   text-align: center;
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.1s ease-out;
   border: none;
+}
+
+.openDesignView.dark .modalContent {
+  background: linear-gradient(135deg, #333333, #444444);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
 }
 
 @keyframes slideDown {
@@ -248,6 +284,10 @@
   color: #333;
 }
 
+.openDesignView.dark .modalContent h2 {
+  color: var(--cryptolab-dark-text);
+}
+
 .modalContent input[type="text"] {
   width: 100%;
   padding: 12px;
@@ -260,8 +300,18 @@
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+.openDesignView.dark .modalContent input[type="text"] {
+  background-color: #555;
+  color: var(--cryptolab-dark-text);
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.1);
+}
+
 .modalContent input[type="text"]::placeholder {
   color: #999;
+}
+
+.openDesignView.dark .modalContent input[type="text"]::placeholder {
+  color: #bbb;
 }
 
 .modalButtons {
@@ -277,7 +327,7 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.1s ease, color 0.1s ease;
 }
 
 .modalButtons button:first-child {
@@ -296,4 +346,13 @@
 
 .modalButtons button:last-child:hover {
   background-color: #ccc;
+}
+
+.openDesignView.dark .modalButtons button:last-child {
+  background-color: #666;
+  color: var(--cryptolab-dark-text);
+}
+
+.openDesignView.dark .modalButtons button:last-child:hover {
+  background-color: #555;
 }

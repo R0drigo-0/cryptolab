@@ -223,14 +223,24 @@ const OpenDesignView = () => {
   };
 
   const handleNewNode = (item) => {
+    const type = item.replace(/\s+/g, "") + "Node";
     const newNode = {
       id: uuidv4(),
-      type: item.replace(/\s+/g, "") + "Node",
+      type: type,
       position: { x: Math.random() * 400, y: Math.random() * 400 },
       data: { label: item },
     };
     OpenDesignController.addNode(newNode);
     setNodes((nds) => [...nds, newNode]);
+    toast(`${type} added`, {
+      position: "top-right",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const handleNodesChange = (item) => {
@@ -447,7 +457,6 @@ const OpenDesignView = () => {
     );
   }, [selectedEdges]);
 
-
   const closeModal = (callback) => {
     setIsModalClosing(true);
     setTimeout(() => {
@@ -459,18 +468,19 @@ const OpenDesignView = () => {
 
   const handleExportToJsonClick = () => {
     closeModal(() => {
-    setIsAuthorModalOpen(true);});
+      setIsAuthorModalOpen(true);
+    });
   };
 
   const handleAuthorNameSubmit = () => {
     closeModal(() => {
-    exportToJson();});
+      exportToJson();
+    });
   };
 
   const handleCancelModal = () => {
     closeModal();
-  }
-
+  };
 
   const exportToPng = () => {
     if (designRef.current === null) {
@@ -585,11 +595,13 @@ const OpenDesignView = () => {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-  }
+  };
 
   return (
-    <div className={`${styles.openDesignView} ${isDarkMode ? styles.dark : ''}`}>
-      <ReactFlowProvider >
+    <div
+      className={`${styles.openDesignView} ${isDarkMode ? styles.dark : ""}`}
+    >
+      <ReactFlowProvider>
         <SidebarView onNewNode={handleNewNode} handleDelete={handleDelete} />
         <div className={styles.gridBg} ref={designRef}>
           <ReactFlow
@@ -608,7 +620,12 @@ const OpenDesignView = () => {
             multiSelectionKeyCode={16}
             onViewportChange={(viewport) => setViewport(viewport)}
           >
-            <Background color="#ccc" variant={isDarkMode ? BackgroundVariant.Dots : BackgroundVariant.Lines} />
+            <Background
+              color="#ccc"
+              variant={
+                isDarkMode ? BackgroundVariant.Dots : BackgroundVariant.Lines
+              }
+            />
             {!isExporting && (
               <>
                 <MiniMap pannable zoomable position="bottom-right" />

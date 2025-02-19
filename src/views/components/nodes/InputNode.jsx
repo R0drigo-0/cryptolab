@@ -52,14 +52,28 @@ const InputNode = ({ data }) => {
   const [text, setText] = useState('');
   
   const handleChange = (event) => {
-    setText(event.target.value);
-    var ascii_text = Array.from(event.target.value)
+    const input = event.target.value;
+    setText(input);
+    let output = '';
+  
+    if (input === '') {
+      output = '';
+    } else if (/^[01]+$/.test(input)) {
+      output = input[0] === '0' ? parseInt(input, 2).toString() : input;
+    } else if (/^\d+$/.test(input)) {
+      output = input;
+    } else if (/[a-zA-Z]/.test(input)) {
+      output = Array.from(input)
         .map(char => char.charCodeAt(0))
         .join('');
-    data.output = ascii_text;
+    } else {
+      output = input;
+    }
+    
+    data.output = output;
     event.target.style.height = 'auto';
     event.target.style.height = `${event.target.scrollHeight}px`;
-  }
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(text);

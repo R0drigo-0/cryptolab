@@ -10,7 +10,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { CRYPTOGRAPHY_OPTIONS } from "../../constants/options";
-
+import Navbar from "../Navbar";
 
 const CryptographyView = ({ option }) => {
   const [secretKey, setSecretKey] = useState("");
@@ -57,8 +57,7 @@ const CryptographyView = ({ option }) => {
         console.log(encrypted);
         return forge.util.encode64(encrypted);
       },
-      decrypt: (input) => {
-      },
+      decrypt: (input) => {},
     },
     ELGamal: {
       encrypt: (input) => "ELGamal encryption not implemented",
@@ -113,72 +112,82 @@ const CryptographyView = ({ option }) => {
   };
 
   return (
-    <Container fluid>
-      <Row className="mt-4">
-        <Col xs={12} md={4}>
-          <Card>
-            <Card.Body>
-              <Form.Group controlId="inputText">
-                <Form.Label>Input</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={10}
-                  value={input}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="keyText">
-                <Form.Label>Key</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={secretKey}
-                  onChange={handleKeyChange}
-                />
-              </Form.Group>
-              <Button
-                variant="primary"
-                onClick={() => handleModeChange("encrypt")}
+    <>
+      <Navbar forceVisible={true} />
+      <div style={{ marginTop: "120px" }}>
+        <Container fluid style={{ marginTop: "100px" }}>
+          <Row className="mt-4">
+            <Col xs={12} md={4}>
+              <Card>
+                <Card.Body>
+                  <Form.Group controlId="inputText">
+                    <Form.Label>Input</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={10}
+                      value={input}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="keyText">
+                    <Form.Label>Key</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={secretKey}
+                      onChange={handleKeyChange}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleModeChange("encrypt")}
+                  >
+                    Encrypt
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleModeChange("decrypt")}
+                  >
+                    Decrypt
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col
+              xs={12}
+              md={4}
+              className="d-flex align-items-center justify-content-center"
+            >
+              <DropdownButton
+                id="dropdown-basic-button"
+                title={selectedAlgorithm}
+                onSelect={handleAlgorithmSelect}
               >
-                Encrypt
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => handleModeChange("decrypt")}
-              >
-                Decrypt
-              </Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col
-          xs={12}
-          md={4}
-          className="d-flex align-items-center justify-content-center"
-        >
-          <DropdownButton
-            id="dropdown-basic-button"
-            title={selectedAlgorithm}
-            onSelect={handleAlgorithmSelect}
-          >
-            {CRYPTOGRAPHY_OPTIONS.map((option, index) => (
-              <Dropdown.Item key={index} eventKey={option}>
-                {option}
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
-        </Col>
-        <Col xs={12} md={4}>
-          <Card>
-            <Card.Body>
-              <Form.Group controlId="outputText">
-                <Form.Label>Output</Form.Label>
-                <Form.Control as="textarea" rows={10} value={output} readOnly />
-              </Form.Group>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                {CRYPTOGRAPHY_OPTIONS.map((option, index) => (
+                  <Dropdown.Item key={index} eventKey={option}>
+                    {option}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </Col>
+            <Col xs={12} md={4}>
+              <Card>
+                <Card.Body>
+                  <Form.Group controlId="outputText">
+                    <Form.Label>Output</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={10}
+                      value={output}
+                      readOnly
+                    />
+                  </Form.Group>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </>
   );
 };
 

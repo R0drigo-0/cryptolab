@@ -12,49 +12,51 @@ const CloseDesignView = () => {
   };
 
   return (
-    <div>
+    <>
       <Navbar forceVisible={true} />
-      <Container className="options-container mt-4">
-        <Row>
-          <Col xs={12} className="mb-4">
-            <h2>Hash</h2>
-            <Row>
-              {HASH_OPTIONS.map((option, index) => (
-                <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-3">
-                  <Card
-                    className="option-box"
-                    style={{ backgroundColor: 'var(--cryptolab-hash)' }}
-                    onClick={() => handleOptionClick(option)}
-                  >
-                    <Card.Body>
-                      <Card.Text>{option}</Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </Col>
-          <Col xs={12} className="mb-4">
-            <h2>Cryptography</h2>
-            <Row>
-              {CRYPTOGRAPHY_OPTIONS.map((option, index) => (
-                <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-3">
-                  <Card
-                    className="option-box"
-                    style={{ backgroundColor: 'var(--cryptolab-cryptography)' }}
-                    onClick={() => handleOptionClick(option)}
-                  >
-                    <Card.Body>
-                      <Card.Text>{option}</Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+      <div style={{ marginTop: "130px" }}>
+        <Container style={{ marginTop: "100px" }} className="options-container mt-4">
+          <Row>
+            <Col xs={12} className="mb-4">
+              <h2>Hash</h2>
+              <Row>
+                {HASH_OPTIONS.map((option, index) => (
+                  <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-3">
+                    <Card
+                      className="option-box"
+                      style={{ backgroundColor: 'var(--cryptolab-hash)' }}
+                      onClick={() => handleOptionClick(option)}
+                    >
+                      <Card.Body>
+                        <Card.Text>{option}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+            <Col xs={12} className="mb-4">
+              <h2>Cryptography</h2>
+              <Row>
+                {CRYPTOGRAPHY_OPTIONS.map((option, index) => (
+                  <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-3">
+                    <Card
+                      className="option-box"
+                      style={{ backgroundColor: 'var(--cryptolab-cryptography)' }}
+                      onClick={() => handleOptionClick(option)}
+                    >
+                      <Card.Body>
+                        <Card.Text>{option}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </>
   );
 };
 

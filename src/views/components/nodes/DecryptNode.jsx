@@ -1,6 +1,8 @@
 import { memo, useState, useEffect, useMemo, useRef } from "react";
 import { Handle, Position } from "@xyflow/react";
 import * as Algorithms from "../algorithms";
+import NodeWrapper from "./NodeWrapper";
+
 const controlStyle = {
   padding: "15px",
   border: "1px,solid #e0e0e0",
@@ -51,7 +53,7 @@ const DecryptNode = ({ data }) => {
   const handleAlgorithmChange = (event) => {
     setAlgorithm(event.target.value);
   };
-  
+
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(data)) {
       prevDataRef.current = data;
@@ -61,40 +63,46 @@ const DecryptNode = ({ data }) => {
     }
   }, [data]);
   return (
-    <div style={controlStyle}>
-      <Handle type="target" position={Position.Top} id="Decrypt-top" />
-      <Handle type="target" position={Position.Left} id="Decrypt-left" />
-      <Handle type="target" position={Position.Right} id="Decrypt-right" />
-      <Handle type="target" position={Position.Bottom} id="Decrypt-bottom" />
-      <div>
-        <label>
-          <select value={algorithm} onChange={handleAlgorithmChange}>
-            {algorithmsNames.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
-        {algorithms[algorithm + "Algorithm"] ? (
-          algorithms[algorithm + "Algorithm"].getInputs(params)
-        ) : (
-          <div>Error: Algorithm not found</div>
-        )}
+    <NodeWrapper nodeType={"Decrypt"}>
+      <div style={controlStyle}>
+        <Handle type="target" position={Position.Top} id="Decrypt-top" />
+        <Handle type="target" position={Position.Left} id="Decrypt-left" />
+        <Handle type="target" position={Position.Right} id="Decrypt-right" />
+        <Handle type="target" position={Position.Bottom} id="Decrypt-bottom" />
+        <div>
+          <label>
+            <select value={algorithm} onChange={handleAlgorithmChange}>
+              {algorithmsNames.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+          {algorithms[algorithm + "Algorithm"] ? (
+            algorithms[algorithm + "Algorithm"].getInputs(params)
+          ) : (
+            <div>Error: Algorithm not found</div>
+          )}
+        </div>
+        <Handle type="source" position={Position.Top} id="Decrypt-output-top" />
+        <Handle
+          type="source"
+          position={Position.Left}
+          id="Decrypt-output-left"
+        />
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="Decrypt-output-right"
+        />
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          id="Decrypt-output-bottom"
+        />
       </div>
-      <Handle type="source" position={Position.Top} id="Decrypt-output-top" />
-      <Handle type="source" position={Position.Left} id="Decrypt-output-left" />
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="Decrypt-output-right"
-      />
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="Decrypt-output-bottom"
-      />
-    </div>
+    </NodeWrapper>
   );
 };
 export default memo(DecryptNode);

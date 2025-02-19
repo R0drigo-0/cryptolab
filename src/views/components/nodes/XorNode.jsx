@@ -1,6 +1,7 @@
 import { memo, useState, useEffect } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { toast, ToastContainer } from "react-toastify";
+import NodeWrapper from "./NodeWrapper";
 
 const nodeStyle = {
   padding: "15px",
@@ -102,64 +103,64 @@ const XorNode = ({ data }) => {
   };
 
   return (
-    <div style={nodeStyle}>
-      <Handle type="target" position={Position.Top} id="xor-in-t" />
-      <Handle type="target" position={Position.Left} id="xor-in-l" />
-      <Handle type="target" position={Position.Right} id="xor-in-r" />
-      <Handle type="target" position={Position.Bottom} id="xor-in-b" />
+    <NodeWrapper nodeType="XOR">
+      <div style={nodeStyle}>
+        <Handle type="target" position={Position.Top} id="xor-in-t" />
+        <Handle type="target" position={Position.Left} id="xor-in-l" />
+        <Handle type="target" position={Position.Right} id="xor-in-r" />
+        <Handle type="target" position={Position.Bottom} id="xor-in-b" />
 
-      <div>
-        <label>Input 1:</label>
-        <input
-          type="text"
-          value={input1}
-          onChange={(e) => setInput1(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Input 2:</label>
-        <input
-          type="text"
-          value={input2}
-          onChange={(e) => setInput2(e.target.value)}
-        />
-      </div>
-      <div>
-        {/* Swap icon button */}
-        <button
-          onClick={swapInputs}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: 0,
-            margin: "10px 0",
-          }}
-          title="Swap Inputs"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            width="24"
-            viewBox="0 0 24 24"
-            fill="currentColor"
+        <div>
+          <label>Input 1:</label>
+          <input
+            type="text"
+            value={input1}
+            onChange={(e) => setInput1(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Input 2:</label>
+          <input
+            type="text"
+            value={input2}
+            onChange={(e) => setInput2(e.target.value)}
+          />
+        </div>
+        <div>
+          {/* Swap icon button */}
+          <button
+            onClick={swapInputs}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              margin: "10px 0",
+            }}
+            title="Swap Inputs"
           >
-            <path d="M16 18l4-4-4-4v3H4v2h12zM8 6l-4 4 4 4V11h12V9H8z" />
-          </svg>
-        </button>
-      </div>
-      <div>
-        <label>Output:</label>
-        <input type="text" value={output} readOnly />
-      </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              width="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M16 18l4-4-4-4v3H4v2h12zM8 6l-4 4 4 4V11h12V9H8z" />
+            </svg>
+          </button>
+        </div>
+        <div>
+          <label>Output:</label>
+          <input type="text" value={output} readOnly />
+        </div>
 
-      <Handle type="source" position={Position.Top} id="xor-out-t" />
-      <Handle type="source" position={Position.Left} id="xor-out-l" />
-      <Handle type="source" position={Position.Right} id="xor-out-r" />
-      <Handle type="source" position={Position.Bottom} id="xor-out-b" />
-
-      {/* Toast Container */}
-    </div>
+        <Handle type="source" position={Position.Top} id="xor-out-t" />
+        <Handle type="source" position={Position.Left} id="xor-out-l" />
+        <Handle type="source" position={Position.Right} id="xor-out-r" />
+        <Handle type="source" position={Position.Bottom} id="xor-out-b" />
+      </div>
+    </NodeWrapper>
   );
 };
 

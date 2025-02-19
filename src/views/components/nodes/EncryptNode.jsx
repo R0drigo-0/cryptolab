@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useMemo, useRef } from "react";
 import { Handle, Position } from "@xyflow/react";
 import * as Algorithms from "../algorithms";
+import NodeWrapper from "./NodeWrapper";
 
 const controlStyle = {
   padding: "15px",
@@ -65,6 +66,7 @@ const EncryptNode = ({ data }) => {
   }, [data]);
 
   return (
+    <NodeWrapper nodeType={"Encrypt"}>
     <div style={controlStyle}>
       <Handle type="target" position={Position.Top} id="encrypt-top" />
       <Handle type="target" position={Position.Left} id="encrypt-left" />
@@ -99,6 +101,7 @@ const EncryptNode = ({ data }) => {
         id="encrypt-output-bottom"
       />
     </div>
+    </NodeWrapper>
   );
 };
 

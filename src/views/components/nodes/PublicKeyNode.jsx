@@ -1,5 +1,6 @@
 import { memo, useState, useEffect } from "react";
 import { Handle, Position } from "@xyflow/react";
+import NodeWrapper from "./NodeWrapper";
 
 const nodeStyle = {
   padding: "15px",
@@ -23,6 +24,7 @@ const PublicKeyNode = ({ data }) => {
   }, [e, n]);
 
   return (
+    <NodeWrapper nodeType="Public Key">
     <div style={nodeStyle}>
       <Handle type="target" position={Position.Top} id="publicKey-in-t" />
       <Handle type="target" position={Position.Left} id="publicKey-in-l" /> 
@@ -53,6 +55,7 @@ const PublicKeyNode = ({ data }) => {
       <Handle type="source" position={Position.Right} id="publicKey-out-r" />
       <Handle type="source" position={Position.Bottom} id="publicKey-out-b" />
     </div>
+    </NodeWrapper>
   );
 };
 

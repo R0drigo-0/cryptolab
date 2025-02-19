@@ -1,5 +1,6 @@
 import { memo, useState, useEffect } from "react";
 import { Handle, Position } from "@xyflow/react";
+import NodeWrapper from "./NodeWrapper";
 
 const nodeStyle = {
   padding: "15px",
@@ -20,6 +21,7 @@ const SeedNode = ({ data }) => {
   };
 
   return (
+    <NodeWrapper nodeType="Seed">
     <div style={nodeStyle}>
       <Handle type="target" position={Position.Top} id="seed-input-top" />
       <Handle type="target" position={Position.Left} id="seed-input-left" />
@@ -46,6 +48,7 @@ const SeedNode = ({ data }) => {
         id="seed-output-bottom"
       />
     </div>
+    </NodeWrapper>
   );
 };
 

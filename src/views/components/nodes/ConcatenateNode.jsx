@@ -1,5 +1,6 @@
 import { memo, useState, useEffect } from "react";
 import { Handle, Position } from "@xyflow/react";
+import NodeWrapper from "./NodeWrapper";
 
 const nodeStyle = {
   padding: "15px",
@@ -31,28 +32,30 @@ const ConcatenateNode = ({ data }) => {
   }, [inputs, data]);
 
   return (
-    <div style={nodeStyle}>
-      <Handle type="target" position={Position.Left} id="conc-cat-1" />
-      <Handle type="target" position={Position.Right} id="conc-cat-2" />
+    <NodeWrapper nodeType="Concatenate">
+      <div style={nodeStyle}>
+        <Handle type="target" position={Position.Left} id="conc-cat-1" />
+        <Handle type="target" position={Position.Right} id="conc-cat-2" />
 
-      <div style={{ marginBottom: "10px" }}>
-        <strong>Concatenate Node</strong>
-      </div>
-      <div>
-        <label>Input 1: </label>
-        <input type="text" value={inputs[0]} readOnly />
-      </div>
-      <div>
-        <label>Input 2: </label>
-        <input type="text" value={inputs[1]} readOnly />
-      </div>
-      <div>
-        <label>Output: </label>
-        <input type="text" value={output} readOnly />
-      </div>
+        <div style={{ marginBottom: "10px" }}>
+          <strong>Concatenate Node</strong>
+        </div>
+        <div>
+          <label>Input 1: </label>
+          <input type="text" value={inputs[0]} readOnly />
+        </div>
+        <div>
+          <label>Input 2: </label>
+          <input type="text" value={inputs[1]} readOnly />
+        </div>
+        <div>
+          <label>Output: </label>
+          <input type="text" value={output} readOnly />
+        </div>
 
-      <Handle type="source" position={Position.Bottom} id="concat-out" />
-    </div>
+        <Handle type="source" position={Position.Bottom} id="concat-out" />
+      </div>
+    </NodeWrapper>
   );
 };
 

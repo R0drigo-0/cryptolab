@@ -1,10 +1,11 @@
-import { Handle, Position } from "@xyflow/react";
-import { memo, useState, useEffect } from "react";
-import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
+import { Handle, Position } from "@xyflow/react";
+import { memo, useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
+import NodeWrapper from "./NodeWrapper";
+import styled from "styled-components";
+import { toast } from "react-toastify";
 
 const NodeContainer = styled.div`
   padding: 15px;

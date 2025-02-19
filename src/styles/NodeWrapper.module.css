@@ -1,0 +1,29 @@
+.nodeWrapper {
+  border: 2px solid #ff0072;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f0f0, #ffffff);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+}
+
+.nodeWrapper:hover {
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.nodeHeader {
+  background: linear-gradient(45deg, #ff0072, #d3095e);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.nodeContent {
+  padding: 12px;
+}

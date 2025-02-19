@@ -1,10 +1,10 @@
-import { Handle, Position } from '@xyflow/react';
-import { memo, useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Handle, Position } from "@xyflow/react";
+import { memo, useState, useEffect } from "react";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NodeContainer = styled.div`
   padding: 15px;
@@ -49,35 +49,45 @@ const IconContainer = styled.div`
 `;
 
 const InputNode = ({ data }) => {
-  const [text, setText] = useState('');
-  
+  const [text, setText] = useState("");
+  const [forceAscii, setForceAscii] = useState(false);
+
+  const convertText = (input, forceAscii) => {
+    if (input === "") return "";
+    if (forceAscii) {
+      return Array.from(input)
+        .map((char) => char.charCodeAt(0))
+        .join("");
+    } else if (/^[01]+$/.test(input)) {
+      return input[0] === "0" ? parseInt(input, 2).toString() : input;
+    } else if (/^\d+$/.test(input)) {
+      return input;
+    } else if (/[a-zA-Z]/.test(input)) {
+      return Array.from(input)
+        .map((char) => char.charCodeAt(0))
+        .join("");
+    }
+    return input;
+  };
+
   const handleChange = (event) => {
     const input = event.target.value;
     setText(input);
-    let output = '';
-  
-    if (input === '') {
-      output = '';
-    } else if (/^[01]+$/.test(input)) {
-      output = input[0] === '0' ? parseInt(input, 2).toString() : input;
-    } else if (/^\d+$/.test(input)) {
-      output = input;
-    } else if (/[a-zA-Z]/.test(input)) {
-      output = Array.from(input)
-        .map(char => char.charCodeAt(0))
-        .join('');
-    } else {
-      output = input;
-    }
-    
+    const output = convertText(input, forceAscii);
     data.output = output;
-    event.target.style.height = 'auto';
+
+    event.target.style.height = "auto";
     event.target.style.height = `${event.target.scrollHeight}px`;
   };
 
+  useEffect(() => {
+    const output = convertText(text, forceAscii);
+    data.output = output;
+  }, [forceAscii]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
-    toast.success('Text copied to clipboard', {
+    toast.success("Text copied to clipboard", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -94,6 +104,65 @@ const InputNode = ({ data }) => {
       <Handle type="target" position={Position.Left} id="input-left" />
       <Handle type="target" position={Position.Right} id="input-right" />
       <Handle type="target" position={Position.Bottom} id="input-bottom" />
+      <div
+        style={{
+          marginTop: "10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span style={{ marginRight: "2.5rem", fontSize: "10px", color: "#333" }}>
+          Force ASCII
+        </span>
+        <label
+          title="Toggle Force ASCII"
+          style={{
+            position: "relative",
+            display: "inline-block",
+            width: "50px",
+            height: "24px",
+            margin: 0,
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={forceAscii}
+            onChange={() => setForceAscii(!forceAscii)}
+            style={{
+              opacity: 0,
+              width: 0,
+              height: 0,
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: forceAscii ? "#ff0071" : "#ccc",
+              transition: "0.4s",
+              borderRadius: "24px",
+            }}
+          ></span>
+          <span
+            style={{
+              position: "absolute",
+              height: "18px",
+              width: "18px",
+              left: forceAscii ? "26px" : "4px",
+              bottom: "3px",
+              backgroundColor: "white",
+              transition: "0.4s",
+              borderRadius: "50%",
+            }}
+          ></span>
+        </label>
+
+      </div>
       <StyledInput
         value={text}
         onChange={handleChange}
@@ -108,7 +177,7 @@ const InputNode = ({ data }) => {
       <Handle type="source" position={Position.Right} id="output-right" />
       <Handle type="source" position={Position.Bottom} id="output-bottom" />
     </NodeContainer>
-  )
-}
+  );
+};
 
 export default memo(InputNode);

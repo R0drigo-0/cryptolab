@@ -16,7 +16,6 @@ const NodeContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
-
   &:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
@@ -34,7 +33,6 @@ const StyledInput = styled.textarea`
   color: #333;
   padding: 5px;
   box-sizing: border-box;
-
   &::placeholder {
     color: #aaa;
   }
@@ -51,6 +49,7 @@ const IconContainer = styled.div`
 const InputNode = ({ data }) => {
   const [text, setText] = useState("");
   const [forceAscii, setForceAscii] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const convertText = (input, forceAscii) => {
     if (input === "") return "";
@@ -75,7 +74,6 @@ const InputNode = ({ data }) => {
     setText(input);
     const output = convertText(input, forceAscii);
     data.output = output;
-
     event.target.style.height = "auto";
     event.target.style.height = `${event.target.scrollHeight}px`;
   };
@@ -99,84 +97,135 @@ const InputNode = ({ data }) => {
   };
 
   return (
-    <NodeContainer>
-      <Handle type="target" position={Position.Top} id="input-top" />
-      <Handle type="target" position={Position.Left} id="input-left" />
-      <Handle type="target" position={Position.Right} id="input-right" />
-      <Handle type="target" position={Position.Bottom} id="input-bottom" />
-      <div
-        style={{
-          marginTop: "10px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span style={{ marginRight: "2.5rem", fontSize: "10px", color: "#333" }}>
-          Force ASCII
-        </span>
-        <label
-          title="Toggle Force ASCII"
+    <>
+      {showInfo && (
+        <div
           style={{
-            position: "relative",
-            display: "inline-block",
-            width: "50px",
-            height: "24px",
-            margin: 0,
-            cursor: "pointer",
+            position: "absolute",
+            bottom: "calc(100% + 5px)",
+            left: "5px",
+            padding: "10px",
+            backgroundColor: "#fff",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+            zIndex: 100,
+            fontSize: "12px",
+            width: "250px",
           }}
         >
-          <input
-            type="checkbox"
-            checked={forceAscii}
-            onChange={() => setForceAscii(!forceAscii)}
+          <div
             style={{
-              opacity: 0,
-              width: 0,
-              height: 0,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "5px",
             }}
-          />
-          <span
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: forceAscii ? "#ff0071" : "#ccc",
-              transition: "0.4s",
-              borderRadius: "24px",
-            }}
-          ></span>
-          <span
-            style={{
-              position: "absolute",
-              height: "18px",
-              width: "18px",
-              left: forceAscii ? "26px" : "4px",
-              bottom: "3px",
-              backgroundColor: "white",
-              transition: "0.4s",
-              borderRadius: "50%",
-            }}
-          ></span>
-        </label>
+          >
+            <strong>Input Node Info</strong>
+            <span
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+              onClick={() => setShowInfo(false)}
+            >
+              ✖
+            </span>
+          </div>
+          <p style={{ margin: "0 0 5px", color: "#555" }}>
+            This node converts text based on its content:
+          </p>
+          <ul style={{ paddingLeft: "15px", margin: "0" }}>
+            <li>Binary (starting with 0): converted to a number</li>
+            <li>Numeric: remains unchanged</li>
+            <li>Alphabetic: converted to ASCII codes</li>
+            <li>Toggle: force ASCII conversion</li>
 
-      </div>
-      <StyledInput
-        value={text}
-        onChange={handleChange}
-        placeholder="Enter text here"
-        rows={1}
-      />
-      <IconContainer onClick={handleCopy}>
-        <FontAwesomeIcon icon={faCopy} />
-      </IconContainer>
-      <Handle type="source" position={Position.Top} id="output-top" />
-      <Handle type="source" position={Position.Left} id="output-left" />
-      <Handle type="source" position={Position.Right} id="output-right" />
-      <Handle type="source" position={Position.Bottom} id="output-bottom" />
-    </NodeContainer>
+          </ul>
+        </div>
+      )}
+      <NodeContainer style={{ position: "relative", zIndex: 3 }}>
+        <Handle type="target" position={Position.Top} id="input-top" />
+        <Handle type="target" position={Position.Left} id="input-left" />
+        <Handle type="target" position={Position.Right} id="input-right" />
+        <Handle type="target" position={Position.Bottom} id="input-bottom" />
+  
+        <div
+          style={{
+            position: "absolute",
+            top: "0px",
+            left: "5px",
+            cursor: "pointer",
+            borderRadius: "100%",
+          }}
+          onClick={() => setShowInfo(true)}
+        >
+          <span style={{ fontSize: "18px", color: "#007bff" }}>ℹ️</span>
+        </div>
+  
+        <div style={{ position: "absolute", top: "5px", right: "5px" }}>
+          <label
+            title="Toggle Force ASCII"
+            style={{
+              position: "relative",
+              display: "inline-block",
+              width: "50px",
+              height: "24px",
+              margin: 0,
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={forceAscii}
+              onChange={() => setForceAscii(!forceAscii)}
+              style={{
+                opacity: 0,
+                width: 0,
+                height: 0,
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: forceAscii ? "#ff0071" : "#ccc",
+                transition: "0.4s",
+                borderRadius: "24px",
+              }}
+            ></span>
+            <span
+              style={{
+                position: "absolute",
+                height: "18px",
+                width: "18px",
+                left: forceAscii ? "26px" : "4px",
+                bottom: "3px",
+                backgroundColor: "white",
+                transition: "0.4s",
+                borderRadius: "50%",
+              }}
+            ></span>
+          </label>
+        </div>
+  
+        <StyledInput
+          value={text}
+          onChange={handleChange}
+          placeholder="Enter text here"
+          rows={1}
+          style={{ marginTop: "10px" }}  // added margin to separate from icons
+        />
+        <IconContainer onClick={handleCopy}>
+          <FontAwesomeIcon icon={faCopy} />
+        </IconContainer>
+        <Handle type="source" position={Position.Top} id="output-top" />
+        <Handle type="source" position={Position.Left} id="output-left" />
+        <Handle type="source" position={Position.Right} id="output-right" />
+        <Handle type="source" position={Position.Bottom} id="output-bottom" />
+      </NodeContainer>
+    </>
   );
 };
 

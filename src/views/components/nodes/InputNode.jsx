@@ -74,6 +74,7 @@ const InputNode = ({ data }) => {
     setText(input);
     const output = convertText(input, forceAscii);
     data.output = output;
+    data.rawOutput = input;
     event.target.style.height = "auto";
     event.target.style.height = `${event.target.scrollHeight}px`;
   };

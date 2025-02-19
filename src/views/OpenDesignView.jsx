@@ -209,6 +209,7 @@ const OpenDesignView = () => {
         data: {
           ...targetNode.data,
           input: sourceNode.data.output,
+          rawInput: sourceNode.data.rawOutput,
           sourceId: sourceNode.id, // Add source node ID to the target node's data
           ...(sourceNode.data.seed && { seed: sourceNode.data.seed }),
           ...(sourceNode.data.pubKey && { pubKey: sourceNode.data.pubKey }),
@@ -256,7 +257,9 @@ const OpenDesignView = () => {
             data: {
               ...node.data,
               input: "",
+              rawInput: "",
               output: "",
+              rawOtput: "",
               pubKey: undefined,
               privKey: undefined,
               seed: undefined,

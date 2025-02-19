@@ -20,26 +20,53 @@ const XorNode = ({ data }) => {
   const [output, setOutput] = useState("");
 
   useEffect(() => {
-    console.log(data);
+    console.log("Data received:", data);
     const inputValue = data.input || "";
-  
-    // If sourceId is already assigned to input1, update input1
-    if (data.sourceId === sourceIDinput1) {
-      setInput1(inputValue);
-    } 
-    // Else if sourceId is already assigned to input2, update input2
-    else if (data.sourceId === sourceIDinput2) {
-      setInput2(inputValue);
-    } 
-    // If input1 is not set, assign data to input1
-    else if (!sourceIDinput1) {
-      setSourceIDinput1(data.sourceId);
-      setInput1(inputValue);
-    } 
-    // Else if input2 is not set and sourceId is new, assign data to input2
-    else if (!sourceIDinput2 && data.sourceId !== sourceIDinput1) {
-      setSourceIDinput2(data.sourceId);
-      setInput2(inputValue);
+
+    if (data.sourceId) {
+      console.log("Source ID:", data.sourceId);
+
+      // Check if the sourceId matches input1
+      if (sourceIDinput1 && data.sourceId === sourceIDinput1) {
+        console.log("Updating input1 with:", inputValue);
+        setInput1(inputValue);
+      }
+      // Check if the sourceId matches input2
+      else if (sourceIDinput2 && data.sourceId === sourceIDinput2) {
+        console.log("Updating input2 with:", inputValue);
+        setInput2(inputValue);
+      }
+      // If neither input is assigned, assign to input1 if it's empty
+      else if (!sourceIDinput1) {
+        console.log(
+          "Assigning input1 with:",
+          inputValue,
+          "Source ID:",
+          data.sourceId
+        );
+        setSourceIDinput1(data.sourceId);
+        setInput1(inputValue);
+      }
+      // If input1 is assigned and input2 is not, assign to input2
+      else if (!sourceIDinput2) {
+        console.log(
+          "Assigning input2 with:",
+          inputValue,
+          "Source ID:",
+          data.sourceId
+        );
+        setSourceIDinput2(data.sourceId);
+        setInput2(inputValue);
+      }
+      // If both are assigned, ignore the new input
+      else {
+        console.log(
+          "Both inputs are assigned, ignoring:",
+          inputValue,
+          "Source ID:",
+          data.sourceId
+        );
+      }
     }
   }, [data, sourceIDinput1, sourceIDinput2]);
 
@@ -48,8 +75,11 @@ const XorNode = ({ data }) => {
       const xorResult = input1
         .split("")
         .map((char, index) => {
-          const xorChar = char.charCodeAt(0) ^ input2.charCodeAt(index % input2.length);
-          return String.fromCharCode(xorChar);
+          const xorValue =
+            char.charCodeAt(0) ^ input2.charCodeAt(index % input2.length);
+          // Convert the XOR result to a hexadecimal string
+          const hexString = xorValue.toString(16).padStart(2, "0");
+          return hexString;
         })
         .join("");
       setOutput(xorResult);

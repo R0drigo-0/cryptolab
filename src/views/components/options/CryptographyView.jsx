@@ -68,22 +68,6 @@ const CryptographyView = ({ option }) => {
       encrypt: (input) => "Diffie-Hellman encryption not implemented",
       decrypt: (input) => "Diffie-Hellman decryption not implemented",
     },
-    ECB: {
-      encrypt: (input) => "ECB encryption not implemented",
-      decrypt: (input) => "ECB decryption not implemented",
-    },
-    CBC: {
-      encrypt: (input) => "CBC encryption not implemented",
-      decrypt: (input) => "CBC decryption not implemented",
-    },
-    PCBC: {
-      encrypt: (input) => "PCBC encryption not implemented",
-      decrypt: (input) => "PCBC decryption not implemented",
-    },
-    CFB: {
-      encrypt: (input) => "CFB encryption not implemented",
-      decrypt: (input) => "CFB decryption not implemented",
-    },
     Caesar: {
       encrypt: (input) => "Caesar encryption not implemented",
       decrypt: (input) => "Caesar decryption not implemented",

@@ -1,13 +1,9 @@
 export { default as AESAlgorithm } from "./AESAlgorithm";
 export { default as CaesarAlgorithm } from "./CaesarAlgorithm";
-export { default as CBCAlgorithm } from "./CBCAlgorithm";
-export { default as CFBAlgorithm } from "./CFBAlgorithm";
 export { default as DESAlgorithm } from "./DESAlgorithm";
 export { default as DiffieHellmanAlgorithm } from "./DiffieHellmanAlgorithm";
-export { default as ECBAlgorithm } from "./ECBAlgorithm";
 export { default as ElGamalAlgorithm } from "./ElGamalAlgorithm";
 export { default as HomophonicAlgorithm } from "./HomophonicAlgorithm";
 export { default as MatrixCipherAlgorithm } from "./MatrixCipherAlgorithm";
-export { default as PCBCAlgorithm } from "./PCBCAlgorithm";
 export { default as PolyalphabeticAlgorithm } from "./PolyalphabeticAlgorithm";
 export { default as RSAAlgorithm } from "./RSAAlgorithm";

@@ -38,7 +38,7 @@ const HashNode = ({ data }) => {
   }, [data.input, algorithm, algorithms]);
 
   return (
-    <NodeWrapper nodeType="Input Node">
+    <NodeWrapper nodeType="Hash">
       <div style={nodeStyle}>
         <Handle type="target" position={Position.Top} id="hash-in-t" />
         <Handle type="target" position={Position.Left} id="hash-in-l" />
